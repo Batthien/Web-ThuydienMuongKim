@@ -5,9 +5,7 @@
   const output = h.formatNumber(Number(settings.annual_output_kwh) / 1e6, L, 2);
 %>
 <section class="hero">
-  <div class="hero__media" aria-hidden="true">
-    <%- h.img('/media/dam/dam-01', '', { sizes: '100vw', eager: true, cls: 'hero__img' }) %>
-  </div>
+  <%- include('partials/hero-slides', { mediaCls: 'hero__media' }) %>
   <div class="container hero__content">
     <p class="eyebrow eyebrow--light"><%= t('home.eyebrow') %></p>
     <h1 class="hero__title"><%= t('home.heroTitle') %></h1>

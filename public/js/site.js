@@ -9,6 +9,51 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  // ---- Trình chiếu ảnh nền (Đập & Nhà máy) ----
+  const slideBox = document.querySelector('[data-slides]');
+  const slideCtl = document.querySelector('[data-slide-controls]');
+  if (slideBox && slideCtl) {
+    const imgs = [...slideBox.querySelectorAll('img')];
+    const dots = [...slideCtl.querySelectorAll('[data-slide-go]')];
+    const toggleBtn = slideCtl.querySelector('[data-slide-toggle]');
+    const DELAY = 6000;
+    let current = 0;
+    let timer = null;
+    // Luôn tự chạy (có nút tạm dừng); khi người dùng bật giảm chuyển động, CSS bỏ hiệu ứng phóng to
+    let paused = false;
+
+    // Ảnh sau được tải ngầm sau khi trang tải xong để không làm chậm ảnh đầu
+    window.addEventListener('load', () => imgs.forEach((img) => { img.loading = 'eager'; }), { once: true });
+
+    const go = async (n) => {
+      const next = (n + imgs.length) % imgs.length;
+      if (next === current) return;
+      const img = imgs[next];
+      img.loading = 'eager';
+      try { await img.decode(); } catch { /* vẫn chuyển ảnh nếu decode lỗi */ }
+      imgs[current].classList.remove('is-active');
+      img.classList.add('is-active');
+      dots[current]?.removeAttribute('aria-current');
+      dots[next]?.setAttribute('aria-current', 'true');
+      current = next;
+    };
+    const schedule = () => {
+      clearTimeout(timer);
+      if (!paused && !document.hidden) timer = setTimeout(async () => { await go(current + 1); schedule(); }, DELAY);
+    };
+    const setPaused = (p) => {
+      paused = p;
+      slideCtl.classList.toggle('is-paused', p);
+      toggleBtn.setAttribute('aria-label', p ? toggleBtn.dataset.labelPlay : toggleBtn.dataset.labelPause);
+      schedule();
+    };
+
+    toggleBtn.addEventListener('click', () => setPaused(!paused));
+    dots.forEach((d) => d.addEventListener('click', () => { go(Number(d.dataset.slideGo)); schedule(); }));
+    document.addEventListener('visibilitychange', schedule);
+    setPaused(paused);
+  }
+
   // ---- Menu di động ----
   const toggle = document.querySelector('[data-nav-toggle]');
   const nav = document.getElementById('main-nav');

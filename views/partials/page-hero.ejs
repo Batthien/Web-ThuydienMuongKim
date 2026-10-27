@@ -1,8 +1,6 @@
-<%# locals: heroTitle, heroLead, heroImage, crumbs [{label, href}] %>
+<%# locals: heroTitle, heroLead, crumbs [{label, href}] %>
 <section class="page-hero">
-  <div class="page-hero__media" aria-hidden="true">
-    <%- h.img(heroImage, '', { sizes: '100vw', eager: true, cls: 'page-hero__img' }) %>
-  </div>
+  <%- include('hero-slides', { mediaCls: 'page-hero__media' }) %>
   <div class="container page-hero__content">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>

@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <% const base = url('news'); const qs = (p) => { const s = new URLSearchParams(); if (cat) s.set('cat', cat); if (p > 1) s.set('page', p); const str = s.toString(); return str ? '?' + str : ''; }; %>
-<%- include('partials/page-hero', { heroTitle: t('news.title'), heroLead: t('news.lead'), heroImage: '/media/anniversary/anniversary-01', crumbs: [{ label: t('nav.news') }] }) %>
+<%- include('partials/page-hero', { heroTitle: t('news.title'), heroLead: t('news.lead'), crumbs: [{ label: t('nav.news') }] }) %>
 
 <section class="section">
   <div class="container">

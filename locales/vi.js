@@ -13,6 +13,7 @@ module.exports = {
     published: 'Ngày đăng', updated: 'Cập nhật', share: 'Chia sẻ', prev: 'Trang trước', next: 'Trang sau',
     page: 'Trang {n}', empty: 'Nội dung đang được cập nhật.', home: 'Trang chủ',
     mw: 'MW', mkwh: 'triệu kWh', units: 'tổ máy', year: 'Năm',
+    slidePause: 'Tạm dừng trình chiếu ảnh', slidePlay: 'Tiếp tục trình chiếu ảnh', slideGo: 'Xem ảnh {n}',
   },
   meta: {
     description: 'Công ty cổ phần Thủy điện Mường Kim – vận hành nhà máy thủy điện 13,5 MW trên suối Nậm Mu, tỉnh Lào Cai, cung cấp năng lượng sạch cho hệ thống điện quốc gia.',

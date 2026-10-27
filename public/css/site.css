@@ -158,14 +158,12 @@ main:focus { outline: none; }
 /* ---------- Hero ---------- */
 .hero { position: relative; isolation: isolate; min-height: min(88vh, 860px); display: grid; align-items: center; color: #fff; overflow: hidden; padding-block: 120px 160px; }
 .hero__media { position: absolute; inset: 0; z-index: -1; }
-.hero__img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); animation: heroZoom 18s var(--ease) forwards; }
 .hero__media::after {
   content: ""; position: absolute; inset: 0;
   background:
     linear-gradient(100deg, rgba(4, 31, 40, .92) 0%, rgba(6, 47, 60, .78) 38%, rgba(11, 79, 99, .35) 72%, rgba(11, 79, 99, .15) 100%),
     linear-gradient(0deg, rgba(4, 31, 40, .55), transparent 40%);
 }
-@keyframes heroZoom { to { transform: scale(1); } }
 .hero__content { max-width: var(--container); }
 .hero__title { color: #fff; font-size: clamp(2.3rem, 5.4vw, 4.4rem); font-weight: 800; line-height: 1.12; letter-spacing: -.025em; max-width: 14ch; margin-bottom: 24px; }
 .hero__lead { font-size: clamp(1.05rem, 1.6vw, 1.3rem); color: #d6e7ee; max-width: 46ch; margin-bottom: 36px; }
@@ -318,7 +316,6 @@ main:focus { outline: none; }
 /* ---------- Inner page hero ---------- */
 .page-hero { position: relative; isolation: isolate; color: #fff; padding-block: clamp(72px, 10vw, 136px) clamp(56px, 7vw, 96px); overflow: hidden; }
 .page-hero__media { position: absolute; inset: 0; z-index: -1; }
-.page-hero__img { width: 100%; height: 100%; object-fit: cover; }
 .page-hero__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(4, 31, 40, .93) 10%, rgba(6, 47, 60, .7) 55%, rgba(11, 79, 99, .35)); }
 .page-hero__title { color: #fff; font-size: clamp(2rem, 4.6vw, 3.5rem); font-weight: 800; letter-spacing: -.025em; max-width: 20ch; margin-bottom: 16px; }
 .page-hero__lead { color: #d0e3ea; font-size: clamp(1rem, 1.5vw, 1.2rem); max-width: 60ch; margin: 0; }
@@ -555,7 +552,6 @@ main:focus { outline: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .js .reveal { opacity: 1; transform: none; }
-  .hero__img { transform: none; }
 }
 
 @media print {
@@ -565,7 +561,7 @@ main:focus { outline: none; }
 }
 .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 640px) {
-  .hero { min-height: 0; padding-block: 64px 136px; }
+  .hero { min-height: 0; padding-block: 64px 184px; }
   .hero__scroll { display: none; }
   .hero__actions .btn { flex: 1 1 100%; }
 }
@@ -573,3 +569,29 @@ main:focus { outline: none; }
   .main-nav__extra .btn { border-radius: 999px; padding: 0 24px; justify-content: center; font-size: 1rem; }
   .main-nav__extra .btn--primary, .main-nav__extra .btn--primary:hover { color: #fff; background: var(--brand-700); }
 }
+
+/* ---------- Trình chiếu ảnh nền (Đập & Nhà máy) ---------- */
+.hero-slides { overflow: hidden; background: var(--brand-950); }
+.hero-slides__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.08); transition: opacity 1.4s ease, transform 8s linear; }
+.hero-slides__img.is-active { opacity: 1; transform: scale(1); }
+.hero-slides::after { z-index: 1; }
+.hero-controls { position: absolute; z-index: 2; right: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))); bottom: 24px; display: flex; align-items: center; gap: 12px; padding: 6px 8px 6px 6px; border-radius: 999px; background: rgba(4, 31, 40, .45); backdrop-filter: blur(6px); }
+.hero .hero-controls { bottom: 112px; }
+.hero-controls__toggle { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .14); color: #fff; cursor: pointer; transition: background-color .2s; }
+.hero-controls__toggle:hover { background: rgba(255, 255, 255, .28); }
+.hero-controls__toggle .icon { width: 16px; height: 16px; fill: currentColor; stroke: none; }
+.hero-controls__toggle .icon-play, .hero-controls.is-paused .icon-pause { display: none; }
+.hero-controls.is-paused .icon-play { display: block; }
+.hero-controls__dots { display: flex; gap: 2px; }
+.hero-controls__dots button { position: relative; width: 24px; height: 36px; border: 0; padding: 0; background: none; cursor: pointer; }
+.hero-controls__dots button::before { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; translate: -50% -50%; border-radius: 999px; background: rgba(255, 255, 255, .45); transition: width .3s var(--ease), background-color .3s; }
+.hero-controls__dots button:hover::before { background: rgba(255, 255, 255, .8); }
+.hero-controls__dots button[aria-current="true"]::before { width: 20px; background: #fff; }
+@media (max-width: 640px) {
+  .hero .hero-controls { bottom: 100px; }
+  .hero-controls { right: 50%; translate: 50% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slides__img { transform: none !important; transition: opacity .6s ease !important; }
+}
+.page-hero { padding-bottom: max(clamp(56px, 7vw, 96px), 92px); }

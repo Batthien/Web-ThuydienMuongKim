@@ -1,0 +1,23 @@
+<%# Trình chiếu ảnh nền: Đập tràn & Nhà máy. locals: mediaCls ('hero__media' | 'page-hero__media') %>
+<%
+  const slides = [
+    '/media/dam/dam-01', '/media/plant/plant-03', '/media/dam/dam-02',
+    '/media/plant/plant-04', '/media/plant/plant-01', '/media/plant/plant-02',
+  ];
+%>
+<div class="<%= mediaCls %> hero-slides" data-slides aria-hidden="true">
+  <% slides.forEach((s, i) => { %>
+    <%- h.img(s, '', { sizes: '100vw', eager: i === 0, cls: 'hero-slides__img' + (i === 0 ? ' is-active' : '') }) %>
+  <% }) %>
+</div>
+<div class="hero-controls" data-slide-controls>
+  <button type="button" class="hero-controls__toggle" data-slide-toggle
+    aria-label="<%= t('common.slidePause') %>" data-label-pause="<%= t('common.slidePause') %>" data-label-play="<%= t('common.slidePlay') %>">
+    <%- icon('pause', 'icon-pause') %><%- icon('play', 'icon-play') %>
+  </button>
+  <div class="hero-controls__dots">
+    <% slides.forEach((s, i) => { %>
+      <button type="button" data-slide-go="<%= i %>" aria-label="<%= t('common.slideGo', { n: i + 1 }) %>" <%- i === 0 ? 'aria-current="true"' : '' %>></button>
+    <% }) %>
+  </div>
+</div>

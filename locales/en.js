@@ -13,6 +13,7 @@ module.exports = {
     published: 'Published', updated: 'Updated', share: 'Share', prev: 'Previous', next: 'Next',
     page: 'Page {n}', empty: 'Content is being updated.', home: 'Home',
     mw: 'MW', mkwh: 'million kWh', units: 'units', year: 'Year',
+    slidePause: 'Pause slideshow', slidePlay: 'Play slideshow', slideGo: 'Show photo {n}',
   },
   meta: {
     description: 'Muong Kim Hydropower JSC operates a 13.5 MW hydropower plant on the Nam Mu stream, Lao Cai Province, supplying clean energy to Vietnam’s national grid.',
