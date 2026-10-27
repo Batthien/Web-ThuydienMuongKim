@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title><%= locals.title ? title + ' · ' : '' %>Quản trị · Thủy điện Mường Kim</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/admin.css?v=<%= assetVersion %>">
+</head>
+<body class="admin">
+<%- include('../partials/sprite') %>
+<% if (locals.bare) { %>
+<main class="admin-bare">
+<% } else { %>
+<% const nav = [
+  ['/admin', 'Tổng quan', 'gauge'],
+  ['/admin/posts', 'Tin tức', 'file'],
+  ['/admin/documents', 'Tài liệu cổ đông', 'briefcase'],
+  ['/admin/jobs', 'Tuyển dụng', 'users'],
+  ['/admin/messages', 'Tin nhắn & hồ sơ', 'mail'],
+  ['/admin/settings', 'Cấu hình', 'cog'],
+  ['/admin/account', 'Tài khoản', 'shield'],
+]; %>
+<div class="admin-shell">
+  <aside class="admin-side" id="admin-side">
+    <a class="admin-brand" href="/admin"><img src="/img/mark.png" alt="" width="36" height="36"><span>Mường Kim<small>Quản trị nội dung</small></span></a>
+    <nav aria-label="Quản trị">
+      <ul>
+        <% nav.forEach(([href, label, ic]) => { const active = href === '/admin' ? path === '/' : ('/admin' + path).startsWith(href); %>
+          <li><a href="<%= href %>" <%- active ? 'aria-current="page"' : '' %>><%- icon(ic) %><span><%= label %></span><% if (href === '/admin/messages' && unread) { %><b class="badge"><%= unread %></b><% } %></a></li>
+        <% }) %>
+      </ul>
+    </nav>
+    <div class="admin-side__foot">
+      <a href="/vi" target="_blank" rel="noopener"><%- icon('globe') %><span>Xem website</span></a>
+      <form method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button type="submit"><%- icon('arrow-right') %><span>Đăng xuất</span></button></form>
+    </div>
+  </aside>
+  <div class="admin-main">
+    <header class="admin-top">
+      <button class="admin-menu" type="button" aria-controls="admin-side" aria-expanded="false" data-admin-menu><%- icon('menu') %><span class="sr-only">Menu</span></button>
+      <h1><%= locals.title || 'Quản trị' %></h1>
+      <% if (locals.actions) { %><div class="admin-top__actions"><%- actions %></div><% } %>
+    </header>
+    <main class="admin-content">
+      <% if (flash) { %><div class="notice notice--<%= flash.type %>" role="status"><%- icon('check') %><span><%= flash.text %></span></div><% } %>
+<% } %>

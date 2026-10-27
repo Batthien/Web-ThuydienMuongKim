@@ -1,0 +1,14 @@
+<article class="news-card reveal">
+  <a class="news-card__media" href="<%= url('news', post.slug) %>" tabindex="-1" aria-hidden="true">
+    <%- h.img(post.cover, '', { sizes: '(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw', width: 640 }) %>
+  </a>
+  <div class="news-card__body">
+    <p class="news-card__meta">
+      <span class="tag"><%= t('news.categories.' + post.category) %></span>
+      <time datetime="<%= post.published_at %>"><%= h.formatDate(post.published_at, t('locale')) %></time>
+    </p>
+    <h3 class="news-card__title"><a href="<%= url('news', post.slug) %>"><%= loc(post, 'title') %></a></h3>
+    <p class="news-card__excerpt"><%= h.truncate(loc(post, 'excerpt'), 140) %></p>
+    <span class="news-card__more" aria-hidden="true"><%= t('common.readMore') %> <%- icon('arrow-right') %></span>
+  </div>
+</article>

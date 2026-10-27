@@ -1,0 +1,73 @@
+<%- include('partials/head') %>
+<% const L = t('locale'); const base = url('ir'); %>
+<%- include('partials/page-hero', { heroTitle: t('ir.title'), heroLead: t('ir.lead'), heroImage: '/media/office/office-03', crumbs: [{ label: t('nav.ir') }] }) %>
+
+<section class="section">
+  <div class="container ir-layout">
+    <div>
+      <nav class="tabs" aria-label="<%= t('ir.title') %>">
+        <a href="<%= base %><%= year ? '?year=' + year : '' %>" <%- !cat ? 'aria-current="page"' : '' %>><%= t('ir.all') %></a>
+        <% IR_CATEGORIES.forEach((c) => { %>
+          <a href="<%= base %>?cat=<%= c %><%= year ? '&year=' + year : '' %>" <%- cat === c ? 'aria-current="page"' : '' %>><%= t('ir.categories.' + c) %></a>
+        <% }) %>
+      </nav>
+
+      <form class="filter-bar" method="get" action="<%= base %>">
+        <% if (cat) { %><input type="hidden" name="cat" value="<%= cat %>"><% } %>
+        <label for="ir-year"><%= t('ir.year') %></label>
+        <select id="ir-year" name="year" data-autosubmit>
+          <option value=""><%= t('ir.allYears') %></option>
+          <% years.forEach((y) => { %><option value="<%= y %>" <%= y === year ? 'selected' : '' %>><%= y %></option><% }) %>
+        </select>
+        <noscript><button class="btn btn--sm btn--primary" type="submit">OK</button></noscript>
+      </form>
+
+      <% if (docs.length) { %>
+        <ul class="doc-list doc-list--full">
+          <% docs.forEach((d) => { %>
+            <li class="doc-item">
+              <span class="doc-item__icon"><%- icon('file') %></span>
+              <div class="doc-item__body">
+                <a class="doc-item__title" href="/uploads/docs/<%= d.file %>" target="_blank" rel="noopener"><%= loc(d, 'title') %></a>
+                <p class="doc-item__meta">
+                  <span class="tag"><%= t('ir.categories.' + d.category) %></span>
+                  <time datetime="<%= d.published_at %>"><%= h.formatDate(d.published_at, L) %></time>
+                  <% if (d.file_size) { %><span><%= d.file.split('.').pop().toUpperCase() %> · <%= h.formatBytes(d.file_size) %></span><% } %>
+                </p>
+              </div>
+              <a class="btn btn--sm btn--outline" href="/uploads/docs/<%= d.file %>" download>
+                <%- icon('download') %><span><%= t('common.download') %><span class="sr-only">: <%= loc(d, 'title') %></span></span>
+              </a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <div class="empty-state">
+          <%- icon('file') %>
+          <p><%= t('ir.empty') %></p>
+        </div>
+      <% } %>
+    </div>
+
+    <aside class="ir-aside">
+      <div class="profile-card">
+        <h2 class="profile-card__title"><%= t('ir.profileTitle') %></h2>
+        <dl class="profile-list">
+          <div><dt><%= t('about.fields.name') %></dt><dd><%= settings.company_name_vi %></dd></div>
+          <div><dt><%= t('about.fields.tax') %></dt><dd><%= settings.tax_code %></dd></div>
+          <div><dt><%= t('plant.specs.capacity') %></dt><dd><%= h.formatNumber(settings.capacity_mw, L) %> MW</dd></div>
+          <div><dt><%= t('plant.specs.operation') %></dt><dd><%= settings.year_operation %></dd></div>
+        </dl>
+      </div>
+      <div class="profile-card profile-card--accent">
+        <h2 class="profile-card__title"><%= t('ir.contactTitle') %></h2>
+        <p><%= t('ir.contactText') %></p>
+        <ul class="site-footer__contact">
+          <li><%- icon('phone') %><a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%= settings.phone %></a></li>
+          <li><%- icon('mail') %><a href="mailto:<%= settings.email %>"><%= settings.email %></a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+<%- include('partials/foot') %>

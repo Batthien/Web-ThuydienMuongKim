@@ -1,0 +1,44 @@
+<%- include('partials/head') %>
+<% const L = t('locale'); %>
+<article class="article">
+  <header class="article__header">
+    <div class="container container--narrow">
+      <nav class="breadcrumb breadcrumb--dark" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="<%= url('home') %>"><%= t('common.home') %></a></li>
+          <li><a href="<%= url('news') %>"><%= t('nav.news') %></a></li>
+          <li><a href="<%= url('news') %>?cat=<%= post.category %>"><%= t('news.categories.' + post.category) %></a></li>
+        </ol>
+      </nav>
+      <h1 class="article__title"><%= loc(post, 'title') %></h1>
+      <p class="article__meta"><%- icon('calendar') %><time datetime="<%= post.published_at %>"><%= h.formatDate(post.published_at, L, { day: 'numeric', month: 'long', year: 'numeric' }) %></time></p>
+      <% if (loc(post, 'excerpt')) { %><p class="article__lead"><%= loc(post, 'excerpt') %></p><% } %>
+    </div>
+  </header>
+  <% if (post.cover) { %>
+    <div class="container article__cover"><%- h.img(post.cover, loc(post, 'title'), { sizes: '(min-width: 1100px) 1040px, 100vw', eager: true }) %></div>
+  <% } %>
+  <div class="container container--narrow prose">
+    <%- h.renderMarkdown(loc(post, 'body')) %>
+  </div>
+  <div class="container container--narrow article__footer">
+    <a class="link-arrow link-arrow--back" href="<%= url('news') %>"><%- icon('chevron-left') %> <%= t('common.back') %></a>
+    <div class="share">
+      <span><%= t('common.share') %>:</span>
+      <a class="icon-btn" href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(siteUrl + currentPath) %>" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><%- icon('facebook') %></a>
+      <a class="icon-btn" href="mailto:?subject=<%= encodeURIComponent(loc(post, 'title')) %>&body=<%= encodeURIComponent(siteUrl + currentPath) %>" aria-label="Email"><%- icon('mail') %></a>
+    </div>
+  </div>
+</article>
+
+<% if (related.length) { %>
+  <section class="section section--tint">
+    <div class="container">
+      <h2 class="section-title section-title--sm"><%= t('news.related') %></h2>
+      <div class="card-grid card-grid--3">
+        <% related.forEach((p) => { %><%- include('partials/news-card', { post: p }) %><% }) %>
+      </div>
+    </div>
+  </section>
+<% } %>
+<%- include('partials/foot') %>

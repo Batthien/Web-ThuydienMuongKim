@@ -1,0 +1,116 @@
+<%- include('partials/head') %>
+<%
+  const L = t('locale');
+  const vi = lang === 'vi';
+  const specs = [
+    ['gauge', t('plant.specs.capacity'), h.formatNumber(settings.capacity_mw, L) + ' MW'],
+    ['cog', t('plant.specs.units'), settings.units + ' ' + t('common.units')],
+    ['zap', t('plant.specs.turbine'), vi ? settings.turbine_vi : settings.turbine_en],
+    ['growth', t('plant.specs.output'), h.formatNumber(settings.annual_output_kwh, L) + ' kWh/' + (vi ? 'năm' : 'year')],
+    ['droplet', t('plant.specs.river'), vi ? settings.river_vi : settings.river_en],
+    ['shield', t('plant.specs.dam'), vi ? settings.dam_vi : settings.dam_en],
+    ['calendar', t('plant.specs.operation'), settings.year_operation],
+    ['users', t('plant.specs.buyer'), vi ? settings.buyer_vi : settings.buyer_en],
+    ['pin', t('plant.specs.location'), vi ? settings.address_vi : settings.address_en],
+  ];
+%>
+<%- include('partials/page-hero', { heroTitle: t('plant.title'), heroLead: t('plant.lead'), heroImage: '/media/plant/plant-04', crumbs: [{ label: t('nav.plant') }] }) %>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow"><%= t('plant.specsTitle') %></p>
+      <h2 class="section-title"><%= vi ? 'Công trình thủy điện trên suối Nậm Mu' : 'A hydropower scheme on the Nam Mu stream' %></h2>
+    </div>
+    <dl class="spec-grid">
+      <% specs.forEach(([ic, label, value]) => { %>
+        <div class="spec reveal">
+          <span class="spec__icon"><%- icon(ic) %></span>
+          <dt><%= label %></dt>
+          <dd><%= value %></dd>
+        </div>
+      <% }) %>
+    </dl>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container split">
+    <div class="split__media reveal">
+      <div class="rounded-media"><%- h.img('/media/dam/dam-01', vi ? 'Đập tràn tự do xả lũ trên suối Nậm Mu' : 'Free-overflow spillway on the Nam Mu stream in flood', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
+    </div>
+    <div class="split__text reveal">
+      <p class="eyebrow"><%= vi ? 'Công trình đầu mối' : 'Headworks' %></p>
+      <h2 class="section-title"><%= t('plant.damTitle') %></h2>
+      <p class="lead"><%= t('plant.damText') %></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split split--reverse">
+    <div class="split__media reveal">
+      <div class="rounded-media"><%- h.img('/media/plant/plant-03', vi ? 'Nhà máy đặt 3 tổ máy Francis trục ngang' : 'Powerhouse with three horizontal Francis units', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
+    </div>
+    <div class="split__text reveal">
+      <p class="eyebrow"><%= vi ? 'Nhà máy' : 'Powerhouse' %></p>
+      <h2 class="section-title"><%= t('plant.houseTitle') %></h2>
+      <p class="lead"><%= t('plant.houseText') %></p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--dark process">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow eyebrow--light"><%= t('home.processEyebrow') %></p>
+      <h2 class="section-title"><%= t('home.processTitle') %></h2>
+    </div>
+    <ol class="flow">
+      <% t('home.steps').forEach((s, i) => { %>
+        <li class="flow__step reveal" style="--i:<%= i %>">
+          <span class="flow__num"><%= String(i + 1).padStart(2, '0') %></span>
+          <h3><%= s.title %></h3>
+          <p><%= s.text %></p>
+        </li>
+      <% }) %>
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split">
+    <div class="split__text reveal">
+      <p class="eyebrow"><%= vi ? 'An toàn' : 'Safety' %></p>
+      <h2 class="section-title"><%= t('plant.safetyTitle') %></h2>
+      <p class="lead"><%= t('plant.safetyText') %></p>
+      <a class="link-arrow" href="<%= url('news') %>?cat=safety"><%= t('news.categories.safety') %> <%- icon('arrow-right') %></a>
+    </div>
+    <div class="split__media mini-grid reveal">
+      <% safety.slice(0, 4).forEach((p) => { %>
+        <figure><%- h.img(p.src, t('gallery.albums.safety'), { sizes: '(min-width: 1024px) 280px, 50vw', width: 640 }) %></figure>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="section-head section-head--row reveal">
+      <div>
+        <p class="eyebrow"><%= t('nav.gallery') %></p>
+        <h2 class="section-title"><%= t('plant.galleryTitle') %></h2>
+      </div>
+      <a class="link-arrow" href="<%= url('gallery') %>"><%= t('common.viewAll') %> <%- icon('arrow-right') %></a>
+    </div>
+    <div class="gallery-grid" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
+      <% photos.forEach((p) => { %>
+        <a class="gallery-grid__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-caption="<%= t('gallery.albums.' + p.album) %>">
+          <%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
+          <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/foot') %>

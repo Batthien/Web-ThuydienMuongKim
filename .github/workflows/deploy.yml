@@ -1,0 +1,43 @@
+# Tự động kiểm tra mỗi lần push; tự động deploy lên VPS khi push vào nhánh main
+# (chỉ chạy bước deploy khi đã khai báo secrets VPS_HOST, VPS_USER, VPS_SSH_KEY trong GitHub).
+name: CI & Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kiểm tra secrets
+        id: guard
+        env:
+          HOST: ${{ secrets.VPS_HOST }}
+        run: echo "enabled=$([ -n "$HOST" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Deploy qua SSH
+        if: steps.guard.outputs.enabled == 'true'
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            cd /var/www/muongkim-web
+            bash deploy/deploy.sh

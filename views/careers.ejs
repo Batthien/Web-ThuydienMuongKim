@@ -1,0 +1,57 @@
+<%- include('partials/head') %>
+<% const L = t('locale'); %>
+<%- include('partials/page-hero', { heroTitle: t('careers.title'), heroLead: t('careers.lead'), heroImage: '/media/sports/sports-01', crumbs: [{ label: t('nav.careers') }] }) %>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <h2 class="section-title"><%= t('careers.whyTitle') %></h2>
+    </div>
+    <div class="card-grid card-grid--3">
+      <% t('careers.why').forEach((w) => { %>
+        <article class="feature-card reveal">
+          <span class="feature-card__icon"><%- icon(w.icon) %></span>
+          <h3><%= w.title %></h3>
+          <p><%= w.text %></p>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <h2 class="section-title section-title--sm"><%= t('careers.openTitle') %></h2>
+    <% if (jobs.length) { %>
+      <ul class="job-list">
+        <% jobs.forEach((j) => { %>
+          <li class="job-card reveal">
+            <div class="job-card__main">
+              <h3><a href="<%= url('careers', j.slug) %>"><%= loc(j, 'title') %></a></h3>
+              <p><%= loc(j, 'summary') %></p>
+              <ul class="job-card__meta">
+                <li><%- icon('pin') %><%= loc(j, 'location') %></li>
+                <li><%- icon('users') %><%= t('careers.quantity') %>: <%= j.quantity %></li>
+                <li><%- icon('clock') %><%= t('careers.deadline') %>: <%= j.deadline ? h.formatDate(j.deadline, L) : t('careers.noDeadline') %></li>
+              </ul>
+            </div>
+            <a class="btn btn--outline" href="<%= url('careers', j.slug) %>"><span><%= t('common.readMore') %></span><%- icon('arrow-right') %></a>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <div class="empty-state"><%- icon('briefcase') %><p><%= t('careers.none') %></p></div>
+    <% } %>
+  </div>
+</section>
+
+<section class="section" id="apply">
+  <div class="container container--narrow">
+    <div class="form-card">
+      <h2 class="section-title section-title--sm"><%= t('careers.applyGeneral') %></h2>
+      <p class="muted"><%= t('careers.applyText') %></p>
+      <%- include('partials/form', { mode: 'apply', action: url('careers') + '#apply', jobTitle: t('careers.generalPosition') }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/foot') %>

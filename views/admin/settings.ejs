@@ -1,0 +1,19 @@
+<%- include('_head', { title: 'Cấu hình website' }) %>
+<form class="stack" method="post" action="/admin/settings">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <% groups.forEach(([title, fields]) => { %>
+    <section class="panel">
+      <div class="panel__head"><h2><%= title %></h2></div>
+      <div class="grid-2">
+        <% fields.forEach(([k, label]) => { %>
+          <div class="field">
+            <label for="s-<%= k %>"><%= label %></label>
+            <input id="s-<%= k %>" name="<%= k %>" value="<%= s[k] || '' %>">
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  <% }) %>
+  <div class="form-actions"><button class="btn btn--primary" type="submit">Lưu cấu hình</button></div>
+</form>
+<%- include('_foot') %>

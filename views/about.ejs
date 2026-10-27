@@ -1,0 +1,115 @@
+<%- include('partials/head') %>
+<%- include('partials/page-hero', { heroTitle: t('about.title'), heroLead: t('about.lead'), heroImage: '/media/office/office-01', crumbs: [{ label: t('about.title') }] }) %>
+
+<section class="section">
+  <div class="container split split--top">
+    <div class="split__text reveal">
+      <p class="eyebrow"><%= t('about.storyTitle') %></p>
+      <h2 class="section-title"><%= companyName %></h2>
+      <% t('about.story').forEach((p) => { %><p><%= p %></p><% }) %>
+    </div>
+    <aside class="profile-card reveal" aria-labelledby="profile-title">
+      <h2 id="profile-title" class="profile-card__title"><%= t('about.overviewTitle') %></h2>
+      <dl class="profile-list">
+        <div><dt><%= t('about.fields.name') %></dt><dd><%= settings.company_name_vi %></dd></div>
+        <div><dt><%= t('about.fields.nameEn') %></dt><dd><%= settings.company_name_en %></dd></div>
+        <div><dt><%= t('about.fields.tax') %></dt><dd><%= settings.tax_code %></dd></div>
+        <div><dt><%= t('about.fields.rep') %></dt><dd><%= lang === 'vi' ? 'Ông ' : 'Mr. ' %><%= settings.director %> – <%= t('about.fields.repRole') %></dd></div>
+        <div><dt><%= t('about.fields.address') %></dt><dd><%= lang === 'en' ? settings.address_en : settings.address_vi %></dd></div>
+        <div><dt><%= t('about.fields.phone') %></dt><dd><a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%= settings.phone %></a></dd></div>
+        <div><dt><%= t('about.fields.email') %></dt><dd><a href="mailto:<%= settings.email %>"><%= settings.email %></a></dd></div>
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="vm-grid">
+      <article class="vm-card reveal">
+        <span class="vm-card__icon"><%- icon('growth') %></span>
+        <h2><%= t('about.visionTitle') %></h2>
+        <p><%= t('about.vision') %></p>
+      </article>
+      <article class="vm-card vm-card--accent reveal">
+        <span class="vm-card__icon"><%- icon('zap') %></span>
+        <h2><%= t('about.missionTitle') %></h2>
+        <p><%= t('about.mission') %></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow"><%= t('about.valuesTitle') %></p>
+      <h2 class="section-title"><%= lang === 'vi' ? 'Nền tảng cho mọi hoạt động' : 'The foundation of everything we do' %></h2>
+    </div>
+    <div class="card-grid card-grid--4 values">
+      <% t('about.values').forEach((v, i) => { %>
+        <article class="value-card reveal">
+          <span class="value-card__num"><%= String(i + 1).padStart(2, '0') %></span>
+          <h3><%= v.title %></h3>
+          <p><%= v.text %></p>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow eyebrow--light"><%= t('about.timelineTitle') %></p>
+      <h2 class="section-title"><%= lang === 'vi' ? 'Hành trình trưởng thành và phát triển' : 'A journey of growth and development' %></h2>
+    </div>
+    <ol class="timeline">
+      <% t('about.timeline').forEach((m) => { %>
+        <li class="timeline__item reveal">
+          <span class="timeline__year"><%= m.year %></span>
+          <div><h3><%= m.title %></h3><p><%= m.text %></p></div>
+        </li>
+      <% }) %>
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split">
+    <div class="split__media reveal">
+      <div class="rounded-media"><%- h.img('/media/anniversary/anniversary-04', lang === 'vi' ? 'Ban lãnh đạo Công ty tại lễ kỷ niệm 10 năm thành lập' : 'Company leadership at the 10th anniversary ceremony', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
+    </div>
+    <div class="split__text reveal">
+      <p class="eyebrow"><%= t('about.leaderTitle') %></p>
+      <div class="leader">
+        <span class="leader__avatar" aria-hidden="true"><img src="/img/mark.png" alt="" width="64" height="64"></span>
+        <div>
+          <h2 class="leader__name"><%= lang === 'vi' ? 'Ông ' : 'Mr. ' %><%= settings.director %></h2>
+          <p class="leader__role"><%= t('about.fields.repRole') %></p>
+        </div>
+      </div>
+      <p class="muted"><%= t('about.leaderNote') %></p>
+      <a class="link-arrow" href="<%= url('ir') %>?cat=governance"><%= t('ir.categories.governance') %> <%- icon('arrow-right') %></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="section-head section-head--row reveal">
+      <div>
+        <p class="eyebrow"><%= t('about.cultureTitle') %></p>
+        <h2 class="section-title"><%= lang === 'vi' ? 'Một tập thể — một gia đình' : 'One team — one family' %></h2>
+        <p class="lead"><%= t('about.cultureText') %></p>
+      </div>
+      <a class="link-arrow" href="<%= url('gallery') %>"><%= t('nav.gallery') %> <%- icon('arrow-right') %></a>
+    </div>
+    <div class="mosaic">
+      <% culture.forEach((p, i) => { %>
+        <figure class="mosaic__item reveal"><%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %></figure>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/foot') %>

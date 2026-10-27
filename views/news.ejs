@@ -1,0 +1,33 @@
+<%- include('partials/head') %>
+<% const base = url('news'); const qs = (p) => { const s = new URLSearchParams(); if (cat) s.set('cat', cat); if (p > 1) s.set('page', p); const str = s.toString(); return str ? '?' + str : ''; }; %>
+<%- include('partials/page-hero', { heroTitle: t('news.title'), heroLead: t('news.lead'), heroImage: '/media/anniversary/anniversary-01', crumbs: [{ label: t('nav.news') }] }) %>
+
+<section class="section">
+  <div class="container">
+    <nav class="tabs" aria-label="<%= t('news.title') %>">
+      <a href="<%= base %>" <%- !cat ? 'aria-current="page"' : '' %>><%= t('news.categories.all') %></a>
+      <% NEWS_CATEGORIES.forEach((c) => { %>
+        <a href="<%= base %>?cat=<%= c %>" <%- cat === c ? 'aria-current="page"' : '' %>><%= t('news.categories.' + c) %></a>
+      <% }) %>
+    </nav>
+
+    <% if (posts.length) { %>
+      <div class="card-grid card-grid--3">
+        <% posts.forEach((post) => { %><%- include('partials/news-card', { post }) %><% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty-state"><%- icon('file') %><p><%= t('news.empty') %></p></div>
+    <% } %>
+
+    <% if (pages > 1) { %>
+      <nav class="pagination" aria-label="Pagination">
+        <% if (current > 1) { %><a href="<%= base + qs(current - 1) %>" rel="prev"><%- icon('chevron-left') %><span class="sr-only"><%= t('common.prev') %></span></a><% } %>
+        <% for (let p = 1; p <= pages; p++) { %>
+          <a href="<%= base + qs(p) %>" <%- p === current ? 'aria-current="page"' : '' %>><%= p %></a>
+        <% } %>
+        <% if (current < pages) { %><a href="<%= base + qs(current + 1) %>" rel="next"><%- icon('chevron-right') %><span class="sr-only"><%= t('common.next') %></span></a><% } %>
+      </nav>
+    <% } %>
+  </div>
+</section>
+<%- include('partials/foot') %>

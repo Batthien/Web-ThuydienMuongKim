@@ -1,0 +1,33 @@
+{
+  "name": "muongkim-hydropower-website",
+  "version": "1.0.0",
+  "description": "Website Công ty cổ phần Thủy điện Mường Kim",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "media": "node scripts/import-media.js",
+    "admin:reset": "node scripts/reset-admin.js",
+    "check": "node scripts/smoke-test.js"
+  },
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.2",
+    "cookie-session": "^2.1.1",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.3.0",
+    "marked": "^18.1.2",
+    "multer": "^2.5.0",
+    "nodemailer": "^10.2.1",
+    "sanitize-html": "^2.18.1",
+    "sharp": "^0.35.5"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.13"
+  }
+}

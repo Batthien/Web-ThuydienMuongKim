@@ -1,0 +1,67 @@
+<%- include('_head', { title: (isNew ? 'Thêm ' : 'Sửa ') + R.singular, actions: `<a class="btn btn--ghost" href="${base}">← ${R.label}</a>` }) %>
+<% const val = (k) => row[k] == null ? '' : row[k]; const err = (k) => errors[k] ? `<p class="field__error">${errors[k]}</p>` : ''; %>
+<form class="panel stack editor-form" method="post" action="<%= isNew ? base : base + '/' + row.id %>" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <% if (Object.keys(errors).length) { %><div class="notice notice--error" role="alert"><%- icon('alert') %><span>Vui lòng kiểm tra các trường được đánh dấu.</span></div><% } %>
+
+  <% R.fields.forEach((f) => { %>
+    <% if (f.i18n) { %>
+      <fieldset class="i18n-field <%= f.type === 'markdown' ? 'i18n-field--tabs' : '' %>">
+        <legend><%= f.label %><% if (f.required) { %> <span class="req">*</span><% } %></legend>
+        <div class="i18n-field__grid">
+          <% ['vi', 'en'].forEach((l) => { const name = f.name + '_' + l; %>
+            <div class="field" data-lang-pane="<%= l %>">
+              <label for="<%= name %>"><span class="lang-chip"><%= l.toUpperCase() %></span> <%= l === 'vi' ? 'Tiếng Việt' : 'English' %><% if (l === 'en') { %> <small class="muted">(để trống sẽ dùng bản Tiếng Việt)</small><% } %></label>
+              <% if (f.type === 'text') { %>
+                <input id="<%= name %>" name="<%= name %>" value="<%= val(name) %>" <%- f.required && l === 'vi' ? 'required' : '' %> <%- errors[name] ? 'aria-invalid="true"' : '' %>>
+              <% } else if (f.type === 'textarea') { %>
+                <textarea id="<%= name %>" name="<%= name %>" rows="3"><%= val(name) %></textarea>
+              <% } else { %>
+                <div class="md-toolbar">
+                  <button type="button" data-md="## " title="Tiêu đề">H2</button>
+                  <button type="button" data-md="**" data-wrap title="In đậm"><b>B</b></button>
+                  <button type="button" data-md="*" data-wrap title="In nghiêng"><i>I</i></button>
+                  <button type="button" data-md="- " title="Danh sách">• List</button>
+                  <button type="button" data-md-link title="Liên kết">Link</button>
+                  <label class="md-upload">Chèn ảnh<input type="file" accept="image/jpeg,image/png,image/webp" data-md-image></label>
+                </div>
+                <textarea id="<%= name %>" name="<%= name %>" rows="16" class="md"><%= val(name) %></textarea>
+              <% } %>
+              <%- err(name) %>
+            </div>
+          <% }) %>
+        </div>
+        <% if (f.type === 'markdown') { %><p class="field__hint">Định dạng Markdown: <code>## Tiêu đề</code>, <code>**đậm**</code>, <code>- danh sách</code>, <code>[chữ](https://liên-kết)</code>. Nút “Chèn ảnh” tự tải ảnh lên và chèn vào vị trí con trỏ.</p><% } %>
+      </fieldset>
+    <% } else { %>
+      <div class="field">
+        <label for="<%= f.name %>"><%= f.label %><% if (f.required) { %> <span class="req">*</span><% } %></label>
+        <% if (f.type === 'select') { %>
+          <select id="<%= f.name %>" name="<%= f.name %>">
+            <% f.options.forEach(([v, l]) => { %><option value="<%= v %>" <%= String(val(f.name)) === v ? 'selected' : '' %>><%= l %></option><% }) %>
+          </select>
+        <% } else if (f.type === 'image') { %>
+          <% if (row.cover) { %>
+            <div class="cover-preview"><%- h.img(row.cover, '', { width: 640 }) %>
+              <label class="check"><input type="checkbox" name="cover_remove" value="1"> Gỡ ảnh hiện tại</label>
+            </div>
+          <% } %>
+          <input id="<%= f.name %>" name="cover_file" type="file" accept="image/jpeg,image/png,image/webp">
+        <% } else if (f.type === 'file') { %>
+          <% if (row.file) { %><p class="muted">Tệp hiện tại: <a href="/uploads/docs/<%= row.file %>" target="_blank" rel="noopener"><%= row.file %></a> (<%= h.formatBytes(row.file_size) %>) — chọn tệp mới để thay thế.</p><% } %>
+          <input id="<%= f.name %>" name="file_upload" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip" <%- errors.file ? 'aria-invalid="true"' : '' %>>
+        <% } else { %>
+          <input id="<%= f.name %>" name="<%= f.name %>" type="<%= f.type %>" value="<%= val(f.name) %>" <%- f.required ? 'required' : '' %> <%- errors[f.name] ? 'aria-invalid="true"' : '' %>>
+        <% } %>
+        <% if (f.help) { %><p class="field__hint"><%= f.help %></p><% } %>
+        <%- err(f.name) %>
+      </div>
+    <% } %>
+  <% }) %>
+
+  <div class="form-actions">
+    <button class="btn btn--primary" type="submit">Lưu</button>
+    <a class="btn btn--ghost" href="<%= base %>">Huỷ</a>
+  </div>
+</form>
+<%- include('_foot') %>

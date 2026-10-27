@@ -1,0 +1,40 @@
+<%- include('_head', { title: 'Tổng quan' }) %>
+<% if (!mailEnabled) { %>
+  <div class="notice notice--warn"><%- icon('alert') %><span>Chưa cấu hình gửi email (SMTP). Tin nhắn vẫn được lưu tại mục <a href="/admin/messages">Tin nhắn &amp; hồ sơ</a>. Xem hướng dẫn trong <code>.env.example</code>.</span></div>
+<% } %>
+<div class="kpis">
+  <a class="kpi" href="/admin/posts"><span>Bài viết đã đăng</span><strong><%= stats.posts %></strong></a>
+  <a class="kpi" href="/admin/documents"><span>Tài liệu cổ đông</span><strong><%= stats.docs %></strong></a>
+  <a class="kpi" href="/admin/jobs"><span>Vị trí đang tuyển</span><strong><%= stats.jobs %></strong></a>
+  <a class="kpi" href="/admin/messages"><span>Tin nhắn & hồ sơ</span><strong><%= stats.messages %></strong><% if (unread) { %><em><%= unread %> chưa đọc</em><% } %></a>
+</div>
+
+<section class="panel">
+  <div class="panel__head"><h2>Tin nhắn gần đây</h2><a href="/admin/messages">Xem tất cả</a></div>
+  <% if (recent.length) { %>
+    <table class="table">
+      <thead><tr><th>Người gửi</th><th>Loại</th><th>Chủ đề</th><th>Thời gian</th></tr></thead>
+      <tbody>
+        <% recent.forEach((m) => { %>
+          <tr class="<%= m.is_read ? '' : 'is-unread' %>">
+            <td><a href="/admin/messages/<%= m.id %>"><%= m.name %></a><small><%= m.email %></small></td>
+            <td><span class="pill pill--<%= m.kind %>"><%= m.kind === 'application' ? 'Ứng tuyển' : 'Liên hệ' %></span></td>
+            <td><%= m.subject %></td>
+            <td><%= h.formatDate(m.created_at + 'Z', 'vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %><p class="muted">Chưa có tin nhắn nào.</p><% } %>
+</section>
+
+<section class="panel">
+  <div class="panel__head"><h2>Thao tác nhanh</h2></div>
+  <div class="quick">
+    <a class="btn btn--primary" href="/admin/posts/new"><%- icon('file') %>Viết bài mới</a>
+    <a class="btn btn--outline" href="/admin/documents/new"><%- icon('upload') %>Tải tài liệu cổ đông</a>
+    <a class="btn btn--outline" href="/admin/jobs/new"><%- icon('briefcase') %>Đăng tin tuyển dụng</a>
+    <a class="btn btn--outline" href="/admin/settings"><%- icon('cog') %>Sửa thông số nhà máy</a>
+  </div>
+</section>
+<%- include('_foot') %>

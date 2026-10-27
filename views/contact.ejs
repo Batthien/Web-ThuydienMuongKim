@@ -1,0 +1,27 @@
+<%- include('partials/head') %>
+<%- include('partials/page-hero', { heroTitle: t('contact.title'), heroLead: t('contact.lead'), heroImage: '/media/plant/plant-02', crumbs: [{ label: t('nav.contact') }] }) %>
+
+<section class="section">
+  <div class="container contact-layout">
+    <aside class="contact-info">
+      <h2 class="section-title section-title--sm"><%= t('contact.infoTitle') %></h2>
+      <p class="contact-info__company"><%= companyName %></p>
+      <ul class="contact-list">
+        <li><span class="contact-list__icon"><%- icon('pin') %></span><div><strong><%= t('about.fields.address') %></strong><span><%= lang === 'en' ? settings.address_en : settings.address_vi %></span></div></li>
+        <li><span class="contact-list__icon"><%- icon('phone') %></span><div><strong><%= t('about.fields.phone') %></strong><a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%= settings.phone %></a></div></li>
+        <li><span class="contact-list__icon"><%- icon('mail') %></span><div><strong>Email</strong><a href="mailto:<%= settings.email %>"><%= settings.email %></a></div></li>
+        <li><span class="contact-list__icon"><%- icon('clock') %></span><div><strong><%= t('contact.hours') %></strong><span><%= t('contact.hoursValue') %></span></div></li>
+      </ul>
+    </aside>
+    <div class="form-card" id="form">
+      <h2 class="section-title section-title--sm"><%= t('contact.formTitle') %></h2>
+      <%- include('partials/form', { mode: 'contact', action: url('contact') + '#form' }) %>
+    </div>
+  </div>
+</section>
+
+<section class="map-section" aria-label="<%= t('contact.mapTitle') %>">
+  <iframe title="<%= t('contact.mapTitle') %>" src="https://www.google.com/maps?q=<%= encodeURIComponent(settings.map_query) %>&hl=<%= lang %>&z=12&output=embed"
+    loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+</section>
+<%- include('partials/foot') %>

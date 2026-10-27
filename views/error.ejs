@@ -1,0 +1,13 @@
+<%- include('partials/head') %>
+<section class="error-page">
+  <div class="container container--narrow">
+    <p class="error-page__code"><%= status %></p>
+    <h1><%= status === 404 ? t('errors.notFoundTitle') : t('errors.serverTitle') %></h1>
+    <p class="lead"><%= status === 404 ? t('errors.notFoundText') : (message || t('errors.serverText')) %></p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="<%= url('home') %>"><%= t('common.home') %></a>
+      <a class="btn btn--outline" href="<%= url('contact') %>"><%= t('nav.contact') %></a>
+    </div>
+  </div>
+</section>
+<%- include('partials/foot') %>

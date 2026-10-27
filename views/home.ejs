@@ -1,0 +1,159 @@
+<%- include('partials/head') %>
+<%
+  const L = t('locale');
+  const mw = h.formatNumber(settings.capacity_mw, L);
+  const output = h.formatNumber(Number(settings.annual_output_kwh) / 1e6, L, 2);
+%>
+<section class="hero">
+  <div class="hero__media" aria-hidden="true">
+    <%- h.img('/media/dam/dam-01', '', { sizes: '100vw', eager: true, cls: 'hero__img' }) %>
+  </div>
+  <div class="container hero__content">
+    <p class="eyebrow eyebrow--light"><%= t('home.eyebrow') %></p>
+    <h1 class="hero__title"><%= t('home.heroTitle') %></h1>
+    <p class="hero__lead"><%= t('home.heroLead', { mw, year: settings.year_operation }) %></p>
+    <div class="hero__actions">
+      <a class="btn btn--light btn--lg" href="<%= url('plant') %>"><span><%= t('home.ctaPlant') %></span><%- icon('arrow-right') %></a>
+      <a class="btn btn--ghost-light btn--lg" href="<%= url('ir') %>"><%= t('home.ctaIr') %></a>
+    </div>
+  </div>
+  <a class="hero__scroll" href="#stats"><span class="sr-only"><%= t('home.scroll') %></span><%- icon('arrow-down') %></a>
+</section>
+
+<section class="stats" id="stats" aria-label="<%= t('plant.specsTitle') %>">
+  <div class="container">
+    <dl class="stats__grid">
+      <div class="stat">
+        <dt><%= t('home.stats.capacity') %></dt>
+        <dd><span class="stat__num" data-count="<%= settings.capacity_mw %>" data-decimals="1" data-locale="<%= L %>"><%= mw %></span><span class="stat__unit">MW</span></dd>
+      </div>
+      <div class="stat">
+        <dt><%= t('home.stats.units') %></dt>
+        <dd><span class="stat__num" data-count="<%= settings.units %>" data-locale="<%= L %>"><%= settings.units %></span><span class="stat__unit"><%= t('common.units') %></span></dd>
+      </div>
+      <div class="stat">
+        <dt><%= t('home.stats.output') %></dt>
+        <dd><span class="stat__num" data-count="<%= (Number(settings.annual_output_kwh) / 1e6).toFixed(2) %>" data-decimals="2" data-locale="<%= L %>"><%= output %></span><span class="stat__unit"><%= t('common.mkwh') %></span></dd>
+      </div>
+      <div class="stat">
+        <dt><%= t('home.stats.since') %></dt>
+        <dd><span class="stat__num"><%= settings.year_operation %></span></dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<section class="section about-intro">
+  <div class="container split">
+    <div class="split__media collage reveal">
+      <div class="collage__main"><%- h.img('/media/plant/plant-03', lang === 'vi' ? 'Nhà máy Thủy điện Mường Kim' : 'Muong Kim Hydropower Plant', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
+      <div class="collage__sub"><%- h.img('/media/anniversary/anniversary-06', lang === 'vi' ? 'Bánh xe công tác tua-bin Francis trưng bày tại khuôn viên nhà máy' : 'Francis turbine runner on display at the plant', { sizes: '260px', width: 640 }) %></div>
+      <div class="collage__badge" aria-hidden="true"><strong>10+</strong><span><%= lang === 'vi' ? 'năm vận hành' : 'years of operation' %></span></div>
+    </div>
+    <div class="split__text reveal">
+      <p class="eyebrow"><%= t('home.aboutEyebrow') %></p>
+      <h2 class="section-title"><%= t('home.aboutTitle') %></h2>
+      <p class="lead"><%= t('home.aboutText') %></p>
+      <ul class="checklist">
+        <% t('home.aboutPoints').forEach((p) => { %><li><%- icon('check') %><span><%= p %></span></li><% }) %>
+      </ul>
+      <a class="btn btn--primary" href="<%= url('about') %>"><span><%= t('common.readMore') %></span><%- icon('arrow-right') %></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--dark process">
+  <div class="process__bg" aria-hidden="true"><%- h.img('/media/dam/dam-02', '', { sizes: '100vw' }) %></div>
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow eyebrow--light"><%= t('home.processEyebrow') %></p>
+      <h2 class="section-title"><%= t('home.processTitle') %></h2>
+      <p class="lead"><%= t('home.processText') %></p>
+    </div>
+    <ol class="flow">
+      <% t('home.steps').forEach((s, i) => { %>
+        <li class="flow__step reveal" style="--i:<%= i %>">
+          <span class="flow__num"><%= String(i + 1).padStart(2, '0') %></span>
+          <h3><%= s.title %></h3>
+          <p><%= s.text %></p>
+        </li>
+      <% }) %>
+    </ol>
+  </div>
+</section>
+
+<section class="section pillars">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow"><%= t('home.pillarsEyebrow') %></p>
+      <h2 class="section-title"><%= t('home.pillarsTitle') %></h2>
+    </div>
+    <div class="card-grid card-grid--4">
+      <% t('home.pillars').forEach((p) => { %>
+        <article class="feature-card reveal">
+          <span class="feature-card__icon"><%- icon(p.icon) %></span>
+          <h3><%= p.title %></h3>
+          <p><%= p.text %></p>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <div class="section-head section-head--row reveal">
+      <div>
+        <p class="eyebrow"><%= t('home.newsEyebrow') %></p>
+        <h2 class="section-title"><%= t('home.newsTitle') %></h2>
+      </div>
+      <a class="link-arrow" href="<%= url('news') %>"><%= t('common.viewAll') %> <%- icon('arrow-right') %></a>
+    </div>
+    <div class="card-grid card-grid--3">
+      <% posts.forEach((post) => { %><%- include('partials/news-card', { post }) %><% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section ir-band">
+  <div class="container split split--top">
+    <div class="split__text reveal">
+      <p class="eyebrow"><%= t('home.irEyebrow') %></p>
+      <h2 class="section-title"><%= t('home.irTitle') %></h2>
+      <p class="lead"><%= t('home.irText') %></p>
+      <a class="btn btn--primary" href="<%= url('ir') %>"><span><%= t('nav.ir') %></span><%- icon('arrow-right') %></a>
+    </div>
+    <div class="reveal">
+      <% if (docs.length) { %>
+        <ul class="doc-list">
+          <% docs.forEach((d) => { %>
+            <li class="doc-item">
+              <span class="doc-item__icon"><%- icon('file') %></span>
+              <div class="doc-item__body">
+                <a class="doc-item__title" href="/uploads/docs/<%= d.file %>" target="_blank" rel="noopener"><%= loc(d, 'title') %></a>
+                <p class="doc-item__meta"><%= t('ir.categories.' + d.category) %> · <time datetime="<%= d.published_at %>"><%= h.formatDate(d.published_at, L) %></time></p>
+              </div>
+              <a class="icon-btn" href="/uploads/docs/<%= d.file %>" download aria-label="<%= t('common.download') %>: <%= loc(d, 'title') %>"><%- icon('download') %></a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <ul class="ir-cats">
+          <% IR_CATEGORIES.forEach((c) => { %>
+            <li><a href="<%= url('ir') %>?cat=<%= c %>"><%- icon('file') %><span><%= t('ir.categories.' + c) %></span><%- icon('chevron-right') %></a></li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="cta-band__media" aria-hidden="true"><%- h.img('/media/office/office-06', '', { sizes: '100vw' }) %></div>
+  <div class="container cta-band__inner reveal">
+    <h2><%= t('home.ctaTitle') %></h2>
+    <p><%= t('home.ctaText') %></p>
+    <a class="btn btn--light btn--lg" href="<%= url('contact') %>"><span><%= t('home.ctaButton') %></span><%- icon('arrow-right') %></a>
+  </div>
+</section>
+<%- include('partials/foot') %>

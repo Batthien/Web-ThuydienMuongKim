@@ -1,0 +1,18 @@
+<%# locals: heroTitle, heroLead, heroImage, crumbs [{label, href}] %>
+<section class="page-hero">
+  <div class="page-hero__media" aria-hidden="true">
+    <%- h.img(heroImage, '', { sizes: '100vw', eager: true, cls: 'page-hero__img' }) %>
+  </div>
+  <div class="container page-hero__content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="<%= url('home') %>"><%= t('common.home') %></a></li>
+        <% (locals.crumbs || []).forEach((c, i, arr) => { %>
+          <li><% if (c.href && i < arr.length - 1) { %><a href="<%= c.href %>"><%= c.label %></a><% } else { %><span aria-current="page"><%= c.label %></span><% } %></li>
+        <% }) %>
+      </ol>
+    </nav>
+    <h1 class="page-hero__title"><%= heroTitle %></h1>
+    <% if (locals.heroLead) { %><p class="page-hero__lead"><%= heroLead %></p><% } %>
+  </div>
+</section>

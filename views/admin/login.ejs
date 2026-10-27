@@ -1,0 +1,21 @@
+<%- include('_head', { title: 'Đăng nhập', bare: true }) %>
+<div class="login-card">
+  <img class="login-card__logo" src="/img/logo.webp" alt="Thủy điện Mường Kim" width="520" height="242">
+  <h1>Đăng nhập quản trị</h1>
+  <% if (error) { %><div class="notice notice--error" role="alert"><%- icon('alert') %><span><%= error %></span></div><% } %>
+  <form method="post" action="/admin/login" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="hidden" name="next" value="<%= next %>">
+    <div class="field">
+      <label for="username">Tên đăng nhập</label>
+      <input id="username" name="username" autocomplete="username" required autofocus>
+    </div>
+    <div class="field">
+      <label for="password">Mật khẩu</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="btn btn--primary btn--block" type="submit">Đăng nhập</button>
+  </form>
+  <a class="login-card__back" href="/vi">← Về trang chủ</a>
+</div>
+<%- include('_foot', { bare: true }) %>

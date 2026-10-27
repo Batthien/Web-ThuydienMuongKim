@@ -1,0 +1,49 @@
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0 40c120-26 240-26 360 0s240 26 360 0 240-26 360 0 240 26 360 0v40H0z"/></svg>
+  </div>
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <span class="footer-logo"><img src="/img/logo.webp" alt="<%= settings.short_name %>" width="520" height="242" loading="lazy"></span>
+      <p class="site-footer__name"><%= companyName %></p>
+      <p class="site-footer__tagline"><%= t('footer.tagline') %></p>
+      <% if (settings.facebook_url) { %>
+        <a class="social" href="<%= settings.facebook_url %>" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><%- icon('facebook') %></a>
+      <% } %>
+    </div>
+    <div>
+      <h2 class="site-footer__title"><%= t('footer.company') %></h2>
+      <ul class="site-footer__links">
+        <li><a href="<%= url('about') %>"><%= t('nav.about') %></a></li>
+        <li><a href="<%= url('plant') %>"><%= t('nav.plant') %></a></li>
+        <li><a href="<%= url('ir') %>"><%= t('nav.ir') %></a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="site-footer__title"><%= t('footer.explore') %></h2>
+      <ul class="site-footer__links">
+        <li><a href="<%= url('news') %>"><%= t('nav.news') %></a></li>
+        <li><a href="<%= url('careers') %>"><%= t('nav.careers') %></a></li>
+        <li><a href="<%= url('gallery') %>"><%= t('nav.gallery') %></a></li>
+        <li><a href="<%= url('contact') %>"><%= t('nav.contact') %></a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="site-footer__title"><%= t('footer.contact') %></h2>
+      <ul class="site-footer__contact">
+        <li><%- icon('pin') %><span><%= lang === 'en' ? settings.address_en : settings.address_vi %></span></li>
+        <li><%- icon('phone') %><a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%= settings.phone %></a></li>
+        <li><%- icon('mail') %><a href="mailto:<%= settings.email %>"><%= settings.email %></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container site-footer__bottom">
+    <p>© <%= new Date().getFullYear() %> <%= t('footer.rights', { name: companyName }) %> <%= t('footer.tax') %>: <%= settings.tax_code %></p>
+    <a class="to-top" href="#main"><%= lang === 'vi' ? 'Lên đầu trang' : 'Back to top' %> <%- icon('arrow-right') %></a>
+  </div>
+</footer>
+<script src="/js/site.js?v=<%= assetVersion %>" defer></script>
+</body>
+</html>

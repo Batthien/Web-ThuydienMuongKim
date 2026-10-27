@@ -1,0 +1,34 @@
+<%- include('_head', { title: R.label, actions: `<a class="btn btn--primary" href="${base}/new">+ Thêm ${R.singular}</a>` }) %>
+<section class="panel">
+  <% if (rows.length) { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><% R.columns.forEach(([, label]) => { %><th><%= label %></th><% }) %><th class="t-right">Thao tác</th></tr></thead>
+        <tbody>
+          <% rows.forEach((row) => { %>
+            <tr>
+              <% R.columns.forEach(([col, , fmt], i) => { const v = fmt ? fmt(row[col]) : row[col]; %>
+                <td>
+                  <% if (i === 0) { %><a href="<%= base %>/<%= row.id %>/edit"><strong><%= v %></strong></a>
+                  <% } else if (col === 'status') { %><span class="pill pill--<%= v %>"><%= v === 'published' ? 'Đã đăng' : 'Nháp' %></span>
+                  <% } else { %><%= v === '' ? '—' : v %><% } %>
+                </td>
+              <% }) %>
+              <td class="t-right actions">
+                <a class="btn btn--sm btn--ghost" href="<%= R.publicUrl(row) %>" target="_blank" rel="noopener">Xem</a>
+                <a class="btn btn--sm btn--outline" href="<%= base %>/<%= row.id %>/edit">Sửa</a>
+                <form method="post" action="<%= base %>/<%= row.id %>/delete" data-confirm="Xoá <%= R.singular %> này? Không thể hoàn tác.">
+                  <input type="hidden" name="_csrf" value="<%= csrf %>">
+                  <button class="btn btn--sm btn--danger" type="submit">Xoá</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty"><p>Chưa có <%= R.singular %> nào.</p><a class="btn btn--primary" href="<%= base %>/new">+ Thêm <%= R.singular %></a></div>
+  <% } %>
+</section>
+<%- include('_foot') %>

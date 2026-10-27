@@ -1,0 +1,31 @@
+<%- include('_head', { title: 'Tin nhắn & hồ sơ' }) %>
+<% const fmt = (d) => h.formatDate(d + 'Z', 'vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }); %>
+<nav class="seg" aria-label="Lọc">
+  <a href="/admin/messages" <%- !kind ? 'aria-current="page"' : '' %>>Tất cả</a>
+  <a href="/admin/messages?kind=contact" <%- kind === 'contact' ? 'aria-current="page"' : '' %>>Liên hệ</a>
+  <a href="/admin/messages?kind=application" <%- kind === 'application' ? 'aria-current="page"' : '' %>>Hồ sơ ứng tuyển</a>
+</nav>
+<section class="panel">
+  <% if (rows.length) { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Người gửi</th><th>Loại</th><th>Chủ đề / Vị trí</th><th>Thời gian</th><th class="t-right">Thao tác</th></tr></thead>
+        <tbody>
+          <% rows.forEach((m) => { %>
+            <tr class="<%= m.is_read ? '' : 'is-unread' %>">
+              <td><a href="/admin/messages/<%= m.id %>"><strong><%= m.name %></strong></a><small><%= m.email %><%= m.phone ? ' · ' + m.phone : '' %></small></td>
+              <td><span class="pill pill--<%= m.kind %>"><%= m.kind === 'application' ? 'Ứng tuyển' : 'Liên hệ' %></span></td>
+              <td><%= m.job_title || m.subject || '—' %></td>
+              <td><%= fmt(m.created_at) %></td>
+              <td class="t-right actions">
+                <% if (m.attachment) { %><a class="btn btn--sm btn--outline" href="/admin/messages/<%= m.id %>/attachment">CV</a><% } %>
+                <a class="btn btn--sm btn--ghost" href="/admin/messages/<%= m.id %>">Xem</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %><div class="empty"><p>Chưa có tin nhắn nào.</p></div><% } %>
+</section>
+<%- include('_foot') %>

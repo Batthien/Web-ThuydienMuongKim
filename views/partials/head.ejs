@@ -1,0 +1,96 @@
+<%
+  const brandName = lang === 'en' ? 'Muong Kim Hydropower' : settings.short_name;
+  const fullTitle = page.title ? `${page.title} | ${brandName}` : `${companyName}`;
+  const canonical = siteUrl + currentPath;
+  const navKeys = ['about', 'plant', 'ir', 'news', 'careers', 'gallery'];
+%><!doctype html>
+<html lang="<%= lang %>">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= fullTitle %></title>
+  <meta name="description" content="<%= page.description %>">
+  <link rel="canonical" href="<%= canonical %>">
+  <link rel="alternate" hreflang="<%= lang %>" href="<%= canonical %>">
+  <link rel="alternate" hreflang="<%= other %>" href="<%= siteUrl + altUrl %>">
+  <link rel="alternate" hreflang="x-default" href="<%= siteUrl %>/vi<%= currentPath.slice(3) %>">
+  <meta property="og:type" content="<%= page.type || 'website' %>">
+  <meta property="og:site_name" content="<%= companyName %>">
+  <meta property="og:title" content="<%= fullTitle %>">
+  <meta property="og:description" content="<%= page.description %>">
+  <meta property="og:url" content="<%= canonical %>">
+  <meta property="og:image" content="<%= siteUrl + page.image %>">
+  <meta property="og:locale" content="<%= lang === 'vi' ? 'vi_VN' : 'en_GB' %>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0B4F63">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+  <link rel="stylesheet" href="/css/site.css?v=<%= assetVersion %>">
+  <script src="/js/boot.js"></script>
+  <% if (page.key === 'home') { %><link rel="preload" as="image" href="/media/dam/dam-01-1280.webp" imagesrcset="/media/dam/dam-01-640.webp 640w, /media/dam/dam-01-1280.webp 1280w" imagesizes="100vw"><% } %>
+  <script type="application/ld+json"><%- JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: settings.company_name_vi,
+    alternateName: settings.company_name_en,
+    url: siteUrl,
+    logo: siteUrl + '/img/logo.png',
+    taxID: settings.tax_code,
+    email: settings.email,
+    telephone: settings.phone,
+    foundingDate: settings.year_founded,
+    address: { '@type': 'PostalAddress', streetAddress: settings.address_vi, addressCountry: 'VN' },
+  }).replace(/</g, '\\u003c') %></script>
+</head>
+<body class="page-<%= page.key %>">
+<%- include('sprite') %>
+<a class="skip-link" href="#main"><%= t('skip') %></a>
+
+<div class="topbar">
+  <div class="container topbar__inner">
+    <div class="topbar__contact">
+      <a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%- icon('phone') %><span><%= settings.phone %></span></a>
+      <a href="mailto:<%= settings.email %>"><%- icon('mail') %><span><%= settings.email %></span></a>
+    </div>
+    <div class="topbar__meta">
+      <span><%= t('footer.tax') %>: <%= settings.tax_code %></span>
+      <nav class="lang-switch" aria-label="Language">
+        <a href="/vi<%= lang === 'vi' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'vi' ? 'aria-current="true"' : '' %> hreflang="vi" lang="vi">VI</a>
+        <a href="/en<%= lang === 'en' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'en' ? 'aria-current="true"' : '' %> hreflang="en" lang="en">EN</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a class="brand" href="<%= url('home') %>" aria-label="<%= companyName %> – <%= t('nav.home') %>">
+      <img src="/img/logo.webp" alt="<%= settings.short_name %>" width="520" height="242">
+      <span class="brand__text">
+        <strong><%= lang === 'vi' ? 'Thủy điện Mường Kim' : 'Muong Kim Hydropower' %></strong>
+        <small><%= lang === 'vi' ? 'Công ty cổ phần' : 'Joint Stock Company' %></small>
+      </span>
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Main">
+      <ul>
+        <% navKeys.forEach((k) => { %>
+          <li><a href="<%= url(k) %>" <%- page.key === k ? 'aria-current="page"' : '' %>><%= t('nav.' + k) %></a></li>
+        <% }) %>
+      </ul>
+      <div class="main-nav__extra">
+        <a class="btn btn--primary" href="<%= url('contact') %>"><%= t('nav.contact') %></a>
+        <a class="main-nav__lang" href="<%= altUrl %>" hreflang="<%= other %>" lang="<%= other %>"><%- icon('globe') %><%= t('nav.switchLang') %></a>
+      </div>
+    </nav>
+    <a class="btn btn--primary header-cta" href="<%= url('contact') %>" <%- page.key === 'contact' ? 'aria-current="page"' : '' %>><%= t('nav.contact') %></a>
+    <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" data-nav-toggle
+      data-label-open="<%= t('nav.menu') %>" data-label-close="<%= t('nav.close') %>">
+      <span class="sr-only"><%= t('nav.menu') %></span>
+      <%- icon('menu', 'icon-open') %><%- icon('x', 'icon-close') %>
+    </button>
+  </div>
+</header>
+<main id="main" tabindex="-1">

@@ -1,0 +1,73 @@
+<%#
+  locals: mode ('contact' | 'apply'), action, values, errors, sent, jobTitle
+%>
+<% const v = values || {}; const e = errors || {}; const isApply = mode === 'apply'; %>
+<% const field = (name) => e[name] ? `aria-invalid="true" aria-describedby="err-${name}"` : ''; %>
+<% if (sent) { %>
+  <div class="alert alert--success" role="status" tabindex="-1" data-focus>
+    <%- icon('check') %><p><%= isApply ? t('form.successApply') : t('form.success') %></p>
+  </div>
+<% } %>
+<% if (errors && Object.keys(errors).length) { %>
+  <div class="alert alert--error" role="alert" tabindex="-1" data-focus>
+    <%- icon('alert') %>
+    <div>
+      <p><strong><%= t('form.errors.title') %></strong></p>
+      <ul><% Object.entries(errors).forEach(([k, msg]) => { %><li><a href="#f-<%= k %>"><%= msg %></a></li><% }) %></ul>
+    </div>
+  </div>
+<% } %>
+<form class="form" method="post" action="<%= action %>" <%- isApply ? 'enctype="multipart/form-data"' : '' %> novalidate data-form>
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+  <% if (isApply) { %>
+    <p class="form__position"><%- icon('briefcase') %><span><%= t('careers.position') %>: <strong><%= jobTitle %></strong></span></p>
+  <% } %>
+  <div class="form__grid">
+    <div class="field">
+      <label for="f-name"><%= t('form.name') %> <span class="req" aria-hidden="true">*</span></label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="120" value="<%= v.name || '' %>" <%- field('name') %>>
+      <% if (e.name) { %><p class="field__error" id="err-name"><%= e.name %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="f-email"><%= t('form.email') %> <span class="req" aria-hidden="true">*</span></label>
+      <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160" value="<%= v.email || '' %>" <%- field('email') %>>
+      <% if (e.email) { %><p class="field__error" id="err-email"><%= e.email %></p><% } %>
+    </div>
+    <div class="field">
+      <label for="f-phone"><%= t('form.phone') %> <span class="field__hint">(<%= t('common.optional') %>)</span></label>
+      <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" value="<%= v.phone || '' %>" <%- field('phone') %>>
+      <% if (e.phone) { %><p class="field__error" id="err-phone"><%= e.phone %></p><% } %>
+    </div>
+    <% if (!isApply) { %>
+      <div class="field">
+        <label for="f-topic"><%= t('form.topic') %></label>
+        <select id="f-topic" name="topic">
+          <% ['general', 'partnership', 'investor', 'other'].forEach((k) => { %>
+            <option value="<%= k %>" <%= v.topic === k ? 'selected' : '' %>><%= t('contact.topics.' + k) %></option>
+          <% }) %>
+        </select>
+      </div>
+    <% } else { %>
+      <div class="field">
+        <label for="f-cv"><%= t('form.cv') %> <span class="req" aria-hidden="true">*</span></label>
+        <input id="f-cv" name="cv" type="file" required accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-describedby="hint-cv<%= e.cv ? ' err-cv' : '' %>" <%- e.cv ? 'aria-invalid="true"' : '' %>>
+        <p class="field__hint" id="hint-cv"><%= t('form.cvHint') %></p>
+        <% if (e.cv) { %><p class="field__error" id="err-cv"><%= e.cv %></p><% } %>
+      </div>
+    <% } %>
+    <div class="field field--full">
+      <label for="f-message"><%= t('form.message') %> <% if (!isApply) { %><span class="req" aria-hidden="true">*</span><% } else { %><span class="field__hint">(<%= t('common.optional') %>)</span><% } %></label>
+      <textarea id="f-message" name="message" rows="5" maxlength="5000" <%- !isApply ? 'required' : '' %> <%- field('message') %>><%= v.message || '' %></textarea>
+      <% if (e.message) { %><p class="field__error" id="err-message"><%= e.message %></p><% } %>
+    </div>
+    <div class="field field--full field--check">
+      <input id="f-consent" name="consent" type="checkbox" required <%= v.consent ? 'checked' : '' %> <%- field('consent') %>>
+      <label for="f-consent"><%= t('form.consent') %></label>
+      <% if (e.consent) { %><p class="field__error" id="err-consent"><%= e.consent %></p><% } %>
+    </div>
+  </div>
+  <button class="btn btn--primary btn--lg" type="submit" data-sending="<%= t('common.sending') %>">
+    <span><%= t('common.send') %></span><%- icon('arrow-right') %>
+  </button>
+</form>

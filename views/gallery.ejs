@@ -1,0 +1,24 @@
+<%- include('partials/head') %>
+<%- include('partials/page-hero', { heroTitle: t('gallery.title'), heroLead: t('gallery.lead'), heroImage: '/media/office/office-07', crumbs: [{ label: t('nav.gallery') }] }) %>
+
+<section class="section">
+  <div class="container">
+    <div class="tabs" role="toolbar" aria-label="<%= t('gallery.title') %>" data-filter>
+      <button type="button" aria-pressed="true" data-album="all"><%= t('gallery.albums.all') %></button>
+      <% ALBUMS.forEach((a) => { %>
+        <button type="button" aria-pressed="false" data-album="<%= a %>"><%= t('gallery.albums.' + a) %></button>
+      <% }) %>
+    </div>
+    <div class="gallery-grid gallery-grid--masonry" data-lightbox
+      data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
+      <% photos.forEach((p) => { %>
+        <a class="gallery-grid__item" href="<%= h.imgUrl(p.src, 1920) %>" data-album="<%= p.album %>" data-caption="<%= t('gallery.albums.' + p.album) %>">
+          <%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: '(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw', width: 640 }) %>
+          <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
+          <span class="sr-only"><%= t('gallery.open') %></span>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/foot') %>

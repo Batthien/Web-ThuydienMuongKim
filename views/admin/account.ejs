@@ -1,0 +1,13 @@
+<%- include('_head', { title: 'Tài khoản' }) %>
+<section class="panel narrow">
+  <div class="panel__head"><h2>Đổi mật khẩu</h2></div>
+  <% if (error) { %><div class="notice notice--error" role="alert"><%- icon('alert') %><span><%= error %></span></div><% } %>
+  <form class="stack" method="post" action="/admin/account">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <div class="field"><label for="current">Mật khẩu hiện tại</label><input id="current" name="current" type="password" autocomplete="current-password" required></div>
+    <div class="field"><label for="password">Mật khẩu mới</label><input id="password" name="password" type="password" autocomplete="new-password" minlength="10" required><p class="field__hint">Ít nhất 10 ký tự.</p></div>
+    <div class="field"><label for="confirm">Nhập lại mật khẩu mới</label><input id="confirm" name="confirm" type="password" autocomplete="new-password" minlength="10" required></div>
+    <div class="form-actions"><button class="btn btn--primary" type="submit">Cập nhật mật khẩu</button></div>
+  </form>
+</section>
+<%- include('_foot') %>

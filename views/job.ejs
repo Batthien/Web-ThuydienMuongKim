@@ -1,0 +1,30 @@
+<%- include('partials/head') %>
+<% const L = t('locale'); %>
+<%- include('partials/page-hero', { heroTitle: loc(job, 'title'), heroLead: loc(job, 'summary'), heroImage: '/media/plant/plant-01', crumbs: [{ label: t('nav.careers'), href: url('careers') }, { label: loc(job, 'title') }] }) %>
+
+<section class="section">
+  <div class="container job-layout">
+    <div class="prose">
+      <%- h.renderMarkdown(loc(job, 'body')) %>
+    </div>
+    <aside class="profile-card job-aside">
+      <dl class="profile-list">
+        <div><dt><%= t('careers.location') %></dt><dd><%= loc(job, 'location') %></dd></div>
+        <div><dt><%= t('careers.quantity') %></dt><dd><%= job.quantity %></dd></div>
+        <div><dt><%= t('careers.deadline') %></dt><dd><%= job.deadline ? h.formatDate(job.deadline, L) : t('careers.noDeadline') %></dd></div>
+      </dl>
+      <a class="btn btn--primary btn--block" href="#apply"><%= t('careers.applyTitle') %></a>
+    </aside>
+  </div>
+</section>
+
+<section class="section section--tint" id="apply">
+  <div class="container container--narrow">
+    <div class="form-card">
+      <h2 class="section-title section-title--sm"><%= t('careers.applyTitle') %></h2>
+      <p class="muted"><%= t('careers.applyText') %></p>
+      <%- include('partials/form', { mode: 'apply', action: url('careers', job.slug) + '#apply', jobTitle: loc(job, 'title') }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/foot') %>

@@ -1,0 +1,20 @@
+<%- include('_head', { title: m.kind === 'application' ? 'Hồ sơ ứng tuyển' : 'Tin nhắn liên hệ', actions: '<a class="btn btn--ghost" href="/admin/messages">← Danh sách</a>' }) %>
+<section class="panel message">
+  <dl class="meta-list">
+    <div><dt>Họ tên</dt><dd><%= m.name %></dd></div>
+    <div><dt>Email</dt><dd><a href="mailto:<%= m.email %>"><%= m.email %></a></dd></div>
+    <div><dt>Điện thoại</dt><dd><%= m.phone ? m.phone : '—' %></dd></div>
+    <div><dt><%= m.kind === 'application' ? 'Vị trí' : 'Chủ đề' %></dt><dd><%= m.job_title || m.subject || '—' %></dd></div>
+    <div><dt>Thời gian</dt><dd><%= h.formatDate(m.created_at + 'Z', 'vi-VN', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }) %></dd></div>
+  </dl>
+  <% if (m.body) { %><div class="message__body"><%= m.body %></div><% } %>
+  <div class="form-actions">
+    <a class="btn btn--primary" href="mailto:<%= m.email %>?subject=<%= encodeURIComponent('Re: ' + (m.job_title || m.subject || 'Thủy điện Mường Kim')) %>"><%- icon('mail') %>Trả lời qua email</a>
+    <% if (m.attachment) { %><a class="btn btn--outline" href="/admin/messages/<%= m.id %>/attachment"><%- icon('download') %>Tải CV</a><% } %>
+    <form method="post" action="/admin/messages/<%= m.id %>/delete" data-confirm="Xoá tin nhắn này<%= m.attachment ? ' và CV đính kèm' : '' %>?">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <button class="btn btn--danger" type="submit">Xoá</button>
+    </form>
+  </div>
+</section>
+<%- include('_foot') %>

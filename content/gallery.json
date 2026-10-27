@@ -1,0 +1,491 @@
+[
+  {
+    "album": "dam",
+    "src": "/media/dam/dam-01",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "dam",
+    "src": "/media/dam/dam-02",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant",
+    "src": "/media/plant/plant-01",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "plant",
+    "src": "/media/plant/plant-02",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 2.2222
+  },
+  {
+    "album": "plant",
+    "src": "/media/plant/plant-03",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "plant",
+    "src": "/media/plant/plant-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "office",
+    "src": "/media/office/office-01",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "office",
+    "src": "/media/office/office-02",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "office",
+    "src": "/media/office/office-03",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "office",
+    "src": "/media/office/office-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "office",
+    "src": "/media/office/office-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "office",
+    "src": "/media/office/office-06",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "office",
+    "src": "/media/office/office-07",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "safety",
+    "src": "/media/safety/safety-01",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "safety",
+    "src": "/media/safety/safety-02",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "safety",
+    "src": "/media/safety/safety-03",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "safety",
+    "src": "/media/safety/safety-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "safety",
+    "src": "/media/safety/safety-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "safety",
+    "src": "/media/safety/safety-06",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 0.5625
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-01",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-02",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-03",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-04",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-05",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-06",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 2.2222
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-07",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-08",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-09",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
+  },
+  {
+    "album": "anniversary",
+    "src": "/media/anniversary/anniversary-10",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
+  },
+  {
+    "album": "site",
+    "src": "/media/site/site-01",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
+  },
+  {
+    "album": "site",
+    "src": "/media/site/site-02",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
+  },
+  {
+    "album": "site",
+    "src": "/media/site/site-03",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
+  },
+  {
+    "album": "site",
+    "src": "/media/site/site-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
+  },
+  {
+    "album": "site",
+    "src": "/media/site/site-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-01",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-02",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-03",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-06",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-07",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 0.6667
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-08",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-09",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 2.1677
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-10",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-11",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "sports",
+    "src": "/media/sports/sports-12",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5
+  },
+  {
+    "album": "travel",
+    "src": "/media/travel/travel-01",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "travel",
+    "src": "/media/travel/travel-02",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "travel",
+    "src": "/media/travel/travel-03",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "travel",
+    "src": "/media/travel/travel-04",
+    "widths": [
+      640
+    ],
+    "ratio": 0.75
+  }
+]
