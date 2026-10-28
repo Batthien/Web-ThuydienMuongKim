@@ -61,6 +61,7 @@ app.use((req, res, next) => {
   res.locals.siteUrl = config.siteUrl;
   res.locals.currentPath = req.path.replace(/\/$/, '') || '/';
   res.locals.assetVersion = ASSET_VERSION;
+  res.locals.isLoggedIn = Boolean(req.session && req.session.userId);
   res.locals.icon = (name, cls = '') => `<svg class="icon ${cls}" aria-hidden="true" focusable="false"><use href="#i-${name}"/></svg>`;
   next();
 });

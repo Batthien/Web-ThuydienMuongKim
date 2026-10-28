@@ -145,3 +145,9 @@ code { background: #e9f1f4; padding: 1px 6px; border-radius: 4px; font-size: .9e
 .login-card h1 { font-size: 20px; text-align: center; }
 .login-card__back { text-align: center; font-size: 14px; color: var(--muted); }
 .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.admin-me { display: flex; align-items: center; gap: 12px; margin: 0 0 6px; padding: 10px 12px; color: #fff; }
+.admin-me small { display: block; color: #8fb0c0; font-size: 12px; }
+.notice--info { background: #e3f1f5; color: #0b4f63; }
+.pill--admin { background: #e6eefc; color: #2c55a8; }
+.pill--editor { background: #eef3f5; color: #3b5560; }

@@ -594,3 +594,7 @@ main:focus { outline: none; }
   .hero-slides__img { transform: none !important; transition: opacity .6s ease !important; }
 }
 .page-hero { padding-bottom: max(clamp(56px, 7vw, 96px), 92px); }
+
+.topbar__login { padding: 4px 12px; border: 1px solid rgba(255, 255, 255, .25); border-radius: 999px; font-weight: 600; font-size: .8rem; min-height: 30px; }
+.topbar__login:hover { background: rgba(255, 255, 255, .1); border-color: #fff; }
+@media (max-width: 760px) { .topbar__meta { gap: 10px; } .topbar__login { padding: 4px 10px; } }

@@ -1,0 +1,29 @@
+<%- include('_head', { title: 'Tài khoản người dùng', actions: '<a class="btn btn--primary" href="/admin/users/new">+ Thêm tài khoản</a>' }) %>
+<% const fmt = (d) => d ? h.formatDate(d + 'Z', 'vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }) : 'Chưa đăng nhập'; %>
+<div class="notice notice--info"><%- icon('shield') %><span><strong>Quản trị viên</strong>: toàn quyền (tin tức, tài liệu cổ đông, tuyển dụng, tin nhắn & CV, cấu hình, tài khoản). <strong>Biên tập viên</strong>: chỉ viết và đăng tin tức.</span></div>
+<section class="panel">
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Tài khoản</th><th>Vai trò</th><th>Đăng nhập gần nhất</th><th class="t-right">Thao tác</th></tr></thead>
+      <tbody>
+        <% rows.forEach((u) => { %>
+          <tr>
+            <td><a href="/admin/users/<%= u.id %>/edit"><strong><%= u.display_name || u.username %></strong></a><small><%= u.username %><%= u.id === me.id ? ' · (bạn)' : '' %></small></td>
+            <td><span class="pill pill--<%= u.role %>"><%= ROLES[u.role] || u.role %></span></td>
+            <td><%= fmt(u.last_login_at) %></td>
+            <td class="t-right actions">
+              <a class="btn btn--sm btn--outline" href="/admin/users/<%= u.id %>/edit">Sửa</a>
+              <% if (u.id !== me.id) { %>
+                <form method="post" action="/admin/users/<%= u.id %>/delete" data-confirm="Xoá tài khoản <%= u.username %>? Người này sẽ không đăng nhập được nữa.">
+                  <input type="hidden" name="_csrf" value="<%= csrf %>">
+                  <button class="btn btn--sm btn--danger" type="submit">Xoá</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+<%- include('_foot') %>

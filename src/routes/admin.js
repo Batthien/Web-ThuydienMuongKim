@@ -51,7 +51,8 @@ router.post('/login', loginLimiter, requireCsrf, (req, res) => {
   req.session.userId = user.id;
   req.session.username = user.username;
   req.session.csrf = null; // đổi token sau khi đăng nhập
-  res.redirect(next);
+  db.prepare("UPDATE users SET last_login_at = datetime('now') WHERE id = ?").run(user.id);
+  res.redirect(user.role === 'admin' ? next : '/admin/posts');
 });
 
 router.post('/logout', requireCsrf, (req, res) => {
@@ -60,6 +61,25 @@ router.post('/logout', requireCsrf, (req, res) => {
 });
 
 router.use(requireAdmin);
+
+// ================= Phân quyền =================
+const ROLES = { admin: 'Quản trị viên', editor: 'Biên tập viên' };
+// Biên tập viên chỉ được quản lý tin tức (và đổi mật khẩu của mình)
+const EDITOR_PATHS = [/^\/posts(\/|$)/, /^\/upload-image$/, /^\/account$/];
+
+router.use((req, res, next) => {
+  const user = db.prepare('SELECT id, username, display_name, role FROM users WHERE id = ?').get(req.session.userId);
+  if (!user) { // tài khoản đã bị xoá
+    req.session = null;
+    return res.redirect('/admin/login');
+  }
+  req.user = user;
+  res.locals.me = user;
+  res.locals.ROLES = ROLES;
+  if (user.role === 'admin' || EDITOR_PATHS.some((r) => r.test(req.path))) return next();
+  if (req.path !== '/') flash(req, 'error', 'Tài khoản Biên tập viên không có quyền truy cập mục này.');
+  res.redirect('/admin/posts');
+});
 
 // ================= Tổng quan =================
 router.get('/', (req, res) => {
@@ -292,6 +312,79 @@ router.post('/settings', requireCsrf, (req, res) => {
   saveSettings(values);
   flash(req, 'success', 'Đã lưu cấu hình.');
   res.redirect('/admin/settings');
+});
+
+// ================= Tài khoản người dùng (chỉ Quản trị viên) =================
+const USERNAME_RE = /^[a-z0-9._-]{3,32}$/;
+const adminCount = () => db.prepare("SELECT COUNT(*) n FROM users WHERE role = 'admin'").get().n;
+
+router.get('/users', (req, res) => {
+  const rows = db.prepare('SELECT id, username, display_name, role, last_login_at, created_at FROM users ORDER BY role, username').all();
+  res.render('admin/users', { rows });
+});
+
+router.get('/users/new', (req, res) => {
+  res.render('admin/user-form', { u: { role: 'editor' }, errors: {}, isNew: true });
+});
+
+router.get('/users/:id/edit', (req, res, next) => {
+  const u = db.prepare('SELECT id, username, display_name, role FROM users WHERE id = ?').get(req.params.id);
+  if (!u) return next();
+  res.render('admin/user-form', { u, errors: {}, isNew: false });
+});
+
+function saveUser(req, res, next) {
+  const id = req.params.id ? Number(req.params.id) : null;
+  const existing = id ? db.prepare('SELECT * FROM users WHERE id = ?').get(id) : null;
+  if (id && !existing) return next();
+  const isSelf = existing && existing.id === req.user.id;
+  const u = {
+    id,
+    username: existing ? existing.username : String(req.body.username || '').trim().toLowerCase(),
+    display_name: String(req.body.display_name || '').trim().slice(0, 80),
+    role: isSelf ? existing.role : (ROLES[req.body.role] ? req.body.role : 'editor'),
+  };
+  const password = String(req.body.password || '');
+  const errors = {};
+  if (!existing) {
+    if (!USERNAME_RE.test(u.username)) errors.username = 'Tên đăng nhập 3–32 ký tự, chỉ gồm chữ thường không dấu, số, dấu chấm, gạch dưới, gạch ngang.';
+    else if (db.prepare('SELECT 1 FROM users WHERE username = ?').get(u.username)) errors.username = 'Tên đăng nhập đã tồn tại.';
+  }
+  if (!existing || password) {
+    if (password.length < 10) errors.password = 'Mật khẩu cần ít nhất 10 ký tự.';
+    else if (password !== String(req.body.confirm || '')) errors.confirm = 'Xác nhận mật khẩu không khớp.';
+  }
+  if (existing && existing.role === 'admin' && u.role !== 'admin' && adminCount() <= 1) {
+    errors.role = 'Cần giữ ít nhất một Quản trị viên.';
+  }
+  if (Object.keys(errors).length) {
+    res.status(422);
+    return res.render('admin/user-form', { u, errors, isNew: !existing });
+  }
+  if (existing) {
+    db.prepare('UPDATE users SET display_name = ?, role = ? WHERE id = ?').run(u.display_name, u.role, id);
+    if (password) db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(bcrypt.hashSync(password, 12), id);
+  } else {
+    db.prepare('INSERT INTO users (username, password_hash, role, display_name) VALUES (?, ?, ?, ?)')
+      .run(u.username, bcrypt.hashSync(password, 12), u.role, u.display_name);
+  }
+  flash(req, 'success', existing ? `Đã cập nhật tài khoản ${u.username}.` : `Đã tạo tài khoản ${u.username}.`);
+  res.redirect('/admin/users');
+}
+
+router.post('/users', requireCsrf, saveUser);
+router.post('/users/:id', requireCsrf, saveUser);
+
+router.post('/users/:id/delete', requireCsrf, (req, res) => {
+  const u = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.id);
+  if (!u) return res.redirect('/admin/users');
+  if (u.id === req.user.id) flash(req, 'error', 'Không thể xoá tài khoản đang đăng nhập.');
+  else if (u.role === 'admin' && adminCount() <= 1) flash(req, 'error', 'Cần giữ ít nhất một Quản trị viên.');
+  else {
+    db.prepare('DELETE FROM users WHERE id = ?').run(u.id);
+    flash(req, 'success', `Đã xoá tài khoản ${u.username}.`);
+  }
+  res.redirect('/admin/users');
 });
 
 // ================= Tài khoản =================

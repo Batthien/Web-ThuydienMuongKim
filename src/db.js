@@ -72,6 +72,12 @@ CREATE INDEX IF NOT EXISTS idx_posts_pub ON posts(status, published_at DESC);
 CREATE INDEX IF NOT EXISTS idx_docs_cat ON documents(category, year DESC);
 `);
 
+// ---- Nâng cấp lược đồ (an toàn khi chạy lại) ----
+const userCols = db.prepare('PRAGMA table_info(users)').all().map((c) => c.name);
+if (!userCols.includes('role')) db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'admin'");
+if (!userCols.includes('display_name')) db.exec("ALTER TABLE users ADD COLUMN display_name TEXT NOT NULL DEFAULT ''");
+if (!userCols.includes('last_login_at')) db.exec("ALTER TABLE users ADD COLUMN last_login_at TEXT NOT NULL DEFAULT ''");
+
 // ---- Settings (cấu hình chỉnh được trong CMS) ----
 const getSettingsStmt = db.prepare('SELECT key, value FROM settings');
 const setSettingStmt = db.prepare(
@@ -112,7 +118,7 @@ function bootstrap() {
       console.log('  Hãy đăng nhập /admin và đổi mật khẩu ngay.');
       console.log('====================================================\n');
     }
-    db.prepare('INSERT INTO users (username, password_hash) VALUES (?, ?)')
+    db.prepare("INSERT INTO users (username, password_hash, role, display_name) VALUES (?, ?, 'admin', 'Quản trị viên')")
       .run(config.admin.username, bcrypt.hashSync(password, 12));
   }
 

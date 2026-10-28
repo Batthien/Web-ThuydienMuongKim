@@ -80,6 +80,31 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   ok(r.status === 200, 'Tải CV ứng viên');
   ok((await req('/uploads/cv/' + 'x.pdf')).status === 404, 'Thư mục CV không công khai');
 
+  console.log('Tài khoản & phân quyền');
+  ok((await (await req('/vi')).text()).includes('/admin'), 'Website có nút Quản trị khi đã đăng nhập');
+  ok((await req('/admin/users')).status === 200, '200 /admin/users');
+  html = await (await req('/admin/users/new')).text();
+  csrf = csrfFrom(html);
+  const form = (o) => ({ method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ _csrf: csrf, ...o }) });
+  r = await req('/admin/users', form({ username: 'Bad Name', password: 'short', confirm: 'x', role: 'editor' }));
+  ok(r.status === 422, 'Báo lỗi khi tạo tài khoản sai (422)');
+  r = await req('/admin/users', form({ username: 'bientap', display_name: 'Biên tập', password: 'editor-password-1', confirm: 'editor-password-1', role: 'editor' }));
+  ok(r.status === 302, 'Tạo tài khoản Biên tập viên');
+  r = await req('/admin/users/1/delete', form({}));
+  ok(r.status === 302 && (await (await req('/admin/users')).text()).includes('Không thể xoá tài khoản đang đăng nhập'), 'Không cho xoá chính mình');
+  await req('/admin/logout', form({}));
+  ok((await (await req('/vi')).text()).includes('/admin/login'), 'Website hiện nút Đăng nhập khi chưa đăng nhập');
+  html = await (await req('/admin/login')).text();
+  csrf = csrfFrom(html);
+  r = await req('/admin/login', form({ username: 'bientap', password: 'editor-password-1', next: '/admin' }));
+  ok(r.status === 302 && r.headers.get('location') === '/admin/posts', 'Biên tập viên đăng nhập → Tin tức');
+  ok((await req('/admin/posts')).status === 200, 'Biên tập viên vào được Tin tức');
+  ok((await req('/admin/posts/new')).status === 200, 'Biên tập viên tạo được bài viết');
+  for (const p of ['/admin', '/admin/messages', '/admin/documents', '/admin/settings', '/admin/users', '/admin/messages/2/attachment']) {
+    const res = await req(p);
+    ok(res.status === 302 && res.headers.get('location') === '/admin/posts', `Biên tập viên bị chặn ${p}`);
+  }
+
   server.close();
   require('../src/db').db.close();
   try { fs.rmSync(tmp, { recursive: true, force: true }); } catch { /* Windows có thể còn khoá tệp WAL */ }

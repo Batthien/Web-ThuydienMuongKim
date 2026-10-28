@@ -61,6 +61,7 @@
         <a href="/vi<%= lang === 'vi' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'vi' ? 'aria-current="true"' : '' %> hreflang="vi" lang="vi">VI</a>
         <a href="/en<%= lang === 'en' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'en' ? 'aria-current="true"' : '' %> hreflang="en" lang="en">EN</a>
       </nav>
+      <a class="topbar__login" href="<%= isLoggedIn ? '/admin' : '/admin/login' %>" rel="nofollow"><%- icon(isLoggedIn ? 'gauge' : 'users') %><%= isLoggedIn ? t('nav.admin') : t('nav.login') %></a>
     </div>
   </div>
 </div>
@@ -83,6 +84,7 @@
       <div class="main-nav__extra">
         <a class="btn btn--primary" href="<%= url('contact') %>"><%= t('nav.contact') %></a>
         <a class="main-nav__lang" href="<%= altUrl %>" hreflang="<%= other %>" lang="<%= other %>"><%- icon('globe') %><%= t('nav.switchLang') %></a>
+        <a class="main-nav__lang" href="<%= isLoggedIn ? '/admin' : '/admin/login' %>" rel="nofollow"><%- icon(isLoggedIn ? 'gauge' : 'users') %><%= isLoggedIn ? t('nav.admin') : t('nav.login') %></a>
       </div>
     </nav>
     <a class="btn btn--primary header-cta" href="<%= url('contact') %>" <%- page.key === 'contact' ? 'aria-current="page"' : '' %>><%= t('nav.contact') %></a>

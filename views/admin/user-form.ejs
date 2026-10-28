@@ -1,0 +1,48 @@
+<%- include('_head', { title: isNew ? 'Thêm tài khoản' : 'Sửa tài khoản ' + u.username, actions: '<a class="btn btn--ghost" href="/admin/users">← Tài khoản</a>' }) %>
+<% const err = (k) => errors[k] ? `<p class="field__error">${errors[k]}</p>` : ''; const isSelf = !isNew && u.id === me.id; %>
+<section class="panel narrow">
+  <% if (Object.keys(errors).length) { %><div class="notice notice--error" role="alert"><%- icon('alert') %><span>Vui lòng kiểm tra các trường được đánh dấu.</span></div><% } %>
+  <form class="stack" method="post" action="<%= isNew ? '/admin/users' : '/admin/users/' + u.id %>" autocomplete="off">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <div class="field">
+      <label for="username">Tên đăng nhập <% if (isNew) { %><span class="req">*</span><% } %></label>
+      <% if (isNew) { %>
+        <input id="username" name="username" value="<%= u.username || '' %>" required pattern="[a-z0-9._\-]{3,32}" autocapitalize="none" spellcheck="false" <%- errors.username ? 'aria-invalid="true"' : '' %>>
+        <p class="field__hint">Chữ thường không dấu, số, dấu chấm, gạch dưới, gạch ngang (vd: nguyenvana).</p>
+      <% } else { %>
+        <input id="username" value="<%= u.username %>" disabled>
+      <% } %>
+      <%- err('username') %>
+    </div>
+    <div class="field">
+      <label for="display_name">Họ tên hiển thị</label>
+      <input id="display_name" name="display_name" value="<%= u.display_name || '' %>" maxlength="80">
+    </div>
+    <div class="field">
+      <label for="role">Vai trò</label>
+      <select id="role" name="role" <%- isSelf ? 'disabled' : '' %> <%- errors.role ? 'aria-invalid="true"' : '' %>>
+        <% Object.entries(ROLES).forEach(([k, label]) => { %><option value="<%= k %>" <%= u.role === k ? 'selected' : '' %>><%= label %></option><% }) %>
+      </select>
+      <p class="field__hint"><%= isSelf ? 'Bạn không thể tự đổi vai trò của mình.' : 'Biên tập viên chỉ được viết và đăng tin tức.' %></p>
+      <%- err('role') %>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="password"><%= isNew ? 'Mật khẩu' : 'Mật khẩu mới' %> <% if (isNew) { %><span class="req">*</span><% } %></label>
+        <input id="password" name="password" type="password" autocomplete="new-password" minlength="10" <%- isNew ? 'required' : '' %> <%- errors.password ? 'aria-invalid="true"' : '' %>>
+        <p class="field__hint"><%= isNew ? 'Ít nhất 10 ký tự.' : 'Để trống nếu không đổi.' %></p>
+        <%- err('password') %>
+      </div>
+      <div class="field">
+        <label for="confirm">Nhập lại mật khẩu</label>
+        <input id="confirm" name="confirm" type="password" autocomplete="new-password" <%- errors.confirm ? 'aria-invalid="true"' : '' %>>
+        <%- err('confirm') %>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn--primary" type="submit"><%= isNew ? 'Tạo tài khoản' : 'Lưu thay đổi' %></button>
+      <a class="btn btn--ghost" href="/admin/users">Huỷ</a>
+    </div>
+  </form>
+</section>
+<%- include('_foot') %>

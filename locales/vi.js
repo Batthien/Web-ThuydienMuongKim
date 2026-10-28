@@ -6,6 +6,7 @@ module.exports = {
     home: 'Trang chủ', about: 'Giới thiệu', plant: 'Nhà máy', ir: 'Cổ đông',
     news: 'Tin tức', careers: 'Tuyển dụng', gallery: 'Thư viện', contact: 'Liên hệ',
     menu: 'Mở menu', close: 'Đóng menu', switchLang: 'Switch to English',
+    login: 'Đăng nhập', admin: 'Quản trị',
   },
   common: {
     readMore: 'Xem chi tiết', viewAll: 'Xem tất cả', back: 'Quay lại', download: 'Tải xuống',

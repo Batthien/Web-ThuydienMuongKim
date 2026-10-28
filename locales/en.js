@@ -6,6 +6,7 @@ module.exports = {
     home: 'Home', about: 'About', plant: 'Power Plant', ir: 'Investors',
     news: 'News', careers: 'Careers', gallery: 'Gallery', contact: 'Contact',
     menu: 'Open menu', close: 'Close menu', switchLang: 'Chuyển sang Tiếng Việt',
+    login: 'Log in', admin: 'Admin',
   },
   common: {
     readMore: 'Read more', viewAll: 'View all', back: 'Back', download: 'Download',
