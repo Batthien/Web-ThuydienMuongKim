@@ -117,8 +117,7 @@ main:focus { outline: none; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
 .brand img { width: 92px; height: auto; }
 .brand__text { display: flex; flex-direction: column; line-height: 1.2; border-left: 1px solid var(--line); padding-left: 12px; }
-.brand__text strong { color: var(--brand-800); font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
-.brand__text small { color: var(--muted); font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; }
+.brand__text > span { color: var(--brand-800); font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
 
 .main-nav ul { display: flex; gap: 4px; }
 .main-nav a { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; color: var(--ink); font-weight: 500; font-size: .95rem; text-decoration: none; border-radius: 999px; transition: color .2s, background-color .2s; }
@@ -151,7 +150,7 @@ main:focus { outline: none; }
   .topbar__meta span, .topbar__contact a:nth-child(2) span { display: none; }
   .topbar__contact { gap: 16px; }
   .brand img { width: 76px; }
-  .brand__text strong { font-size: .92rem; }
+  .brand__text > span { font-size: .92rem; }
 }
 @media (max-width: 400px) { .brand__text { display: none; } }
 
