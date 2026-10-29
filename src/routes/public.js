@@ -84,7 +84,7 @@ function createRouter(lang) {
     about(req, res) {
       setPage(res, 'about', { title: t('about.title'), description: t('about.lead') });
       const pick = (album, n) => h.gallery.filter((g) => g.album === album).slice(0, n);
-      res.render('about', { culture: [...pick('anniversary', 3), ...pick('sports', 2), ...pick('travel', 1)] });
+      res.render('about', { culture: [...pick('anniversary', 4), ...pick('sports', 3), ...pick('travel', 2)] });
     },
     plant(req, res) {
       setPage(res, 'plant', { title: t('plant.title'), description: t('plant.lead'), image: h.imgUrl('/media/plant/plant-04', 1280) });

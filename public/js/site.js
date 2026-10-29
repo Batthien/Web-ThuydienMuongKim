@@ -185,10 +185,10 @@
     }
 
     grid.addEventListener('click', (e) => {
-      const a = e.target.closest('a.gallery-grid__item');
+      const a = e.target.closest('a.gallery-grid__item, a[data-lightbox-item]');
       if (!a) return;
       e.preventDefault();
-      links = [...grid.querySelectorAll('a.gallery-grid__item:not([hidden])')];
+      links = [...grid.querySelectorAll('a.gallery-grid__item:not([hidden]), a[data-lightbox-item]')];
       lastFocus = a;
       if (!box) build();
       document.body.appendChild(box);

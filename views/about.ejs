@@ -105,9 +105,13 @@
       </div>
       <a class="link-arrow" href="<%= url('gallery') %>"><%= t('nav.gallery') %> <%- icon('arrow-right') %></a>
     </div>
-    <div class="mosaic">
+    <div class="mosaic" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
       <% culture.forEach((p, i) => { %>
-        <figure class="mosaic__item reveal"><%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %></figure>
+        <a class="mosaic__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= t('gallery.albums.' + p.album) %>">
+          <%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
+          <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
+          <span class="sr-only"><%= t('gallery.open') %></span>
+        </a>
       <% }) %>
     </div>
   </div>
