@@ -49,6 +49,7 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
     body = body
       .replace(/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" class="svg-sprite"[\s\S]*?<\/svg>/, '')
       .replace(/<script[\s\S]*?<\/script>/g, '')
+      .replace(/ (?:srcset|sizes)="[^"]*"/g, '') // mỗi ảnh chỉ còn 1 nguồn để nhúng trực tiếp
       .replace(IMG_RE, (m) => tokenFor(m))
       .replace(/href="\/admin[^"]*"/g, 'href="#" data-preview-disabled')
       .replace(/href="(\/(?:vi|en)(?:\/[^"#?]*)?)(?:\?[^"#]*)?(#[^"]*)?"/g, (m, p) => `href="#${p}"`)
@@ -58,19 +59,20 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
   }
   server.close();
 
-  // Nén & nhúng ảnh (tối đa 1100px, WebP chất lượng 55)
+  // Nén & nhúng ảnh — JPEG/PNG để mọi trình duyệt (kể cả bản cũ) đều đọc được
   const imgData = [];
   for (const [key, info] of images) {
     const variants = [...info.variants].sort();
     const best = variants.find((v) => v.includes('-1280')) || variants[variants.length - 1];
     const file = best.startsWith('/uploads/') ? path.join(ROOT, best) : path.join(ROOT, 'public', best);
     let buf;
-    let mime = 'image/webp';
-    if (/\.(png|jpg)$/.test(best) && best.startsWith('/img/')) {
-      buf = fs.readFileSync(file);
-      mime = best.endsWith('.png') ? 'image/png' : 'image/jpeg';
+    let mime = 'image/jpeg';
+    if (best.startsWith('/img/') || best === '/favicon.png') {
+      // Logo & biểu tượng: giữ nền trong suốt
+      buf = await sharp(file).png({ compressionLevel: 9 }).toBuffer();
+      mime = 'image/png';
     } else {
-      buf = await sharp(file).resize({ width: 1100, withoutEnlargement: true }).webp({ quality: 55 }).toBuffer();
+      buf = await sharp(file).resize({ width: 1000, withoutEnlargement: true }).jpeg({ quality: 64, mozjpeg: true }).toBuffer();
     }
     imgData[info.id] = `data:${mime};base64,${buf.toString('base64')}`;
     process.stdout.write('+');
@@ -100,12 +102,6 @@ ${sprite}
 <script>
 const PAGES = ${JSON.stringify(pages).replace(/</g, '\\u003c')};
 const IMGS = ${JSON.stringify(imgData)};
-const URLS = IMGS.map((d) => {
-  const [meta, b64] = d.split(',');
-  const bin = atob(b64); const arr = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-  return URL.createObjectURL(new Blob([arr], { type: meta.slice(5, meta.indexOf(';')) }));
-});
 const runSite = () => {
 ${siteJs}
 };
@@ -114,7 +110,7 @@ function render() {
   if (!PAGES[route]) route = route.startsWith('/en') ? '/en' : '/vi';
   const p = PAGES[route];
   const root = document.getElementById('preview-root');
-  root.innerHTML = p.body.replace(/mkimg(\\d+)/g, (m, i) => URLS[i]);
+  root.innerHTML = p.body.replace(/mkimg(\\d+)/g, (m, i) => IMGS[i]); // ảnh nhúng trực tiếp (data URI), chạy được cả khi mở file từ ổ đĩa
   document.title = p.title.replace(/&amp;/g, '&');
   document.body.className = p.bodyClass;
   document.documentElement.lang = route.slice(1, 3);
