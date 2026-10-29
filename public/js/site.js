@@ -124,6 +124,21 @@
     });
   }
 
+  // ---- Ảnh trong bài viết: tự bọc liên kết để mở bằng lightbox ----
+  document.querySelectorAll('[data-zoom-images]').forEach((root) => {
+    root.querySelectorAll('.article__cover img, .prose img').forEach((img) => {
+      if (img.closest('a')) return; // ảnh đã có liên kết riêng
+      const srcset = (img.getAttribute('srcset') || '').split(',').map((s) => s.trim().split(' ')[0]).filter(Boolean);
+      const a = document.createElement('a');
+      a.href = srcset[srcset.length - 1] || img.src; // bản lớn nhất
+      a.className = 'zoomable';
+      a.setAttribute('data-lightbox-item', '');
+      a.dataset.caption = img.alt || '';
+      img.replaceWith(a);
+      a.appendChild(img);
+    });
+  });
+
   // ---- Lightbox ----
   document.querySelectorAll('[data-lightbox]').forEach((grid) => {
     const labels = {
