@@ -16,7 +16,7 @@
     </div>
   </header>
   <% if (post.cover) { %>
-    <div class="container article__cover"><%- h.img(post.cover, loc(post, 'title'), { sizes: '(min-width: 1100px) 1040px, 100vw', eager: true }) %></div>
+    <div class="container container--narrow article__cover"><%- h.img(post.cover, loc(post, 'title'), { sizes: '(min-width: 860px) 780px, 100vw', eager: true }) %></div>
   <% } %>
   <div class="container container--narrow prose">
     <%- h.renderMarkdown(loc(post, 'body')) %>
