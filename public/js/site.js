@@ -16,7 +16,7 @@
     const imgs = [...slideBox.querySelectorAll('img')];
     const dots = [...slideCtl.querySelectorAll('[data-slide-go]')];
     const toggleBtn = slideCtl.querySelector('[data-slide-toggle]');
-    const DELAY = 6000;
+    const DELAY = 2000; // mỗi ảnh hiển thị 2 giây
     let current = 0;
     let timer = null;
     // Luôn tự chạy (có nút tạm dừng); khi người dùng bật giảm chuyển động, CSS bỏ hiệu ứng phóng to
