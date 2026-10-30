@@ -48,7 +48,7 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
     if (!sprite) sprite = (body.match(/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" class="svg-sprite"[\s\S]*?<\/svg>/) || [''])[0];
     body = body
       .replace(/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" class="svg-sprite"[\s\S]*?<\/svg>/, '')
-      .replace(/<script[\s\S]*?<\/script>/g, '')
+      .replace(/<script(?![^>]*application\/json)[^>]*>[\s\S]*?<\/script>/g, '') // giữ lại thẻ dữ liệu JSON của biểu đồ
       .replace(/ (?:srcset|sizes)="[^"]*"/g, '') // mỗi ảnh chỉ còn 1 nguồn để nhúng trực tiếp
       .replace(IMG_RE, (m) => tokenFor(m))
       .replace(/href="\/admin[^"]*"/g, 'href="#" data-preview-disabled')

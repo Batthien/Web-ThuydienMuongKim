@@ -91,13 +91,15 @@
 
     <p class="prod-source"><%= t('prod.source') %></p>
 
-    <table class="sr-only">
+    <div class="sr-only">
+    <table>
       <caption><%= t('prod.table') %></caption>
       <thead><tr><th><%= t('prod.year') %></th><th><%= t('prod.plant') %></th><th><%= t('prod.output') %> – <%= t('prod.actual') %> (kWh)</th><th><%= t('prod.output') %> – <%= t('prod.plan') %> (kWh)</th><th><%= t('prod.revenue') %> – <%= t('prod.actual') %></th><th><%= t('prod.revenue') %> – <%= t('prod.plan') %></th></tr></thead>
       <tbody>
         <% rows.forEach((r) => { %><tr><td><%= r.year %></td><td><%= r.plant %></td><td><%= fmt(r.oa, 0) %></td><td><%= fmt(r.op, 0) %></td><td><%= fmt(r.ra) %></td><td><%= fmt(r.rp) %></td></tr><% }) %>
       </tbody>
     </table>
+    </div>
   </div>
 </section>
 <% } %>

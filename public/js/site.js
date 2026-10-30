@@ -56,7 +56,7 @@
 
   // ---- Biểu đồ kết quả sản xuất kinh doanh (SVG thuần) ----
   const prod = document.querySelector('[data-prod]');
-  if (prod) {
+  if (prod && prod.querySelector('[data-prod-rows]') && prod.querySelector('[data-prod-labels]')) {
     const rows = JSON.parse(prod.querySelector('[data-prod-rows]').textContent);
     const T = JSON.parse(prod.querySelector('[data-prod-labels]').textContent);
     const locale = prod.dataset.locale;
