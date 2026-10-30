@@ -83,12 +83,30 @@
     // Tên ngắn trên trục: "Thủy điện Mường Kim II" -> "Mường Kim II"
     const shortName = (s) => String(s).replace(/^(Nhà máy\s+)?(Thủy điện|Thuỷ điện)\s+/i, '').replace(/\s+(HPP|Hydropower( Plant)?)$/i, '');
 
+    // Hiệu ứng: chạy hàm theo tiến độ 0→1 (ease-out), có độ trễ
+    const easeOut = (x) => 1 - (1 - x) ** 3;
+    const tween = (dur, onFrame, delay = 0) => {
+      const start = performance.now() + delay;
+      const step = (now) => {
+        const p = Math.min(1, Math.max(0, (now - start) / dur));
+        onFrame(easeOut(p));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    // Đếm số từ 0 tới giá trị đích trong một phần tử
+    const countTo = (node, value, fmt, delay = 0) => {
+      if (value == null || Number.isNaN(value)) { node.textContent = '—'; return; }
+      tween(1100, (e) => { node.textContent = fmt(value * e); }, delay);
+    };
+
     // Biểu đồ cột nhóm: mỗi nhóm 2 cột (Thực hiện, Kế hoạch)
     const barChart = (box, groups, unitLabel) => {
       const W = 420, H = 340, pad = { t: 26, r: 6, b: 44, l: 40 };
       const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
       const max = niceMax(Math.max(0, ...groups.flatMap((g) => [g.a || 0, g.p || 0])));
-      const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': unitLabel });
+      const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': unitLabel, class: 'is-drawing' });
+      let order = 0;
       for (let i = 0; i <= 4; i++) {
         const y = pad.t + ih - (ih * i) / 4;
         svg.append(el('line', { x1: pad.l, x2: W - pad.r, y1: y, y2: y, class: 'grid' }));
@@ -104,8 +122,18 @@
           const r = el('rect', { x, y: pad.t + ih, width: bw, height: 0, rx: 4, class: `bar ${cls}` });
           r.append(el('title', {}, `${g.label} – ${k === 'a' ? T.actual : T.plan}: ${nf(v)} ${unitLabel}`));
           svg.append(r);
-          requestAnimationFrame(() => { r.setAttribute('y', y); r.setAttribute('height', h); });
-          svg.append(el('text', { x: x + bw / 2, y: y - 6, class: 'val', 'text-anchor': 'middle' }, nf(v, v >= 100 ? 0 : 1)));
+          const label = el('text', { x: x + bw / 2, y: pad.t + ih - 6, class: 'val', 'text-anchor': 'middle', opacity: 0 }, '0');
+          svg.append(label);
+          // Cột mọc lên lần lượt, số trên đầu cột đếm theo
+          const d = 150 + order++ * 110, dec = v >= 100 ? 0 : 1;
+          tween(900, (e) => {
+            const hh = h * e;
+            r.setAttribute('y', pad.t + ih - hh);
+            r.setAttribute('height', hh);
+            label.setAttribute('y', pad.t + ih - hh - 6);
+            label.setAttribute('opacity', Math.min(1, e * 1.6));
+            label.textContent = nf(v * e, dec);
+          }, d);
         });
         // Nhãn trục X (tối đa 2 dòng)
         const words = String(g.label).split(' ');
@@ -138,17 +166,24 @@
       const set = (k, v) => { prod.querySelector(`[data-k="${k}"]`).textContent = v; };
       const planOnly = oa == null;
       const pct = !planOnly && op ? (oa / op) * 100 : null;
-      set('oa', nf(scale.output(oa)));
-      set('op', nf(scale.output(op)));
-      set('tOut', nf(scale.output(planOnly ? op : oa)));
-      set('tRev', nf(scale.revenue(planOnly ? rp : ra)));
-      set('rOut', pct == null ? '—' : `${nf(pct, 1)}%`);
-      set('rRev', !planOnly && ra != null && rp ? `${nf((ra / rp) * 100, 1)}%` : '—');
-      prod.querySelector('[data-donut-pct]').textContent = pct == null ? T.planOnly : `${nf(pct, 1)}%`;
+      const node = (k) => prod.querySelector(`[data-k="${k}"]`);
+      const pctFmt = (v) => `${nf(v, 1)}%`;
+      countTo(node('oa'), scale.output(oa), nf);
+      countTo(node('op'), scale.output(op), nf, 120);
+      countTo(node('tOut'), scale.output(planOnly ? op : oa), nf, 240);
+      countTo(node('tRev'), scale.revenue(planOnly ? rp : ra), nf, 320);
+      countTo(node('rOut'), pct, pctFmt, 400);
+      countTo(node('rRev'), !planOnly && ra != null && rp ? (ra / rp) * 100 : null, pctFmt, 480);
+      const pctEl = prod.querySelector('[data-donut-pct]');
+      if (pct == null) pctEl.textContent = T.planOnly; else countTo(pctEl, pct, pctFmt);
       prod.querySelector('[data-donut-caption]').textContent = pct == null ? String(state.year) : T.ofPlan;
+      // Vòng tròn quay dần tới tỉ lệ hoàn thành
       const arc = prod.querySelector('[data-donut-arc]');
       const fill = pct == null ? 0 : Math.min(100, pct);
-      requestAnimationFrame(() => arc.setAttribute('stroke-dasharray', `${fill} ${100 - fill}`));
+      tween(1300, (e) => arc.setAttribute('stroke-dasharray', `${fill * e} ${100 - fill * e}`));
+      prod.querySelector('[data-donut]').classList.remove('pop');
+      void prod.querySelector('[data-donut]').offsetWidth; // khởi động lại hiệu ứng nảy
+      prod.querySelector('[data-donut]').classList.add('pop');
       prod.querySelector('[data-donut]').classList.toggle('is-over', pct != null && pct >= 100);
       prod.querySelector('[data-prod-note]').hidden = !planOnly;
       prod.querySelector('[data-year-tag]').textContent = state.year;
@@ -174,7 +209,16 @@
         if (tabs.dataset.tabs === 'plant') { state.plant = b.dataset.metric; renderPlant(); } else { state.year2 = b.dataset.metric; renderYears(); }
       });
     });
-    renderProgress(); renderTiles(); renderPlant(); renderYears();
+    // Chỉ vẽ khi người xem cuộn tới để thấy được hiệu ứng
+    const drawAll = () => { renderProgress(); renderTiles(); renderPlant(); renderYears(); };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((en) => en.isIntersecting)) { io.disconnect(); drawAll(); }
+      }, { threshold: 0.2 });
+      io.observe(prod);
+    } else {
+      drawAll();
+    }
   }
 
   // ---- Menu di động ----

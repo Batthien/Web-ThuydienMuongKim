@@ -628,7 +628,7 @@ main:focus { outline: none; }
 .donut svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .donut circle { fill: none; stroke-width: 12; }
 .donut__track { stroke: #f2b705; opacity: .9; }
-.donut__value { stroke: var(--brand-600); stroke-linecap: butt; transition: stroke-dasharray 1.2s var(--ease); }
+.donut__value { stroke: var(--brand-600); stroke-linecap: butt; }
 .donut.is-over .donut__track { stroke: var(--brand-600); }
 .donut__label { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
 .donut__label strong { font-size: 1.7rem; font-weight: 800; color: var(--brand-700); line-height: 1.1; }
@@ -662,8 +662,18 @@ main:focus { outline: none; }
 .prod-chart .axis { font-size: 12px; fill: var(--muted); font-family: var(--font); }
 .prod-chart .axis--x { font-size: 13px; font-weight: 600; fill: var(--text); }
 .prod-chart .val { font-size: 12px; font-weight: 600; fill: var(--ink); font-family: var(--font); }
-.prod-chart .bar { transition: y .9s var(--ease), height .9s var(--ease), opacity .2s; }
-.prod-chart .bar:hover { opacity: .8; }
+.prod-chart .bar { transition: filter .2s, opacity .2s; cursor: pointer; }
+.prod-chart .bar:hover { filter: brightness(1.12) drop-shadow(0 4px 8px rgba(6, 47, 60, .25)); }
+.prod-chart svg:hover .bar:not(:hover) { opacity: .55; }
+/* Lưới và trục hiện dần khi vẽ */
+.prod-chart .is-drawing .grid, .prod-chart .is-drawing .axis { animation: prodFade .6s ease both; }
+@keyframes prodFade { from { opacity: 0; } }
+/* Vòng tròn nảy nhẹ khi cập nhật */
+.donut.pop { animation: donutPop .7s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes donutPop { from { transform: scale(.85); opacity: .4; } }
+.donut__value { filter: drop-shadow(0 0 6px rgba(21, 110, 138, .35)); }
+.prod-tile { transition: transform .25s var(--ease), box-shadow .25s var(--ease); }
+.prod-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
 .bar--actual { fill: var(--brand-600); }
 .bar--plan { fill: #f2b705; }
 .prod-source { margin: 16px 0 0; font-size: .85rem; color: var(--muted); }
