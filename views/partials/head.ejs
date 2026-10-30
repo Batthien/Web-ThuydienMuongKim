@@ -56,12 +56,12 @@
       <a href="mailto:<%= settings.email %>"><%- icon('mail') %><span><%= settings.email %></span></a>
     </div>
     <div class="topbar__meta">
-      <span><%= t('footer.tax') %>: <%= settings.tax_code %></span>
+      <span class="topbar__tax"><%= t('footer.tax') %>: <%= settings.tax_code %></span>
       <nav class="lang-switch" aria-label="Language">
         <a href="/vi<%= lang === 'vi' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'vi' ? 'aria-current="true"' : '' %> hreflang="vi" lang="vi">VI</a>
         <a href="/en<%= lang === 'en' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'en' ? 'aria-current="true"' : '' %> hreflang="en" lang="en">EN</a>
       </nav>
-      <a class="topbar__login" href="<%= isLoggedIn ? '/admin' : '/admin/login' %>" rel="nofollow"><%- icon(isLoggedIn ? 'gauge' : 'users') %><%= isLoggedIn ? t('nav.admin') : t('nav.login') %></a>
+      <a class="topbar__login" href="<%= isLoggedIn ? '/admin' : '/admin/login' %>" rel="nofollow" aria-label="<%= isLoggedIn ? t('nav.admin') : t('nav.login') %>"><%- icon(isLoggedIn ? 'gauge' : 'users') %><span><%= isLoggedIn ? t('nav.admin') : t('nav.login') %></span></a>
     </div>
   </div>
 </div>
