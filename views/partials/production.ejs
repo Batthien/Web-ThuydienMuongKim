@@ -1,0 +1,103 @@
+<%#
+  Kết quả SXKD trên trang chủ. Dữ liệu lấy từ bảng production (CMS > Số liệu sản xuất);
+  biểu đồ SVG được vẽ bằng public/js/site.js, bảng số liệu ẩn dành cho trình đọc màn hình.
+%>
+<% if (production && production.length) {
+  const L = t('locale');
+  const rows = production.map((r) => ({
+    year: r.year, plant: (lang === 'en' && r.plant_en) || r.plant_vi,
+    op: r.output_plan, oa: r.output_actual, rp: r.revenue_plan, ra: r.revenue_actual,
+  }));
+  const years = [...new Set(rows.map((r) => r.year))].sort((a, b) => b - a);
+  // Năm mặc định: năm gần nhất đã có số liệu thực hiện
+  const defYear = years.find((y) => rows.some((r) => r.year === y && r.oa != null)) || years[0];
+  const fmt = (v, d = 2) => (v == null ? '—' : h.formatNumber(v, L, d));
+  const labels = {
+    output: t('prod.output'), revenue: t('prod.revenue'), actual: t('prod.actual'), plan: t('prod.plan'),
+    unitOutput: t('prod.unitOutput'), unitRevenue: t('prod.unitRevenue'), ofPlan: t('prod.ofPlan'),
+    planOnly: t('prod.planOnly'), planOnlyNote: t('prod.planOnlyNote'),
+  };
+%>
+<section class="section prod" id="ket-qua-sxkd" aria-labelledby="prod-title">
+  <div class="container">
+    <div class="section-head section-head--row reveal">
+      <div>
+        <p class="eyebrow"><%= t('prod.eyebrow') %></p>
+        <h2 class="section-title" id="prod-title"><%= t('prod.title') %></h2>
+        <p class="lead"><%= t('prod.lead') %></p>
+      </div>
+    </div>
+
+    <div class="prod-grid" data-prod data-locale="<%= L %>" data-year="<%= defYear %>">
+      <script type="application/json" data-prod-rows><%- JSON.stringify(rows).replace(/</g, '\\u003c') %></script>
+      <script type="application/json" data-prod-labels><%- JSON.stringify(labels).replace(/</g, '\\u003c') %></script>
+
+      <!-- 1. Tiến độ thực hiện kế hoạch -->
+      <article class="prod-card">
+        <header class="prod-card__head">
+          <h3><%= t('prod.progressTitle') %></h3>
+          <label class="prod-select"><span class="sr-only"><%= t('prod.year') %></span>
+            <select data-prod-year>
+              <% years.forEach((y) => { %><option value="<%= y %>" <%= y === defYear ? 'selected' : '' %>><%= y %></option><% }) %>
+            </select>
+          </label>
+        </header>
+        <div class="prod-progress">
+          <div class="donut" data-donut>
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="donut__track" cx="60" cy="60" r="50"/>
+              <circle class="donut__value" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="0 100" data-donut-arc/>
+            </svg>
+            <div class="donut__label"><strong data-donut-pct>—</strong><span data-donut-caption><%= t('prod.ofPlan') %></span></div>
+          </div>
+          <ul class="prod-legend">
+            <li><span class="dot dot--actual"></span><div><%= t('prod.actual') %>:<strong data-k="oa">—</strong><small><%= t('prod.unitOutput') %></small></div></li>
+            <li><span class="dot dot--plan"></span><div><%= t('prod.plan') %>:<strong data-k="op">—</strong><small><%= t('prod.unitOutput') %></small></div></li>
+          </ul>
+        </div>
+        <div class="prod-tiles">
+          <div class="prod-tile"><span><%= t('prod.totalOutput') %></span><strong data-k="tOut">—</strong><small><%= t('prod.unitOutput') %></small></div>
+          <div class="prod-tile"><span><%= t('prod.totalRevenue') %></span><strong data-k="tRev">—</strong><small><%= t('prod.unitRevenue') %></small></div>
+          <div class="prod-tile"><span><%= t('prod.outputRate') %></span><strong data-k="rOut">—</strong></div>
+          <div class="prod-tile"><span><%= t('prod.revenueRate') %></span><strong data-k="rRev">—</strong></div>
+        </div>
+        <p class="prod-note" data-prod-note hidden><%= t('prod.planOnlyNote') %></p>
+      </article>
+
+      <!-- 2. Theo nhà máy -->
+      <article class="prod-card">
+        <header class="prod-card__head">
+          <h3><%= t('prod.byPlantTitle') %> <span class="prod-year-tag" data-year-tag><%= defYear %></span></h3>
+        </header>
+        <div class="prod-tabs" role="tablist" data-tabs="plant">
+          <button type="button" role="tab" aria-selected="true" data-metric="output"><%= t('prod.output') %></button>
+          <button type="button" role="tab" aria-selected="false" data-metric="revenue"><%= t('prod.revenue') %></button>
+        </div>
+        <p class="prod-legend-inline"><span><span class="dot dot--actual"></span><%= t('prod.actual') %></span><span><span class="dot dot--plan"></span><%= t('prod.plan') %></span><small data-unit></small></p>
+        <div class="prod-chart" data-chart="plant"></div>
+      </article>
+
+      <!-- 3. Qua các năm -->
+      <article class="prod-card">
+        <header class="prod-card__head"><h3><%= t('prod.byYearTitle') %></h3></header>
+        <div class="prod-tabs" role="tablist" data-tabs="year">
+          <button type="button" role="tab" aria-selected="true" data-metric="output"><%= t('prod.output') %></button>
+          <button type="button" role="tab" aria-selected="false" data-metric="revenue"><%= t('prod.revenue') %></button>
+        </div>
+        <p class="prod-legend-inline"><span><span class="dot dot--actual"></span><%= t('prod.actual') %></span><span><span class="dot dot--plan"></span><%= t('prod.plan') %></span><small data-unit></small></p>
+        <div class="prod-chart" data-chart="year"></div>
+      </article>
+    </div>
+
+    <p class="prod-source"><%= t('prod.source') %></p>
+
+    <table class="sr-only">
+      <caption><%= t('prod.table') %></caption>
+      <thead><tr><th><%= t('prod.year') %></th><th><%= t('prod.plant') %></th><th><%= t('prod.output') %> – <%= t('prod.actual') %> (kWh)</th><th><%= t('prod.output') %> – <%= t('prod.plan') %> (kWh)</th><th><%= t('prod.revenue') %> – <%= t('prod.actual') %></th><th><%= t('prod.revenue') %> – <%= t('prod.plan') %></th></tr></thead>
+      <tbody>
+        <% rows.forEach((r) => { %><tr><td><%= r.year %></td><td><%= r.plant %></td><td><%= fmt(r.oa, 0) %></td><td><%= fmt(r.op, 0) %></td><td><%= fmt(r.ra) %></td><td><%= fmt(r.rp) %></td></tr><% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+<% } %>

@@ -51,7 +51,7 @@
           <% if (row.file) { %><p class="muted">Tệp hiện tại: <a href="/uploads/docs/<%= row.file %>" target="_blank" rel="noopener"><%= row.file %></a> (<%= h.formatBytes(row.file_size) %>) — chọn tệp mới để thay thế.</p><% } %>
           <input id="<%= f.name %>" name="file_upload" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip" <%- errors.file ? 'aria-invalid="true"' : '' %>>
         <% } else { %>
-          <input id="<%= f.name %>" name="<%= f.name %>" type="<%= f.type %>" value="<%= val(f.name) %>" <%- f.required ? 'required' : '' %> <%- errors[f.name] ? 'aria-invalid="true"' : '' %>>
+          <input id="<%= f.name %>" name="<%= f.name %>" type="<%= f.type %>" <%- f.type === 'number' ? 'step="any"' : '' %> value="<%= val(f.name) %>" <%- f.required ? 'required' : '' %> <%- errors[f.name] ? 'aria-invalid="true"' : '' %>>
         <% } %>
         <% if (f.help) { %><p class="field__hint"><%= f.help %></p><% } %>
         <%- err(f.name) %>

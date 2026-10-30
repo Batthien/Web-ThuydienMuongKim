@@ -70,6 +70,16 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 CREATE INDEX IF NOT EXISTS idx_posts_pub ON posts(status, published_at DESC);
 CREATE INDEX IF NOT EXISTS idx_docs_cat ON documents(category, year DESC);
+CREATE TABLE IF NOT EXISTS production (
+  id INTEGER PRIMARY KEY,
+  year INTEGER NOT NULL,
+  sort INTEGER NOT NULL DEFAULT 0,
+  plant_vi TEXT NOT NULL, plant_en TEXT NOT NULL DEFAULT '',
+  output_plan REAL, output_actual REAL,     -- kWh
+  revenue_plan REAL, revenue_actual REAL,   -- triệu đồng
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 `);
 
 // ---- Nâng cấp lược đồ (an toàn khi chạy lại) ----
@@ -129,6 +139,16 @@ function bootstrap() {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
     for (const p of seed.posts) {
       ins.run(p.slug, p.category, p.title_vi, p.title_en, p.excerpt_vi, p.excerpt_en, p.body_vi, p.body_en, p.cover, p.status || 'published', p.published_at);
+    }
+  }
+
+  const prodCount = db.prepare('SELECT COUNT(*) AS n FROM production').get().n;
+  if (prodCount === 0) {
+    const ins = db.prepare(`INSERT INTO production
+      (year, sort, plant_vi, plant_en, output_plan, output_actual, revenue_plan, revenue_actual)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+    for (const r of seed.production) {
+      ins.run(r.year, r.sort, r.plant_vi, r.plant_en, r.output_plan, r.output_actual ?? null, r.revenue_plan, r.revenue_actual ?? null);
     }
   }
 

@@ -35,6 +35,7 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
     ok(r.status === 200 && !/undefined|NaN|\[object Object\]/.test(body.replace(/<script[\s\S]*?<\/script>/g, '')), `${r.status} ${p}`);
   }
   ok((await req('/')).status === 302, 'Trang gốc chuyển hướng theo ngôn ngữ');
+  ok((await (await req('/vi')).text()).includes('id="ket-qua-sxkd"'), 'Trang chủ có biểu đồ kết quả SXKD');
   ok((await req('/vi/khong-ton-tai')).status === 404, '404 cho trang không tồn tại');
   ok((await req('/en/gioi-thieu')).status === 404, '404 khi dùng slug sai ngôn ngữ');
 
@@ -63,7 +64,7 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   csrf = csrfFrom(html);
   r = await req('/admin/login', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ _csrf: csrf, username: 'admin', password: 'smoke-test-password', next: '/admin' }) });
   ok(r.status === 302 && r.headers.get('location') === '/admin', 'Đăng nhập thành công');
-  for (const p of ['/admin', '/admin/posts', '/admin/posts/new', '/admin/posts/1/edit', '/admin/jobs', '/admin/jobs/new', '/admin/documents', '/admin/documents/new', '/admin/messages', '/admin/messages/1', '/admin/messages/2', '/admin/settings', '/admin/account']) {
+  for (const p of ['/admin', '/admin/posts', '/admin/posts/new', '/admin/posts/1/edit', '/admin/jobs', '/admin/jobs/new', '/admin/documents', '/admin/documents/new', '/admin/production', '/admin/production/new', '/admin/production/1/edit', '/admin/messages', '/admin/messages/1', '/admin/messages/2', '/admin/settings', '/admin/account']) {
     const res = await req(p);
     ok(res.status === 200, `${res.status} ${p}`);
   }
@@ -79,6 +80,14 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   r = await req('/admin/messages/2/attachment');
   ok(r.status === 200, 'Tải CV ứng viên');
   ok((await req('/uploads/cv/' + 'x.pdf')).status === 404, 'Thư mục CV không công khai');
+
+  html = await (await req('/admin/production/new')).text();
+  csrf = csrfFrom(html);
+  const pf = new FormData();
+  for (const [k, v] of Object.entries({ _csrf: csrf, year: '2026', plant_vi: 'Thủy điện Mường Kim', sort: '1', output_plan: '50 000 000', output_actual: '', revenue_plan: '70000,5', revenue_actual: '' })) pf.append(k, v);
+  r = await req('/admin/production', { method: 'POST', body: pf });
+  const saved = require('../src/db').db.prepare('SELECT * FROM production WHERE year = 2026').get();
+  ok(r.status === 302 && saved && saved.output_actual === null && saved.output_plan === 50000000 && saved.revenue_plan === 70000.5, 'Lưu số liệu sản xuất (ô trống = chưa có số liệu)');
 
   console.log('Tài khoản & phân quyền');
   ok((await (await req('/vi')).text()).includes('/admin'), 'Website có nút Quản trị khi đã đăng nhập');

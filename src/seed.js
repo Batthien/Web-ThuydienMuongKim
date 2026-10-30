@@ -171,4 +171,15 @@ const jobs = [
   },
 ];
 
-module.exports = { settings, posts, jobs };
+// Kết quả sản xuất kinh doanh — theo Báo cáo tổng kết SXKD 2024 & kế hoạch 2025 (số 01/BC-MK-TU-PL, 27/12/2024).
+// Sản lượng: kWh; doanh thu: triệu đồng. Năm 2025 mới có kế hoạch (điện thương phẩm).
+const production = [
+  { year: 2024, sort: 1, plant_vi: 'Thủy điện Mường Kim', plant_en: 'Muong Kim HPP', output_plan: 46649100, output_actual: 54974043, revenue_plan: 68669.693, revenue_actual: 71870.527 },
+  { year: 2024, sort: 2, plant_vi: 'Thủy điện Mường Kim II', plant_en: 'Muong Kim II HPP', output_plan: 38319742, output_actual: 42914183, revenue_plan: 56237.883, revenue_actual: 56254.914 },
+  { year: 2024, sort: 3, plant_vi: 'Thủy điện Phiêng Lúc', plant_en: 'Phieng Luc HPP', output_plan: 66676792, output_actual: 66924547, revenue_plan: 83262.789, revenue_actual: 80936.478 },
+  { year: 2025, sort: 1, plant_vi: 'Thủy điện Mường Kim', plant_en: 'Muong Kim HPP', output_plan: 51463611, revenue_plan: 73306 },
+  { year: 2025, sort: 2, plant_vi: 'Thủy điện Mường Kim II', plant_en: 'Muong Kim II HPP', output_plan: 40154708, revenue_plan: 58244 },
+  { year: 2025, sort: 3, plant_vi: 'Thủy điện Phiêng Lúc', plant_en: 'Phieng Luc HPP', output_plan: 67698004, revenue_plan: 79206 },
+];
+
+module.exports = { settings, posts, jobs, production };

@@ -16,6 +16,7 @@ const tvi = translator('vi');
 const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community'];
 const IR_CATEGORIES = ['disclosure', 'financial', 'annual', 'agm', 'governance'];
 const STATUS = [['published', 'Đăng công khai'], ['draft', 'Nháp (ẩn)']];
+const fmtNum = (v) => (v == null || v === '' ? '—' : new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 }).format(v));
 const today = () => new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
 
 router.use((req, res, next) => {
@@ -130,6 +131,25 @@ const RESOURCES = {
       { name: 'body', label: 'Chi tiết công việc', type: 'markdown', i18n: true },
     ],
   },
+  production: {
+    table: 'production', label: 'Số liệu sản xuất', singular: 'dòng số liệu', order: 'year DESC, sort, id',
+    upload: multer().none(),
+    columns: [
+      ['plant_vi', 'Nhà máy'], ['year', 'Năm'],
+      ['output_actual', 'SL thực hiện (kWh)', (v) => fmtNum(v)], ['output_plan', 'SL kế hoạch (kWh)', (v) => fmtNum(v)],
+      ['revenue_actual', 'DT thực hiện (tr.đ)', (v) => fmtNum(v)], ['revenue_plan', 'DT kế hoạch (tr.đ)', (v) => fmtNum(v)],
+    ],
+    publicUrl: () => '/vi#ket-qua-sxkd',
+    fields: [
+      { name: 'year', label: 'Năm', type: 'number', required: true },
+      { name: 'plant', label: 'Tên nhà máy', type: 'text', i18n: true, required: true },
+      { name: 'sort', label: 'Thứ tự hiển thị', type: 'number', help: 'Số nhỏ hiện trước.' },
+      { name: 'output_plan', label: 'Sản lượng kế hoạch (kWh)', type: 'number', help: 'Chỉ nhập số, ví dụ 46649100.' },
+      { name: 'output_actual', label: 'Sản lượng thực hiện (kWh)', type: 'number', help: 'Để trống nếu năm chưa kết thúc / chưa có số liệu.' },
+      { name: 'revenue_plan', label: 'Doanh thu kế hoạch (triệu đồng)', type: 'number', help: 'Ví dụ 68669.69 (dùng dấu chấm cho phần thập phân).' },
+      { name: 'revenue_actual', label: 'Doanh thu thực hiện (triệu đồng)', type: 'number', help: 'Để trống nếu chưa có số liệu.' },
+    ],
+  },
   documents: {
     table: 'documents', label: 'Tài liệu cổ đông', singular: 'tài liệu', order: 'published_at DESC, id DESC',
     upload: docUpload.single('file_upload'),
@@ -180,6 +200,12 @@ for (const [key, R] of Object.entries(RESOURCES)) {
     if (id && !existing) return next();
     const row = { ...(existing || {}) };
     for (const col of columnsOf(R)) row[col] = String(req.body[col] ?? '').trim();
+    // Ô số để trống -> NULL (chưa có số liệu); chấp nhận cả dấu phẩy thập phân
+    for (const f of R.fields) {
+      if (f.type !== 'number' || ['year', 'quantity'].includes(f.name)) continue;
+      const v = row[f.name].replace(/\s/g, '').replace(',', '.');
+      row[f.name] = v === '' || Number.isNaN(Number(v)) ? null : Number(v);
+    }
     const errors = {};
     for (const f of R.fields) {
       const col = f.i18n ? `${f.name}_vi` : f.name;

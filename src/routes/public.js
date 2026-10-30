@@ -77,7 +77,8 @@ function createRouter(lang) {
 
   router.get('/', (req, res) => {
     setPage(res, 'home', { title: t('home.title') });
-    res.render('home', { posts: q.latestPosts.all(3), docs: q.latestDocs.all(4), IR_CATEGORIES });
+    const production = db.prepare('SELECT year, sort, plant_vi, plant_en, output_plan, output_actual, revenue_plan, revenue_actual FROM production ORDER BY year, sort, id').all();
+    res.render('home', { posts: q.latestPosts.all(3), docs: q.latestDocs.all(4), IR_CATEGORIES, production });
   });
 
   const pages = {
