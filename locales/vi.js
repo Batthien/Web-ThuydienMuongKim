@@ -65,9 +65,9 @@ module.exports = {
     processText: 'Thế năng của dòng nước được chuyển hóa thành điện năng qua một chuỗi công trình khép kín — không phát thải trong quá trình sản xuất điện.',
     steps: [
       { title: 'Đập tràn', text: 'Đập tràn tự do kiểu Ophixerop dâng nước suối Nậm Mu, điều tiết dòng chảy.' },
-      { title: 'Cửa lấy nước', text: 'Nước từ hồ được dẫn qua cửa lấy nước vào tuyến năng lượng.' },
+      { title: 'Cửa nhận nước', text: 'Nước từ hồ được dẫn qua cửa nhận nước vào tuyến năng lượng.' },
       { title: 'Đường ống áp lực', text: 'Dòng nước tích lũy áp lực, dẫn xuống nhà máy đặt ở cao trình thấp hơn.' },
-      { title: 'Tua-bin Francis', text: '3 tổ máy Francis trục ngang chuyển năng lượng dòng nước thành cơ năng.' },
+      { title: 'Tuabin', text: '3 tổ máy Francis trục ngang chuyển năng lượng dòng nước thành cơ năng.' },
       { title: 'Máy phát & trạm biến áp', text: 'Máy phát tạo ra điện năng, trạm biến áp nâng điện áp để truyền tải.' },
       { title: 'Lưới điện quốc gia', text: 'Điện năng hòa lưới và bán cho Tập đoàn Điện lực Việt Nam (EVN).' },
     ],

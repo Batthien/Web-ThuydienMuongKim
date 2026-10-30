@@ -67,7 +67,7 @@ module.exports = {
       { title: 'Spillway dam', text: 'A free-overflow Ogee-profile spillway raises the Nam Mu stream and regulates the flow.' },
       { title: 'Intake', text: 'Water from the reservoir enters the waterway through the intake structure.' },
       { title: 'Penstock', text: 'Water builds pressure as it descends to the powerhouse at a lower elevation.' },
-      { title: 'Francis turbines', text: 'Three horizontal-axis Francis units convert the energy of water into mechanical power.' },
+      { title: 'Turbines', text: 'Three horizontal-axis Francis units convert the energy of water into mechanical power.' },
       { title: 'Generators & substation', text: 'Generators produce electricity; the substation steps up the voltage for transmission.' },
       { title: 'National grid', text: 'Power is delivered to the grid and sold to Vietnam Electricity (EVN).' },
     ],
