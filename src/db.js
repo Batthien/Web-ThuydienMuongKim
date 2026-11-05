@@ -70,6 +70,15 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 CREATE INDEX IF NOT EXISTS idx_posts_pub ON posts(status, published_at DESC);
 CREATE INDEX IF NOT EXISTS idx_docs_cat ON documents(category, year DESC);
+CREATE TABLE IF NOT EXISTS image_framing (
+  slot TEXT NOT NULL,
+  image TEXT NOT NULL,
+  x REAL NOT NULL DEFAULT 50,
+  y REAL NOT NULL DEFAULT 50,
+  zoom REAL NOT NULL DEFAULT 1,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (slot, image)
+);
 CREATE TABLE IF NOT EXISTS production (
   id INTEGER PRIMARY KEY,
   year INTEGER NOT NULL,

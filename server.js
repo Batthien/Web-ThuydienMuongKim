@@ -10,6 +10,7 @@ const h = require('./src/lib/helpers');
 const { csrfToken } = require('./src/lib/security');
 const { createRouter } = require('./src/routes/public');
 const adminRouter = require('./src/routes/admin');
+const framing = require('./src/lib/framing');
 const pkg = require('./package.json');
 
 const app = express();
@@ -62,6 +63,12 @@ app.use((req, res, next) => {
   res.locals.currentPath = req.path.replace(/\/$/, '') || '/';
   res.locals.assetVersion = ASSET_VERSION;
   res.locals.isLoggedIn = Boolean(req.session && req.session.userId);
+  // Chỉ Quản trị viên mới có công cụ căn chỉnh ảnh trên trang
+  res.locals.imageEditor = null;
+  if (res.locals.isLoggedIn) {
+    const user = db.prepare('SELECT role FROM users WHERE id = ?').get(req.session.userId);
+    if (user && user.role === 'admin') res.locals.imageEditor = { slots: framing.SLOTS, maxZoom: framing.MAX_ZOOM };
+  }
   res.locals.icon = (name, cls = '') => `<svg class="icon ${cls}" aria-hidden="true" focusable="false"><use href="#i-${name}"/></svg>`;
   next();
 });
@@ -96,6 +103,11 @@ app.get('/sitemap.xml', (req, res) => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${xml}
 </urlset>`);
+});
+
+app.get('/image-framing.css', (req, res) => {
+  res.set('Cache-Control', 'no-cache');
+  res.type('text/css').send(framing.buildCss());
 });
 
 app.get('/healthz', (req, res) => res.json({ ok: true }));

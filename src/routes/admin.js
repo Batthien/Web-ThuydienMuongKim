@@ -9,6 +9,7 @@ const { csrfToken, requireCsrf, requireAdmin } = require('../lib/security');
 const { dirs, docUpload, imageUpload, saveImage, removeFile } = require('../lib/uploads');
 const h = require('../lib/helpers');
 const mailer = require('../lib/mailer');
+const framing = require('../lib/framing');
 const { translator, url } = require('../i18n');
 
 const router = express.Router();
@@ -274,6 +275,14 @@ router.post('/upload-image', imageUpload.single('image'), requireCsrf, async (re
     const base = await saveImage(req.file.buffer, req.file.originalname);
     res.json({ url: `${base}-1280.webp` });
   } catch (e) { next(e); }
+});
+
+// Căn chỉnh ảnh trên trang (vị trí & độ phóng theo từng loại khung)
+router.post('/image-framing', express.json({ limit: '4kb' }), requireCsrf, (req, res) => {
+  const data = framing.parse(req.body || {});
+  if (!data) return res.status(400).json({ error: 'Dữ liệu không hợp lệ.' });
+  if (data.reset) framing.reset(data); else framing.save(data);
+  res.json({ ok: true });
 });
 
 // ================= Tin nhắn & hồ sơ =================

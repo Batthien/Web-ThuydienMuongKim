@@ -39,7 +39,7 @@
     };
     const schedule = () => {
       clearTimeout(timer);
-      if (!paused && !document.hidden) timer = setTimeout(async () => { await go(current + 1); schedule(); }, DELAY);
+      if (!paused && !document.hidden && !document.body.classList.contains('image-edit-mode')) timer = setTimeout(async () => { await go(current + 1); schedule(); }, DELAY);
     };
     const setPaused = (p) => {
       paused = p;
@@ -51,6 +51,7 @@
     toggleBtn.addEventListener('click', () => setPaused(!paused));
     dots.forEach((d) => d.addEventListener('click', () => { go(Number(d.dataset.slideGo)); schedule(); }));
     document.addEventListener('visibilitychange', schedule);
+    document.addEventListener('image-edit-change', schedule);
     setPaused(paused);
   }
 

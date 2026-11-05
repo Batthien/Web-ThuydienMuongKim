@@ -45,5 +45,9 @@
   </div>
 </footer>
 <script src="/js/site.js?v=<%= assetVersion %>" defer></script>
+<% if (locals.imageEditor) { %>
+<script src="/js/image-editor.js?v=<%= assetVersion %>" defer data-csrf="<%= csrf %>" data-endpoint="/admin/image-framing"
+  data-max-zoom="<%= imageEditor.maxZoom %>" data-slots="<%= JSON.stringify(imageEditor.slots) %>"></script>
+<% } %>
 </body>
 </html>

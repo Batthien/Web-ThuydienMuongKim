@@ -15,6 +15,7 @@ process.env.SMTP_HOST = '';
 const app = require('../server');
 const { db } = require('../src/db');
 const { ROUTES, url } = require('../src/i18n');
+const framing = require('../src/lib/framing');
 
 const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.webp|\/img\/[\w.-]+\.(?:png|webp|jpg)|\/favicon\.png/g;
 
@@ -50,6 +51,8 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
       .replace(/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" class="svg-sprite"[\s\S]*?<\/svg>/, '')
       .replace(/<script(?![^>]*application\/json)[^>]*>[\s\S]*?<\/script>/g, '') // giữ lại thẻ dữ liệu JSON của biểu đồ
       .replace(/ (?:srcset|sizes)="[^"]*"/g, '') // mỗi ảnh chỉ còn 1 nguồn để nhúng trực tiếp
+      // Đánh dấu ảnh để áp dụng căn chỉnh đã lưu (đường dẫn ảnh sẽ được thay bằng dữ liệu nhúng)
+      .replace(/<img ([^>]*?)src="([^"]+?)(-(?:640|1280|1920)\.webp)"/g, '<img $1data-k="$2" src="$2$3"')
       .replace(IMG_RE, (m) => tokenFor(m))
       .replace(/href="\/admin[^"]*"/g, 'href="#" data-preview-disabled')
       .replace(/href="(\/(?:vi|en)(?:\/[^"#?]*)?)(?:\?[^"#]*)?(#[^"]*)?"/g, (m, p) => `href="#${p}"`)
@@ -92,6 +95,7 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
 <style>${css}
+${framing.buildCss((image) => `img[data-k="${image}"]`)}
 .preview-badge { position: fixed; left: 12px; bottom: 12px; z-index: 300; background: #e4572e; color: #fff; font: 600 13px/1.3 var(--font); padding: 8px 14px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
 </style>
 </head>

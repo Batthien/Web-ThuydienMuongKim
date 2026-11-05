@@ -110,6 +110,23 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   ok((await (await req('/en')).text()).includes('Production &amp; business results'), 'Để trống thì dùng lại nội dung mặc định');
   ok((await (await req('/admin/settings')).text()).includes('value="5200823899"'), 'Các cấu hình khác không bị mất');
 
+  console.log('Căn chỉnh ảnh');
+  html = await (await req('/vi')).text();
+  ok(html.includes('/js/image-editor.js'), 'Quản trị viên có công cụ căn chỉnh ảnh');
+  const token = (html.match(/data-csrf="([^"]+)"/) || [])[1];
+  const framing = (body, t = token) => req('/admin/image-framing', { method: 'POST', headers: { 'content-type': 'application/json', 'x-csrf-token': t }, body: JSON.stringify(body) });
+  r = await framing({ slot: 'gallery', image: '/media/plant/plant-03', x: 20, y: 70, zoom: 1.5 });
+  ok(r.status === 200, 'Lưu căn chỉnh ảnh');
+  let css = await (await req('/image-framing.css')).text();
+  ok(css.includes('.mosaic__item img[src^="/media/plant/plant-03-"]') && css.includes('object-position: 20% 70%') && css.includes('scale(1.5)'), 'CSS áp dụng vị trí và độ phóng');
+  ok((await framing({ slot: 'gallery', image: '/media/x"}body{display:none', x: 1, y: 1, zoom: 1 })).status === 400, 'Từ chối đường dẫn ảnh không hợp lệ');
+  ok((await framing({ slot: 'gallery', image: '/media/plant/plant-03', x: 500, y: 1, zoom: 1 })).status === 400, 'Từ chối vị trí ngoài phạm vi');
+  ok((await framing({ slot: 'nope', image: '/media/plant/plant-03', x: 1, y: 1, zoom: 1 })).status === 400, 'Từ chối loại khung không hợp lệ');
+  ok((await framing({ slot: 'gallery', image: '/media/plant/plant-03', x: 1, y: 1, zoom: 1 }, 'sai')).status === 403, 'Chặn khi CSRF sai');
+  r = await framing({ slot: 'gallery', image: '/media/plant/plant-03', reset: true });
+  css = await (await req('/image-framing.css')).text();
+  ok(r.status === 200 && !css.includes('plant-03'), 'Đặt lại căn chỉnh ảnh');
+
   console.log('Tài khoản & phân quyền');
   ok((await (await req('/vi')).text()).includes('/admin'), 'Website có nút Quản trị khi đã đăng nhập');
   ok((await req('/admin/users')).status === 200, '200 /admin/users');
@@ -130,6 +147,10 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   ok(r.status === 302 && r.headers.get('location') === '/admin/posts', 'Biên tập viên đăng nhập → Tin tức');
   ok((await req('/admin/posts')).status === 200, 'Biên tập viên vào được Tin tức');
   ok((await req('/admin/posts/new')).status === 200, 'Biên tập viên tạo được bài viết');
+  html = await (await req('/vi')).text();
+  ok(!html.includes('/js/image-editor.js'), 'Biên tập viên không có công cụ căn chỉnh ảnh');
+  r = await req('/admin/image-framing', { method: 'POST', headers: { 'content-type': 'application/json', 'x-csrf-token': csrf }, body: JSON.stringify({ slot: 'gallery', image: '/media/plant/plant-03', x: 1, y: 1, zoom: 1 }) });
+  ok(r.status === 302 && !(await (await req('/image-framing.css')).text()).includes('plant-03'), 'Biên tập viên không lưu được căn chỉnh');
   for (const p of ['/admin', '/admin/messages', '/admin/documents', '/admin/settings', '/admin/users', '/admin/messages/2/attachment']) {
     const res = await req(p);
     ok(res.status === 302 && res.headers.get('location') === '/admin/posts', `Biên tập viên bị chặn ${p}`);
