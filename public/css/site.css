@@ -411,6 +411,9 @@ main:focus { outline: none; }
 .lightbox.is-open { opacity: 1; }
 .lightbox__figure { margin: 0; display: grid; place-items: center; min-height: 0; }
 .lightbox__img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+/* Ảnh trong bài viết: phóng theo bề rộng, kéo lên xuống nếu ảnh cao hơn màn hình */
+.lightbox--scroll .lightbox__figure { display: flex; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.lightbox--scroll .lightbox__img { display: block; flex: none; width: min(100%, 1100px); height: auto; max-height: none; margin: auto; }
 .lightbox__caption { color: #cfe1ea; text-align: center; padding: 12px; font-size: .95rem; }
 .lightbox button { position: absolute; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .12); color: #fff; cursor: pointer; transition: background-color .2s; }
 .lightbox button:hover { background: rgba(255, 255, 255, .25); }

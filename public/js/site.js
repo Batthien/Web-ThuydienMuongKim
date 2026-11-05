@@ -311,12 +311,13 @@
     const labels = {
       close: grid.dataset.labelClose || 'Close', prev: grid.dataset.labelPrev || 'Previous', next: grid.dataset.labelNext || 'Next',
     };
-    let box, img, cap, index = 0, links = [], lastFocus;
+    let box, img, figure, cap, index = 0, links = [], lastFocus;
     const icon = (n) => `<svg class="icon" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 
     const build = () => {
       box = document.createElement('div');
-      box.className = 'lightbox';
+      // Ảnh trong bài viết: hiện theo bề rộng màn hình, kéo lên xuống để xem hết ảnh
+      box.className = grid.hasAttribute('data-zoom-images') ? 'lightbox lightbox--scroll' : 'lightbox';
       box.setAttribute('role', 'dialog');
       box.setAttribute('aria-modal', 'true');
       box.innerHTML = `<figure class="lightbox__figure"><img class="lightbox__img" alt=""></figure>
@@ -325,6 +326,7 @@
         <button type="button" class="lightbox__prev" aria-label="${labels.prev}">${icon('chevron-left')}</button>
         <button type="button" class="lightbox__next" aria-label="${labels.next}">${icon('chevron-right')}</button>`;
       img = box.querySelector('img');
+      figure = box.querySelector('.lightbox__figure');
       cap = box.querySelector('.lightbox__caption');
       box.querySelector('.lightbox__close').addEventListener('click', close);
       box.querySelector('.lightbox__prev').addEventListener('click', () => show(index - 1));
@@ -334,6 +336,10 @@
         if (e.key === 'Escape') close();
         else if (e.key === 'ArrowLeft') show(index - 1);
         else if (e.key === 'ArrowRight') show(index + 1);
+        else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          figure.scrollBy({ top: e.key === 'ArrowDown' ? 120 : -120 });
+        }
         else if (e.key === 'Tab') {
           const f = [...box.querySelectorAll('button')];
           const i = f.indexOf(document.activeElement);
@@ -341,12 +347,14 @@
           else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
         }
       });
-      let x0 = null;
-      box.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+      let x0 = null, y0 = null;
+      box.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
       box.addEventListener('touchend', (e) => {
         if (x0 === null) return;
         const dx = e.changedTouches[0].clientX - x0;
-        if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+        const dy = e.changedTouches[0].clientY - y0;
+        // Vuốt ngang mới chuyển ảnh; vuốt dọc là để kéo xem ảnh
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) show(index + (dx < 0 ? 1 : -1));
         x0 = null;
       });
     };
@@ -355,6 +363,7 @@
       index = (i + links.length) % links.length;
       const a = links[index];
       img.src = a.href;
+      figure.scrollTop = 0;
       img.alt = a.querySelector('img')?.alt || '';
       cap.textContent = `${a.dataset.caption || ''} · ${index + 1}/${links.length}`;
     };
