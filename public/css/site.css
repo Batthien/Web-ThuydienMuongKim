@@ -200,6 +200,7 @@ main:focus { outline: none; }
 .section-head { max-width: 760px; margin-bottom: clamp(40px, 5vw, 64px); }
 .section-head--center { margin-inline: auto; text-align: center; }
 .section-head--center .eyebrow { justify-content: center; }
+.section-head--center .eyebrow::after { content: ""; width: 28px; height: 2px; background: linear-gradient(90deg, var(--brand-400), var(--accent)); border-radius: 2px; }
 .section-head--row { max-width: none; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
 .section-head--row > div { max-width: 720px; }
 .section-head .lead { margin: 0; }
@@ -243,7 +244,6 @@ main:focus { outline: none; }
 @keyframes flow { to { background-position: -20px 0; } }
 .flow__step { position: relative; }
 .flow__num { position: relative; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--brand-900); border: 2px solid var(--brand-400); color: #fff; font-weight: 800; margin-bottom: 20px; box-shadow: 0 0 0 8px var(--brand-950); }
-.flow__step:last-child .flow__num { background: var(--accent); border-color: var(--accent-soft); }
 .flow__step h3 { font-size: 1.08rem; margin-bottom: .4em; }
 .flow__step p { font-size: .92rem; color: #a9c4cf; margin: 0; }
 @media (max-width: 1024px) {
