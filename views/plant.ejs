@@ -103,10 +103,10 @@
       </div>
       <a class="link-arrow" href="<%= url('gallery') %>"><%= t('common.viewAll') %> <%- icon('arrow-right') %></a>
     </div>
-    <div class="gallery-grid" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
+    <div class="gallery-grid gallery-grid--masonry" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
       <% photos.forEach((p) => { %>
         <a class="gallery-grid__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-caption="<%= t('gallery.albums.' + p.album) %>">
-          <%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
+          <%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: '(min-width: 1024px) 400px, 50vw', width: 640 }) %>
           <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
         </a>
       <% }) %>

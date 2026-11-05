@@ -403,6 +403,8 @@ main:focus { outline: none; }
 .gallery-grid__item:hover .gallery-grid__zoom, .gallery-grid__item:focus-visible .gallery-grid__zoom { opacity: 1; transform: none; }
 .gallery-grid--masonry { grid-template-columns: repeat(3, 1fr); }
 .gallery-grid__item[hidden] { display: none; }
+/* Ảnh gian máy chụp dọc: lấy phần tổ máy ở nửa dưới ảnh */
+.gallery-grid__item img[src*="plant-08"] { object-position: center 78%; }
 @media (max-width: 900px) { .gallery-grid, .gallery-grid--masonry { grid-template-columns: repeat(2, 1fr); } }
 
 .lightbox { position: fixed; inset: 0; z-index: 200; display: grid; grid-template-rows: 1fr auto; background: rgba(4, 20, 26, .94); padding: 64px 16px 16px; opacity: 0; transition: opacity .25s; }

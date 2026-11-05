@@ -58,6 +58,53 @@
     "ratio": 1.7778
   },
   {
+    "album": "plant",
+    "src": "/media/plant/plant-05",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant",
+    "src": "/media/plant/plant-06",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant",
+    "src": "/media/plant/plant-07",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant",
+    "src": "/media/plant/plant-08",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 0.75
+  },
+  {
+    "album": "plant",
+    "src": "/media/plant/plant-09",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
     "album": "office",
     "src": "/media/office/office-01",
     "widths": [
