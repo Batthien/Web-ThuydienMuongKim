@@ -534,5 +534,63 @@
       640
     ],
     "ratio": 0.75
+  },
+  {
+    "album": "anniversary-post",
+    "src": "/media/anniversary-post/anniversary-post-01",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary-post",
+    "src": "/media/anniversary-post/anniversary-post-02",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 2.2222
+  },
+  {
+    "album": "anniversary-post",
+    "src": "/media/anniversary-post/anniversary-post-03",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "anniversary-post",
+    "src": "/media/anniversary-post/anniversary-post-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 2.2173
+  },
+  {
+    "album": "anniversary-post",
+    "src": "/media/anniversary-post/anniversary-post-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
+  },
+  {
+    "album": "anniversary-post",
+    "src": "/media/anniversary-post/anniversary-post-06",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7746
   }
 ]

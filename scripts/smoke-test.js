@@ -39,6 +39,10 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   ok((await req('/vi/khong-ton-tai')).status === 404, '404 cho trang không tồn tại');
   ok((await req('/en/gioi-thieu')).status === 404, '404 khi dùng slug sai ngôn ngữ');
 
+  const postHtml = await (await req('/vi/tin-tuc/ky-niem-10-nam-thanh-lap-cong-ty')).text();
+  ok(postHtml.includes('anniversary-post-01') && postHtml.includes('anniversary-post-06'), 'Bài kỷ niệm 10 năm có ảnh mới');
+  ok(!(await (await req('/vi/thu-vien')).text()).includes('anniversary-post'), 'Ảnh riêng của bài không vào Thư viện');
+
   console.log('Form liên hệ');
   let html = await (await req('/vi/lien-he')).text();
   let csrf = csrfFrom(html);

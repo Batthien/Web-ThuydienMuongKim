@@ -113,7 +113,7 @@ function createRouter(lang) {
     },
     gallery(req, res) {
       setPage(res, 'gallery', { title: t('gallery.title'), description: t('gallery.lead') });
-      res.render('gallery', { photos: h.gallery, ALBUMS });
+      res.render('gallery', { photos: h.gallery.filter((g) => ALBUMS.includes(g.album)), ALBUMS });
     },
     contact(req, res, extra = {}) {
       setPage(res, 'contact', { title: t('contact.title'), description: t('contact.lead') });

@@ -58,6 +58,26 @@ Trong khuôn khổ chương trình, Công ty đã trao cúp và cờ vinh danh c
 
 ![Trao cúp vinh danh 10 năm](/media/anniversary/anniversary-08-1280.webp)
 
+## Công trình kỷ niệm 10 năm thành lập
+
+Nhân dịp này, Công trình kỷ niệm 10 năm thành lập với bánh xe công tác tuabin được đặt trong khuôn viên nhà máy. Lãnh đạo Công ty, các đại biểu và cán bộ, công nhân viên đã chụp ảnh lưu niệm bên công trình.
+
+![Lãnh đạo Công ty bên công trình kỷ niệm 10 năm thành lập](/media/anniversary-post/anniversary-post-01-1280.webp)
+
+![Chụp ảnh lưu niệm bên bánh xe công tác tuabin](/media/anniversary-post/anniversary-post-02-1280.webp)
+
+![Các đại biểu bên công trình và bia kỷ niệm 10 năm thành lập](/media/anniversary-post/anniversary-post-03-1280.webp)
+
+## Những giây phút giao lưu
+
+Bên lề chương trình, các đại biểu và lãnh đạo Công ty đã có những giây phút trò chuyện, giao lưu thân mật.
+
+![Trò chuyện thân mật trong buổi tối giao lưu](/media/anniversary-post/anniversary-post-04-1280.webp)
+
+![Các đại biểu giao lưu, trò chuyện](/media/anniversary-post/anniversary-post-05-1280.webp)
+
+![Chụp ảnh lưu niệm tại Hầm rượu Mường Kim](/media/anniversary-post/anniversary-post-06-1280.webp)
+
 ## Hướng tới chặng đường mới
 
 Dấu mốc 10 năm là nền tảng để Công ty tiếp tục vận hành nhà máy an toàn, ổn định, hiệu quả và đóng góp nguồn năng lượng sạch cho hệ thống điện quốc gia.`,
@@ -72,6 +92,26 @@ The ceremony brought together the Board of Management, all employees, partners a
 During the programme, the Company presented trophies and banners to outstanding teams and individuals, and received congratulations from partner organisations.
 
 ![Trophy award ceremony](/media/anniversary/anniversary-08-1280.webp)
+
+## The 10th anniversary monument
+
+To mark the occasion, a monument featuring a turbine runner was placed on the plant grounds. Company leaders, guests and employees took commemorative photos beside it.
+
+![Company leaders beside the 10th anniversary monument](/media/anniversary-post/anniversary-post-01-1280.webp)
+
+![Commemorative photo beside the turbine runner](/media/anniversary-post/anniversary-post-02-1280.webp)
+
+![Guests beside the monument and the 10th anniversary plaque](/media/anniversary-post/anniversary-post-03-1280.webp)
+
+## Moments together
+
+Alongside the programme, guests and Company leaders shared friendly conversations.
+
+![Friendly conversation during the evening gathering](/media/anniversary-post/anniversary-post-04-1280.webp)
+
+![Guests talking together](/media/anniversary-post/anniversary-post-05-1280.webp)
+
+![Commemorative photo at the Muong Kim wine cellar](/media/anniversary-post/anniversary-post-06-1280.webp)
 
 ## Towards the next chapter
 
