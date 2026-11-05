@@ -592,5 +592,14 @@
       1920
     ],
     "ratio": 1.7746
+  },
+  {
+    "album": "travel-post",
+    "src": "/media/travel-post/travel-post-01",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
   }
 ]

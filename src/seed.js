@@ -181,10 +181,22 @@ The matches were lively and played in a spirit of friendship and solidarity.
     excerpt_en: 'A retreat to bring the team together and recharge after long operating shifts.',
     body_vi: `Công ty tổ chức chuyến tham quan, nghỉ dưỡng cho cán bộ, công nhân viên — dịp để mọi người nghỉ ngơi, gắn kết và tái tạo năng lượng.
 
-![Tập thể tại điểm tham quan](/media/travel/travel-02-1280.webp)`,
+![Tập thể tại điểm tham quan](/media/travel/travel-02-1280.webp)
+
+![Tập thể chụp ảnh lưu niệm tại khu đền ven biển](/media/travel/travel-01-1280.webp)
+
+![Lưu niệm bên bờ biển](/media/travel-post/travel-post-01-1280.webp)
+
+![Tập thể trước cổng VinWonders](/media/travel/travel-03-1280.webp)`,
     body_en: `The Company organised a retreat for its employees — a chance to rest, bond and recharge.
 
-![The team at the destination](/media/travel/travel-02-1280.webp)`,
+![The team at the destination](/media/travel/travel-02-1280.webp)
+
+![Group photo at the seaside temple](/media/travel/travel-01-1280.webp)
+
+![Keepsake photo by the sea](/media/travel-post/travel-post-01-1280.webp)
+
+![The team in front of the VinWonders gate](/media/travel/travel-03-1280.webp)`,
   },
 ];
 

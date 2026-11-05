@@ -615,6 +615,8 @@ main:focus { outline: none; }
 .zoomable:hover img { filter: brightness(1.05); }
 .prose .zoomable { margin: 2em 0; }
 .prose .zoomable img { margin: 0; }
+/* Ảnh tập thể du lịch: mọi người đứng ở phần dưới ảnh, căn khung xuống để không cắt mất hàng đầu */
+.prose img[src*="/media/travel"] { object-position: center 88%; }
 
 /* ---------- Kết quả sản xuất kinh doanh (trang chủ) ---------- */
 .prod { background: linear-gradient(180deg, var(--mist), #fff); }
