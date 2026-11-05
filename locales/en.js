@@ -35,7 +35,6 @@ module.exports = {
     totalOutput: 'Total output', totalRevenue: 'Total revenue',
     outputRate: 'Output plan achieved', revenueRate: 'Revenue plan achieved',
     unitOutput: 'million kWh', unitRevenue: 'VND billion',
-    source: 'Source: Company annual business report.',
     table: 'Data table', plant: 'Plant',
   },
   home: {

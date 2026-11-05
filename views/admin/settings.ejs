@@ -5,10 +5,14 @@
     <section class="panel">
       <div class="panel__head"><h2><%= title %></h2></div>
       <div class="grid-2">
-        <% fields.forEach(([k, label]) => { %>
+        <% fields.forEach(([k, label, type]) => { %>
           <div class="field">
             <label for="s-<%= k %>"><%= label %></label>
-            <input id="s-<%= k %>" name="<%= k %>" value="<%= s[k] || '' %>">
+            <% if (type === 'textarea') { %>
+              <textarea id="s-<%= k %>" name="<%= k %>" rows="3"><%= s[k] || '' %></textarea>
+            <% } else { %>
+              <input id="s-<%= k %>" name="<%= k %>" value="<%= s[k] || '' %>">
+            <% } %>
           </div>
         <% }) %>
       </div>

@@ -23,8 +23,8 @@
     <div class="section-head section-head--row reveal">
       <div>
         <p class="eyebrow"><%= t('prod.eyebrow') %></p>
-        <h2 class="section-title" id="prod-title"><%= t('prod.title') %></h2>
-        <p class="lead"><%= t('prod.lead') %></p>
+        <h2 class="section-title" id="prod-title"><%= settings['prod_title_' + lang] || t('prod.title') %></h2>
+        <p class="lead"><%= settings['prod_lead_' + lang] || t('prod.lead') %></p>
       </div>
     </div>
 
@@ -88,8 +88,6 @@
         <div class="prod-chart" data-chart="year"></div>
       </article>
     </div>
-
-    <p class="prod-source"><%= t('prod.source') %></p>
 
     <div class="sr-only">
     <table>

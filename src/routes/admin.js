@@ -326,6 +326,10 @@ const SETTING_GROUPS = [
     ['dam_vi', 'Kết cấu đập (Tiếng Việt)'], ['dam_en', 'Kết cấu đập (English)'],
     ['buyer_vi', 'Đơn vị mua điện (Tiếng Việt)'], ['buyer_en', 'Đơn vị mua điện (English)'],
   ]],
+  ['Mục biểu đồ trên trang chủ', [
+    ['prod_title_vi', 'Tiêu đề (Tiếng Việt)'], ['prod_title_en', 'Tiêu đề (English)'],
+    ['prod_lead_vi', 'Đoạn giới thiệu (Tiếng Việt)', 'textarea'], ['prod_lead_en', 'Đoạn giới thiệu (English)', 'textarea'],
+  ]],
 ];
 
 router.get('/settings', (req, res) => res.render('admin/settings', { groups: SETTING_GROUPS, s: getSettings() }));

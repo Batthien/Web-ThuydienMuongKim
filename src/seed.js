@@ -1,5 +1,8 @@
 // Dữ liệu khởi tạo. Mọi giá trị đều chỉnh được trong CMS (/admin) sau khi chạy lần đầu.
 
+const vi = require('../locales/vi');
+const en = require('../locales/en');
+
 const settings = {
   company_name_vi: 'Công ty cổ phần Thủy điện Mường Kim',
   company_name_en: 'Muong Kim Hydropower Joint Stock Company',
@@ -26,6 +29,11 @@ const settings = {
   buyer_vi: 'Tập đoàn Điện lực Việt Nam (EVN)',
   buyer_en: 'Vietnam Electricity (EVN)',
   facebook_url: '',
+  // Tiêu đề & giới thiệu mục biểu đồ trên trang chủ
+  prod_title_vi: vi.prod.title,
+  prod_title_en: en.prod.title,
+  prod_lead_vi: vi.prod.lead,
+  prod_lead_en: en.prod.lead,
 };
 
 const posts = [

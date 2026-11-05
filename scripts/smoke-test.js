@@ -89,6 +89,23 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   const saved = require('../src/db').db.prepare('SELECT * FROM production WHERE year = 2026').get();
   ok(r.status === 302 && saved && saved.output_actual === null && saved.output_plan === 50000000 && saved.revenue_plan === 70000.5, 'Lưu số liệu sản xuất (ô trống = chưa có số liệu)');
 
+  console.log('Tiêu đề mục biểu đồ');
+  html = await (await req('/vi')).text();
+  ok(!html.includes('prod-source') && !html.includes('Nguồn: Báo cáo'), 'Trang chủ không còn dòng nguồn');
+  html = await (await req('/admin/settings')).text();
+  ok(html.includes('name="prod_title_vi"') && html.includes('<textarea id="s-prod_lead_en"'), 'Cấu hình có ô tiêu đề và giới thiệu');
+  // Gửi lại toàn bộ giá trị hiện có, chỉ đổi tiêu đề & giới thiệu
+  const sf = new URLSearchParams();
+  for (const m of html.matchAll(/<input[^>]*name="([^"]+)"[^>]*value="([^"]*)"/g)) sf.set(m[1], m[2]);
+  sf.set('prod_title_vi', 'Tiêu đề thử <nghiệm>');
+  sf.set('prod_lead_vi', 'Giới thiệu thử nghiệm');
+  sf.set('prod_title_en', '');
+  r = await req('/admin/settings', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: sf });
+  html = await (await req('/vi')).text();
+  ok(r.status === 302 && html.includes('Tiêu đề thử &lt;nghiệm&gt;') && html.includes('Giới thiệu thử nghiệm'), 'Sửa tiêu đề và giới thiệu trong CMS, trang chủ cập nhật');
+  ok((await (await req('/en')).text()).includes('Production &amp; business results'), 'Để trống thì dùng lại nội dung mặc định');
+  ok((await (await req('/admin/settings')).text()).includes('value="5200823899"'), 'Các cấu hình khác không bị mất');
+
   console.log('Tài khoản & phân quyền');
   ok((await (await req('/vi')).text()).includes('/admin'), 'Website có nút Quản trị khi đã đăng nhập');
   ok((await req('/admin/users')).status === 200, '200 /admin/users');

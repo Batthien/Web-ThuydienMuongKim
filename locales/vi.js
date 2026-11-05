@@ -35,7 +35,6 @@ module.exports = {
     totalOutput: 'Tổng sản lượng', totalRevenue: 'Tổng doanh thu',
     outputRate: 'Hoàn thành KH sản lượng', revenueRate: 'Hoàn thành KH doanh thu',
     unitOutput: 'triệu kWh', unitRevenue: 'tỷ đồng',
-    source: 'Nguồn: Báo cáo tổng kết hoạt động SXKD của Công ty.',
     table: 'Bảng số liệu', plant: 'Nhà máy',
   },
   home: {

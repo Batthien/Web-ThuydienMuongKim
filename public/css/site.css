@@ -678,7 +678,6 @@ main:focus { outline: none; }
 .prod-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
 .bar--actual { fill: var(--brand-600); }
 .bar--plan { fill: #f2b705; }
-.prod-source { margin: 16px 0 0; font-size: .85rem; color: var(--muted); }
 
 /* Màn hình vừa: ẩn MST để thanh thông tin không bị xuống dòng */
 @media (max-width: 1100px) { .topbar__tax { display: none; } }
