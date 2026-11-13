@@ -144,7 +144,7 @@ main:focus { outline: none; }
   .brand__text > span { font-size: .92rem; }
 }
 /* Tên công ty một hàng: màn hình hẹp chỉ giữ logo */
-@media (max-width: 600px) { .brand__text { display: none; } }
+@media (max-width: 660px) { .brand__text { display: none; } }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; isolation: isolate; min-height: min(88vh, 860px); display: grid; align-items: center; color: #fff; overflow: hidden; padding-block: 120px 160px; }
@@ -724,3 +724,15 @@ main:focus { outline: none; }
 @keyframes wheelSpin { to { transform: rotate(360deg); } }
 /* Giữ chuyển động cả khi máy bật giảm chuyển động (theo yêu cầu thương hiệu; chuyển động chậm, nhỏ) */
 @media (prefers-reduced-motion: reduce) { .brand__logo .brand__wheel { animation-duration: 12s !important; animation-iteration-count: infinite !important; } }
+
+/* Tên công ty nổi bật hơn; menu và các nút bên phải gọn lại */
+.brand__text > span { font-size: 1.1rem; }
+@media (min-width: 1360px) {
+  .main-nav a { font-size: .85rem; min-height: 40px; padding: 0 8px; }
+  .main-nav a[aria-current="page"]::after { left: 8px; right: 8px; bottom: 4px; }
+}
+.header-cta { min-height: 38px; padding: .45em 1.1em; font-size: .85rem; }
+.header-tools .lang-switch a { min-width: 30px; min-height: 26px; font-size: .72rem; }
+.header-login { width: 34px; height: 34px; }
+.header-login .icon { width: 16px; height: 16px; }
+@media (max-width: 760px) { .brand__text > span { font-size: 1rem; } }
