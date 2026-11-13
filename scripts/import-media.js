@@ -67,6 +67,66 @@ async function processOg() {
     .toFile(path.join(dir, 'og-image.jpg'));
 }
 
+/**
+ * Tách logo thành 2 lớp để bánh xe công tác (cánh quạt bên trái) xoay được:
+ * logo-base.webp (logo đã xoá cánh quạt) và logo-wheel.png (cánh quạt, tâm ảnh = tâm xoay).
+ * Vị trí cánh quạt (% theo logo) ghi vào content/logo-wheel.json.
+ */
+async function processLogoWheel() {
+  const dir = path.join(ROOT, 'public', 'img');
+  const { data, info } = await sharp(path.join(dir, 'logo.png')).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const W = info.width, H = info.height;
+  const alpha = (x, y) => data[(y * W + x) * 4 + 3];
+  const rowFilled = (y) => { for (let x = 0; x < W; x++) if (alpha(x, y) > 40) return true; return false; };
+  // Dòng chữ "MUONG KIM HYDRO POWER" ở đáy; cánh quạt nằm phía trên, bên trái chữ MK
+  let y = H - 1;
+  while (y > 0 && !rowFilled(y)) y--;
+  while (y > 0 && rowFilled(y)) y--;
+  while (y > 0 && !rowFilled(y)) y--;
+  const top = y; // hàng cuối của phần phía trên dòng chữ
+  const colFilled = (x) => { for (let yy = 0; yy <= top; yy++) if (alpha(x, yy) > 40) return true; return false; };
+  let x0 = 0;
+  while (!colFilled(x0)) x0++;
+  let x1 = x0;
+  while (colFilled(x1)) x1++; // x1 = cột trống đầu tiên giữa cánh quạt và chữ M
+
+  // Tâm xoay = trọng tâm phần cánh quạt; bán kính = điểm xa nhất để không bị cắt khi xoay
+  let sx = 0, sy = 0, n = 0;
+  for (let yy = 0; yy <= top; yy++) for (let x = x0; x < x1; x++) {
+    const a = alpha(x, yy);
+    if (a > 40) { sx += x * a; sy += yy * a; n += a; }
+  }
+  const cx = sx / n, cy = sy / n;
+  let r = 0;
+  for (let yy = 0; yy <= top; yy++) for (let x = x0; x < x1; x++) {
+    if (alpha(x, yy) > 40) r = Math.max(r, Math.hypot(x - cx, yy - cy));
+  }
+  r = Math.ceil(r) + 1;
+
+  // Lớp cánh quạt: ảnh vuông 2r, tâm ảnh trùng tâm xoay
+  const side = r * 2;
+  const wheel = Buffer.alloc(side * side * 4);
+  const base = Buffer.from(data);
+  for (let yy = 0; yy <= top; yy++) for (let x = x0; x < x1; x++) {
+    const i = (yy * W + x) * 4;
+    const tx = Math.round(x - cx + r), ty = Math.round(yy - cy + r);
+    if (tx >= 0 && ty >= 0 && tx < side && ty < side) data.copy(wheel, (ty * side + tx) * 4, i, i + 4);
+    base[i + 3] = 0; // xoá cánh quạt khỏi lớp nền
+  }
+  await sharp(base, { raw: { width: W, height: H, channels: 4 } }).webp({ quality: 92 }).toFile(path.join(dir, 'logo-base.webp'));
+  await sharp(wheel, { raw: { width: side, height: side, channels: 4 } }).png({ compressionLevel: 9 }).toFile(path.join(dir, 'logo-wheel.png'));
+  const pct = (v, total) => +((v / total) * 100).toFixed(3);
+  const pos = { left: pct(cx - r, W), top: pct(cy - r, H), width: pct(side, W) };
+  fs.writeFileSync(path.join(ROOT, 'content', 'logo-wheel.json'), JSON.stringify(pos, null, 2));
+  return pos;
+}
+
+// Chỉ tạo lại các lớp logo:  node scripts/import-media.js --logo
+if (process.argv.includes('--logo')) {
+  processLogoWheel().then((p) => console.log('Logo:', p)).catch((e) => { console.error(e); process.exit(1); });
+  return;
+}
+
 (async () => {
   fs.rmSync(OUT, { recursive: true, force: true });
   const gallery = [];
@@ -77,6 +137,7 @@ async function processOg() {
     }
   }
   await processLogo();
+  await processLogoWheel();
   await processOg();
   fs.mkdirSync(path.join(ROOT, 'content'), { recursive: true });
   fs.writeFileSync(path.join(ROOT, 'content', 'gallery.json'), JSON.stringify(gallery, null, 2));

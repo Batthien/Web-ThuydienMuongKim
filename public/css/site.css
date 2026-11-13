@@ -107,7 +107,8 @@ main:focus { outline: none; }
 .site-header.is-scrolled { border-color: var(--line); box-shadow: 0 6px 24px -16px rgba(6, 47, 60, .4); }
 .site-header__inner { display: flex; align-items: center; gap: 24px; min-height: var(--header-h); }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
-.brand img { width: 92px; height: auto; }
+.brand__logo { position: relative; display: block; flex: none; width: 92px; }
+.brand__logo img { display: block; width: 100%; height: auto; }
 .brand__text { display: flex; flex-direction: column; line-height: 1.2; border-left: 1px solid var(--line); padding-left: 12px; }
 .brand__text > span { color: var(--brand-800); font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
 
@@ -139,7 +140,7 @@ main:focus { outline: none; }
   body.nav-open { overflow: hidden; }
 }
 @media (max-width: 760px) {
-  .brand img { width: 76px; }
+  .brand__logo { width: 76px; }
   .brand__text > span { font-size: .92rem; }
 }
 @media (max-width: 400px) { .brand__text { display: none; } }
@@ -714,3 +715,11 @@ main:focus { outline: none; }
 .site-header__inner { gap: 16px; }
 .brand__text > span, .main-nav a, .header-cta { white-space: nowrap; }
 @media (min-width: 1241px) { .main-nav a { padding: 0 11px; } }
+
+/* Header giãn hết bề rộng: logo và tên công ty sát lề trái */
+.site-header > .container { max-width: none; }
+/* Bánh xe công tác trong logo xoay chậm liên tục */
+.brand__logo .brand__wheel { position: absolute; max-width: none; height: auto; transform-origin: 50% 50%; animation: wheelSpin 12s linear infinite; }
+@keyframes wheelSpin { to { transform: rotate(360deg); } }
+/* Giữ chuyển động cả khi máy bật giảm chuyển động (theo yêu cầu thương hiệu; chuyển động chậm, nhỏ) */
+@media (prefers-reduced-motion: reduce) { .brand__logo .brand__wheel { animation-duration: 12s !important; animation-iteration-count: infinite !important; } }

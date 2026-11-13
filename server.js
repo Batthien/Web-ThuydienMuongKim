@@ -12,6 +12,7 @@ const { createRouter } = require('./src/routes/public');
 const adminRouter = require('./src/routes/admin');
 const framing = require('./src/lib/framing');
 const pkg = require('./package.json');
+const logoWheel = require('./content/logo-wheel.json');
 
 const app = express();
 const ASSET_VERSION = `${pkg.version}-${Date.now().toString(36)}`;
@@ -62,6 +63,7 @@ app.use((req, res, next) => {
   res.locals.siteUrl = config.siteUrl;
   res.locals.currentPath = req.path.replace(/\/$/, '') || '/';
   res.locals.assetVersion = ASSET_VERSION;
+  res.locals.logoWheel = logoWheel;
   res.locals.isLoggedIn = Boolean(req.session && req.session.userId);
   // Chỉ Quản trị viên mới có công cụ căn chỉnh ảnh trên trang
   res.locals.imageEditor = null;

@@ -53,7 +53,12 @@
 <header class="site-header" data-header>
   <div class="container site-header__inner">
     <a class="brand" href="<%= url('home') %>" aria-label="<%= companyName %> – <%= t('nav.home') %>">
-      <img src="/img/logo.webp" alt="<%= settings.short_name %>" width="520" height="242">
+      <span class="brand__logo">
+        <img src="/img/logo-base.webp" alt="<%= settings.short_name %>" width="520" height="235">
+        <%# Bánh xe công tác tách riêng để xoay; vị trí sinh từ scripts/import-media.js --logo %>
+        <img class="brand__wheel" src="/img/logo-wheel.png" alt="" aria-hidden="true"
+          style="left: <%= logoWheel.left %>%; top: <%= logoWheel.top %>%; width: <%= logoWheel.width %>%">
+      </span>
       <span class="brand__text">
         <span><%= lang === 'vi' ? 'Công ty cổ phần' : 'Muong Kim Hydropower' %></span>
         <span><%= lang === 'vi' ? 'Thủy điện Mường Kim' : 'Joint Stock Company' %></span>
