@@ -711,3 +711,9 @@ main:focus { outline: none; }
 .img-edit-actions button { min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font: 600 .88rem var(--font); cursor: pointer; }
 .img-edit-actions button:hover { border-color: var(--brand-400); }
 .img-edit-actions .is-primary { background: var(--brand-700); border-color: var(--brand-700); color: #fff; }
+
+/* Đầu trang chủ chỉ chạy ảnh: bỏ lớp phủ tối dùng cho chữ, chỉ giữ dải mờ dưới đáy cho nút điều khiển */
+.hero--bare { min-height: min(78vh, 760px); padding: 0; }
+.hero--bare .hero__media::after { background: linear-gradient(0deg, rgba(4, 31, 40, .45), transparent 30%); }
+.hero--bare .hero-controls { bottom: 24px; }
+@media (max-width: 640px) { .hero--bare { min-height: 0; aspect-ratio: 4 / 3; padding: 0; } .hero--bare .hero-controls { bottom: 16px; } }

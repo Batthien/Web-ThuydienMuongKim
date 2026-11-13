@@ -1,44 +1,9 @@
 <%- include('partials/head') %>
-<%
-  const L = t('locale');
-  const mw = h.formatNumber(settings.capacity_mw, L);
-  const output = h.formatNumber(Number(settings.annual_output_kwh) / 1e6, L, 2);
-%>
-<section class="hero">
+<% const L = t('locale'); %>
+<%# Đầu trang chủ chỉ chạy ảnh; tiêu đề giữ lại cho trình đọc màn hình và SEO %>
+<section class="hero hero--bare">
   <%- include('partials/hero-slides', { mediaCls: 'hero__media' }) %>
-  <div class="container hero__content">
-    <p class="eyebrow eyebrow--light"><%= t('home.eyebrow') %></p>
-    <h1 class="hero__title"><%= t('home.heroTitle') %></h1>
-    <p class="hero__lead"><%= t('home.heroLead', { mw, year: settings.year_operation }) %></p>
-    <div class="hero__actions">
-      <a class="btn btn--light btn--lg" href="<%= url('plant') %>"><span><%= t('home.ctaPlant') %></span><%- icon('arrow-right') %></a>
-      <a class="btn btn--ghost-light btn--lg" href="<%= url('ir') %>"><%= t('home.ctaIr') %></a>
-    </div>
-  </div>
-  <a class="hero__scroll" href="#stats"><span class="sr-only"><%= t('home.scroll') %></span><%- icon('arrow-down') %></a>
-</section>
-
-<section class="stats" id="stats" aria-label="<%= t('plant.specsTitle') %>">
-  <div class="container">
-    <dl class="stats__grid">
-      <div class="stat">
-        <dt><%= t('home.stats.capacity') %></dt>
-        <dd><span class="stat__num" data-count="<%= settings.capacity_mw %>" data-decimals="1" data-locale="<%= L %>"><%= mw %></span><span class="stat__unit">MW</span></dd>
-      </div>
-      <div class="stat">
-        <dt><%= t('home.stats.units') %></dt>
-        <dd><span class="stat__num" data-count="<%= settings.units %>" data-locale="<%= L %>"><%= settings.units %></span><span class="stat__unit"><%= t('common.units') %></span></dd>
-      </div>
-      <div class="stat">
-        <dt><%= t('home.stats.output') %></dt>
-        <dd><span class="stat__num" data-count="<%= (Number(settings.annual_output_kwh) / 1e6).toFixed(2) %>" data-decimals="2" data-locale="<%= L %>"><%= output %></span><span class="stat__unit"><%= t('common.mkwh') %></span></dd>
-      </div>
-      <div class="stat">
-        <dt><%= t('home.stats.since') %></dt>
-        <dd><span class="stat__num"><%= settings.year_operation %></span></dd>
-      </div>
-    </dl>
-  </div>
+  <h1 class="sr-only"><%= t('home.heroTitle') %></h1>
 </section>
 
 <section class="section about-intro">
