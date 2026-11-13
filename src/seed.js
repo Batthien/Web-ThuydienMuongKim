@@ -34,6 +34,19 @@ const settings = {
   prod_title_en: en.prod.title,
   prod_lead_vi: vi.prod.lead,
   prod_lead_en: en.prod.lead,
+  // Dải chữ chạy dưới ảnh đầu trang chủ — mỗi dòng một mục
+  ticker_vi: [
+    'Nhà máy Thủy điện Mường Kim',
+    'Nhà máy Thủy điện Mường Kim II',
+    'Nhà máy Thủy điện Phiêng Lúc',
+    'Nhà máy Thủy điện Hồ Bốn 2',
+  ].join('\n'),
+  ticker_en: [
+    'Muong Kim Hydropower Plant',
+    'Muong Kim II Hydropower Plant',
+    'Phieng Luc Hydropower Plant',
+    'Ho Bon 2 Hydropower Plant',
+  ].join('\n'),
 };
 
 const posts = [

@@ -339,6 +339,9 @@ const SETTING_GROUPS = [
     ['prod_title_vi', 'Tiêu đề (Tiếng Việt)'], ['prod_title_en', 'Tiêu đề (English)'],
     ['prod_lead_vi', 'Đoạn giới thiệu (Tiếng Việt)', 'textarea'], ['prod_lead_en', 'Đoạn giới thiệu (English)', 'textarea'],
   ]],
+  ['Dải chữ chạy dưới ảnh trang chủ', [
+    ['ticker_vi', 'Nội dung (Tiếng Việt) — mỗi dòng một mục', 'textarea'], ['ticker_en', 'Nội dung (English) — mỗi dòng một mục', 'textarea'],
+  ]],
 ];
 
 router.get('/settings', (req, res) => res.render('admin/settings', { groups: SETTING_GROUPS, s: getSettings() }));

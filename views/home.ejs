@@ -6,6 +6,22 @@
   <h1 class="sr-only"><%= t('home.heroTitle') %></h1>
 </section>
 
+<%# Dải chữ chạy: nội dung sửa trong Quản trị → Cấu hình %>
+<% const tickerItems = String(settings['ticker_' + lang] || settings.ticker_vi || '').split(/\r?\n/).map((x) => x.trim()).filter(Boolean); %>
+<% if (tickerItems.length) { %>
+<section class="ticker" aria-label="<%= lang === 'en' ? 'Our power plants' : 'Các nhà máy' %>">
+  <div class="ticker__track">
+    <% for (let copy = 0; copy < 2; copy++) { %>
+    <ul class="ticker__list"<%- copy ? ' aria-hidden="true"' : '' %>>
+      <% for (let r = 0; r < 2; r++) for (const item of tickerItems) { %>
+      <li class="ticker__item"><span class="ticker__dot" aria-hidden="true"></span><%= item %></li>
+      <% } %>
+    </ul>
+    <% } %>
+  </div>
+</section>
+<% } %>
+
 <section class="section about-intro">
   <div class="container split">
     <div class="split__media collage reveal">
