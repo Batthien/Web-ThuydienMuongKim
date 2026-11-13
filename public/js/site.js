@@ -240,7 +240,7 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && document.body.classList.contains('nav-open')) { setOpen(false); toggle.focus(); }
     });
-    window.matchMedia('(min-width: 1141px)').addEventListener('change', (e) => e.matches && setOpen(false));
+    window.matchMedia('(min-width: 1241px)').addEventListener('change', (e) => e.matches && setOpen(false));
   }
 
   // ---- Hiện dần khi cuộn ----

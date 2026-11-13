@@ -50,23 +50,6 @@
 <%- include('sprite') %>
 <a class="skip-link" href="#main"><%= t('skip') %></a>
 
-<div class="topbar">
-  <div class="container topbar__inner">
-    <div class="topbar__contact">
-      <a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%- icon('phone') %><span><%= settings.phone %></span></a>
-      <a href="mailto:<%= settings.email %>"><%- icon('mail') %><span><%= settings.email %></span></a>
-    </div>
-    <div class="topbar__meta">
-      <span class="topbar__tax"><%= t('footer.tax') %>: <%= settings.tax_code %></span>
-      <nav class="lang-switch" aria-label="Language">
-        <a href="/vi<%= lang === 'vi' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'vi' ? 'aria-current="true"' : '' %> hreflang="vi" lang="vi">VI</a>
-        <a href="/en<%= lang === 'en' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'en' ? 'aria-current="true"' : '' %> hreflang="en" lang="en">EN</a>
-      </nav>
-      <a class="topbar__login" href="<%= isLoggedIn ? '/admin' : '/admin/login' %>" rel="nofollow" aria-label="<%= isLoggedIn ? t('nav.admin') : t('nav.login') %>"><%- icon(isLoggedIn ? 'gauge' : 'users') %><span><%= isLoggedIn ? t('nav.admin') : t('nav.login') %></span></a>
-    </div>
-  </div>
-</div>
-
 <header class="site-header" data-header>
   <div class="container site-header__inner">
     <a class="brand" href="<%= url('home') %>" aria-label="<%= companyName %> – <%= t('nav.home') %>">
@@ -88,6 +71,13 @@
         <a class="main-nav__lang" href="<%= isLoggedIn ? '/admin' : '/admin/login' %>" rel="nofollow"><%- icon(isLoggedIn ? 'gauge' : 'users') %><%= isLoggedIn ? t('nav.admin') : t('nav.login') %></a>
       </div>
     </nav>
+    <div class="header-tools">
+      <nav class="lang-switch" aria-label="Language">
+        <a href="/vi<%= lang === 'vi' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'vi' ? 'aria-current="true"' : '' %> hreflang="vi" lang="vi">VI</a>
+        <a href="/en<%= lang === 'en' ? currentPath.slice(3) : altUrl.slice(3) %>" <%- lang === 'en' ? 'aria-current="true"' : '' %> hreflang="en" lang="en">EN</a>
+      </nav>
+      <a class="header-login" href="<%= isLoggedIn ? '/admin' : '/admin/login' %>" rel="nofollow" aria-label="<%= isLoggedIn ? t('nav.admin') : t('nav.login') %>" title="<%= isLoggedIn ? t('nav.admin') : t('nav.login') %>"><%- icon(isLoggedIn ? 'gauge' : 'users') %></a>
+    </div>
     <a class="btn btn--primary header-cta" href="<%= url('contact') %>" <%- page.key === 'contact' ? 'aria-current="page"' : '' %>><%= t('nav.contact') %></a>
     <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" data-nav-toggle
       data-label-open="<%= t('nav.menu') %>" data-label-close="<%= t('nav.close') %>">
