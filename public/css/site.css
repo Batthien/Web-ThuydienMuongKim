@@ -109,8 +109,8 @@ main:focus { outline: none; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
 .brand__logo { position: relative; display: block; flex: none; width: 92px; }
 .brand__logo img { display: block; width: 100%; height: auto; }
-.brand__text { display: flex; flex-direction: column; line-height: 1.2; border-left: 1px solid var(--line); padding-left: 12px; }
-.brand__text > span { color: var(--brand-800); font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+.brand__text { display: flex; flex-direction: row; gap: .3em; white-space: nowrap; line-height: 1.2; border-left: 1px solid var(--line); padding-left: 12px; }
+.brand__text > span { color: var(--brand-800); font-size: .95rem; font-weight: 800; letter-spacing: -.01em; }
 
 .main-nav ul { display: flex; gap: 4px; }
 .main-nav a { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; color: var(--ink); font-weight: 500; font-size: .95rem; text-decoration: none; border-radius: 999px; transition: color .2s, background-color .2s; }
@@ -123,7 +123,7 @@ main:focus { outline: none; }
 .nav-toggle .icon-close, .nav-open .nav-toggle .icon-open { display: none; }
 .nav-open .nav-toggle .icon-close { display: block; }
 
-@media (max-width: 1240px) {
+@media (max-width: 1359px) {
   .nav-toggle { display: grid; }
   .header-cta { display: none; }
   .main-nav {
@@ -143,7 +143,8 @@ main:focus { outline: none; }
   .brand__logo { width: 76px; }
   .brand__text > span { font-size: .92rem; }
 }
-@media (max-width: 400px) { .brand__text { display: none; } }
+/* Tên công ty một hàng: màn hình hẹp chỉ giữ logo */
+@media (max-width: 600px) { .brand__text { display: none; } }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; isolation: isolate; min-height: min(88vh, 860px); display: grid; align-items: center; color: #fff; overflow: hidden; padding-block: 120px 160px; }
@@ -566,7 +567,7 @@ main:focus { outline: none; }
   .hero__scroll { display: none; }
   .hero__actions .btn { flex: 1 1 100%; }
 }
-@media (max-width: 1240px) {
+@media (max-width: 1359px) {
   .main-nav__extra .btn { border-radius: 999px; padding: 0 24px; justify-content: center; font-size: 1rem; }
   .main-nav__extra .btn--primary, .main-nav__extra .btn--primary:hover { color: #fff; background: var(--brand-700); }
 }
@@ -709,12 +710,12 @@ main:focus { outline: none; }
 .header-login { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); color: var(--brand-700); background: #fff; transition: background-color .2s, color .2s, border-color .2s; }
 .header-login:hover { background: var(--brand-700); border-color: var(--brand-700); color: #fff; }
 .header-login .icon { width: 18px; height: 18px; }
-@media (max-width: 1240px) { .header-login { display: none; } }
+@media (max-width: 1359px) { .header-login { display: none; } }
 
 /* Header không xuống dòng; thiếu chỗ thì chuyển sang menu ☰ */
-.site-header__inner { gap: 16px; }
+.site-header__inner { gap: 12px; }
 .brand__text > span, .main-nav a, .header-cta { white-space: nowrap; }
-@media (min-width: 1241px) { .main-nav a { padding: 0 11px; } }
+@media (min-width: 1360px) { .main-nav a { padding: 0 9px; } }
 
 /* Header giãn hết bề rộng: logo và tên công ty sát lề trái */
 .site-header > .container { max-width: none; }
