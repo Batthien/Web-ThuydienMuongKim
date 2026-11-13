@@ -1,0 +1,34 @@
+<%# Tin nổi bật theo từng mục: ô lớn + các ô nhỏ xếp chồng, trong mỗi ô tin tự chuyển lần lượt %>
+<% if (spotlight.length) { %>
+<section class="section spotlight" aria-labelledby="spotlight-title">
+  <div class="container">
+    <h2 class="sr-only" id="spotlight-title"><%= lang === 'en' ? 'Highlights' : 'Tin nổi bật' %></h2>
+    <div class="spotlight__grid">
+      <% spotlight.forEach((tile, ti) => { %>
+      <article class="spot spot--<%= tile.key %> reveal" data-spot style="--i:<%= ti %>">
+        <a class="spot__label" href="<%= tile.href %>"><%= tile.label %></a>
+        <div class="spot__slides">
+          <% tile.items.forEach((it, i) => { %>
+          <a class="spot__slide<%= i === 0 ? ' is-active' : '' %>" href="<%= it.href %>"<%- it.external ? ' target="_blank" rel="noopener"' : '' %><%- i === 0 ? '' : ' tabindex="-1" aria-hidden="true"' %> data-spot-slide>
+            <span class="spot__media"><%- h.img(it.image, '', { sizes: ti === 0 ? '(min-width: 1024px) 760px, 100vw' : '(min-width: 1024px) 420px, 100vw', width: 1280 }) %></span>
+            <span class="spot__body">
+              <span class="spot__meta"><%- icon(it.icon) %><%= it.meta %></span>
+              <span class="spot__title"><%= it.title %></span>
+              <span class="spot__more"><%= t('common.readMore') %> <%- icon('arrow-right') %></span>
+            </span>
+          </a>
+          <% }) %>
+        </div>
+        <% if (tile.items.length > 1) { %>
+        <div class="spot__dots">
+          <% tile.items.forEach((it, i) => { %>
+          <button type="button" class="spot__dot" data-spot-go="<%= i %>"<%- i === 0 ? ' aria-current="true"' : '' %> aria-label="<%= tile.label %>: <%= it.title %>"></button>
+          <% }) %>
+        </div>
+        <% } %>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>

@@ -222,6 +222,44 @@
     }
   }
 
+  // ---- Tin nổi bật theo mục: mỗi ô tự chuyển tin, các ô lệch nhịp nhau ----
+  document.querySelectorAll('[data-spot]').forEach((tile, index) => {
+    const slides = [...tile.querySelectorAll('[data-spot-slide]')];
+    const dots = [...tile.querySelectorAll('[data-spot-go]')];
+    if (slides.length < 2) return;
+    const DELAY = 5000;
+    let current = 0;
+    let timer = null;
+    let hold = false;
+    const go = (n) => {
+      const next = (n + slides.length) % slides.length;
+      if (next === current) return;
+      const img = slides[next].querySelector('img');
+      if (img) img.loading = 'eager';
+      [[slides[current], false], [slides[next], true]].forEach(([s, on]) => {
+        s.classList.toggle('is-active', on);
+        if (on) { s.removeAttribute('tabindex'); s.removeAttribute('aria-hidden'); } else { s.tabIndex = -1; s.setAttribute('aria-hidden', 'true'); }
+      });
+      dots[current]?.removeAttribute('aria-current');
+      dots[next]?.setAttribute('aria-current', 'true');
+      current = next;
+    };
+    const schedule = (wait = DELAY) => {
+      clearTimeout(timer);
+      if (!hold && !document.hidden && !document.body.classList.contains('image-edit-mode')) timer = setTimeout(() => { go(current + 1); schedule(); }, wait);
+    };
+    // Tải trước ảnh kế tiếp khi trang đã tải xong
+    window.addEventListener('load', () => { const img = slides[1].querySelector('img'); if (img) img.loading = 'eager'; }, { once: true });
+    tile.addEventListener('mouseenter', () => { hold = true; clearTimeout(timer); });
+    tile.addEventListener('mouseleave', () => { hold = false; schedule(); });
+    tile.addEventListener('focusin', () => { hold = true; clearTimeout(timer); });
+    tile.addEventListener('focusout', () => { hold = false; schedule(); });
+    dots.forEach((d) => d.addEventListener('click', () => go(Number(d.dataset.spotGo))));
+    document.addEventListener('visibilitychange', () => schedule());
+    document.addEventListener('image-edit-change', () => schedule());
+    schedule(DELAY + index * 900);
+  });
+
   // ---- Menu di động ----
   const toggle = document.querySelector('[data-nav-toggle]');
   const nav = document.getElementById('main-nav');

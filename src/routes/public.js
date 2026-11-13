@@ -7,6 +7,7 @@ const h = require('../lib/helpers');
 const { csrfToken, requireCsrf } = require('../lib/security');
 const { cvUpload, dirs, removeFile } = require('../lib/uploads');
 const mailer = require('../lib/mailer');
+const spotlight = require('../lib/spotlight');
 
 const NEWS_PER_PAGE = 9;
 const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community'];
@@ -78,7 +79,9 @@ function createRouter(lang) {
   router.get('/', (req, res) => {
     setPage(res, 'home', { title: t('home.title') });
     const production = db.prepare('SELECT year, sort, plant_vi, plant_en, output_plan, output_actual, revenue_plan, revenue_actual FROM production ORDER BY year, sort, id').all();
-    res.render('home', { posts: q.latestPosts.all(3), docs: q.latestDocs.all(4), IR_CATEGORIES, production });
+    const docs = q.latestDocs.all(4);
+    const tiles = spotlight.build({ t, url: res.locals.url, loc: res.locals.loc, posts: q.latestPosts.all(5), docs, jobs: q.jobs.all().slice(0, 4), IR_CATEGORIES });
+    res.render('home', { docs, IR_CATEGORIES, production, spotlight: tiles });
   });
 
   const pages = {

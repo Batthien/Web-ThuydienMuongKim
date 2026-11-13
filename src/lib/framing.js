@@ -4,6 +4,7 @@ const { db } = require('../db');
 const SLOTS = {
   hero: ['.hero-slides'],
   card: ['.news-card__media'],
+  spot: ['.spot__media'],
   gallery: ['.gallery-grid__item', '.mosaic__item', '.mini-grid figure'],
   article: ['.article__cover', '.prose'],
   feature: ['.collage__main', '.collage__sub', '.rounded-media'],
