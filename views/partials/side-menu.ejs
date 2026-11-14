@@ -4,8 +4,8 @@
   ir: ['disclosure', 'financial', 'annual', 'agm', 'governance'].map((c) => [t('ir.categories.' + c), url('ir') + '?cat=' + c]),
   news: ['company', 'operation', 'safety', 'community'].map((c) => [t('news.categories.' + c), url('news') + '?cat=' + c]),
 }; %>
-<button class="side-menu-btn" type="button" aria-haspopup="dialog" aria-controls="side-menu" aria-expanded="false" data-side-open>
-  <%- icon('menu') %><span><%= lang === 'en' ? 'Menu' : 'Danh mục' %></span>
+<button class="side-menu-btn" type="button" aria-haspopup="dialog" aria-controls="side-menu" aria-expanded="false" data-side-open title="<%= lang === 'en' ? 'Menu' : 'Danh mục' %>">
+  <%- icon('menu') %><span class="sr-only"><%= lang === 'en' ? 'Menu' : 'Danh mục' %></span>
 </button>
 <dialog class="side-menu" id="side-menu" aria-labelledby="side-menu-title">
   <div class="side-menu__head">

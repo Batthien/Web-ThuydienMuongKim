@@ -806,10 +806,10 @@ body.image-edit-mode .spot__media::after { pointer-events: none; }
 .side-menu-btn { display: none; }
 @media (min-width: 1360px) {
   .side-menu-btn { position: fixed; z-index: 40; left: 24px; top: calc(var(--header-h) + 24px);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 68px; height: 68px; padding: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; width: 56px; height: 56px; padding: 0;
     border: 0; border-radius: 16px; background: var(--brand-800, #0a4a5c); color: #fff; cursor: pointer; font: inherit; font-size: .66rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
     box-shadow: 0 12px 28px -12px rgba(6, 47, 60, .6); transition: transform .25s, background .2s; }
-  .side-menu-btn .icon { width: 24px; height: 24px; }
+  .side-menu-btn .icon { width: 26px; height: 26px; }
   .side-menu-btn:hover { background: var(--brand-700); transform: translateY(-2px); }
   .side-menu-btn:focus-visible { outline: 3px solid var(--accent-soft, #7fd3a8); outline-offset: 3px; }
 }
