@@ -260,6 +260,42 @@
     schedule(DELAY + index * 900);
   });
 
+  // ---- Nút menu nổi bên trái + ngăn kéo danh mục ----
+  const sideBtn = document.querySelector('[data-side-open]');
+  const sideMenu = document.getElementById('side-menu');
+  if (sideBtn && sideMenu && typeof sideMenu.showModal === 'function') {
+    const close = () => sideMenu.close();
+    sideBtn.addEventListener('click', () => {
+      sideMenu.showModal();
+      document.body.classList.add('side-open');
+      sideBtn.setAttribute('aria-expanded', 'true');
+    });
+    sideMenu.addEventListener('close', () => {
+      document.body.classList.remove('side-open');
+      sideBtn.setAttribute('aria-expanded', 'false');
+      sideBtn.focus();
+    });
+    sideMenu.querySelector('[data-side-close]')?.addEventListener('click', close);
+    // Bấm ra ngoài ngăn kéo (vùng nền mờ) để đóng
+    sideMenu.addEventListener('click', (e) => {
+      const r = sideMenu.getBoundingClientRect();
+      if (e.clientX > r.right || e.clientX < r.left || e.clientY < r.top || e.clientY > r.bottom) close();
+    });
+    // Trang chủ: nút nằm ngay dưới dải chữ chạy, cuộn lên tới dưới header thì dừng lại
+    const anchor = document.querySelector('.ticker') || document.querySelector('.hero');
+    if (anchor) {
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const min = document.querySelector('.site-header')?.getBoundingClientRect().bottom || 76;
+        sideBtn.style.top = `${Math.max(min + 24, anchor.getBoundingClientRect().bottom + 24)}px`;
+      };
+      window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    }
+  }
+
   // ---- Menu di động ----
   const toggle = document.querySelector('[data-nav-toggle]');
   const nav = document.getElementById('main-nav');

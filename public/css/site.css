@@ -801,3 +801,40 @@ main:focus { outline: none; }
 }
 @media (prefers-reduced-motion: reduce) { .spot__slide { transition-duration: .3s !important; } .spot__media img { transition: none !important; transform: none !important; } }
 body.image-edit-mode .spot__media::after { pointer-events: none; }
+
+/* ---- Nút menu nổi bên trái + ngăn kéo danh mục ---- */
+.side-menu-btn { display: none; }
+@media (min-width: 1360px) {
+  .side-menu-btn { position: fixed; z-index: 40; left: 24px; top: calc(var(--header-h) + 24px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 68px; height: 68px; padding: 0;
+    border: 0; border-radius: 16px; background: var(--brand-800, #0a4a5c); color: #fff; cursor: pointer; font: inherit; font-size: .66rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    box-shadow: 0 12px 28px -12px rgba(6, 47, 60, .6); transition: transform .25s, background .2s; }
+  .side-menu-btn .icon { width: 24px; height: 24px; }
+  .side-menu-btn:hover { background: var(--brand-700); transform: translateY(-2px); }
+  .side-menu-btn:focus-visible { outline: 3px solid var(--accent-soft, #7fd3a8); outline-offset: 3px; }
+}
+.side-menu { position: fixed; inset: 0 auto 0 0; width: min(360px, 88vw); max-width: none; height: 100%; max-height: none; margin: 0; padding: 0; border: 0;
+  background: #fff; color: var(--ink, #10262e); box-shadow: 20px 0 50px -20px rgba(6, 47, 60, .5); display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; }
+.side-menu:not([open]) { display: none; }
+.side-menu[open] { animation: sideIn .3s ease both; }
+.side-menu::backdrop { background: rgba(4, 30, 38, .5); backdrop-filter: blur(2px); }
+@keyframes sideIn { from { transform: translateX(-100%); } }
+.side-menu__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 20px 16px 24px; background: var(--brand-800, #0a4a5c); color: #fff; position: sticky; top: 0; z-index: 1; }
+.side-menu__title { margin: 0; font-weight: 700; font-size: 1.05rem; letter-spacing: .04em; text-transform: uppercase; padding-left: 12px; border-left: 4px solid var(--accent-soft, #7fd3a8); }
+.side-menu__close { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 10px; background: rgba(255, 255, 255, .12); color: #fff; cursor: pointer; }
+.side-menu__close:hover { background: rgba(255, 255, 255, .22); }
+.side-menu__list, .side-menu__sub { list-style: none; margin: 0; padding: 0; }
+.side-menu__list { padding: 12px 12px 8px; flex: 1; }
+.side-menu__link { display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 0 12px; border-radius: 10px; color: var(--brand-900); font-weight: 600; text-decoration: none; }
+.side-menu__link .icon { width: 20px; height: 20px; color: var(--brand-700); flex-shrink: 0; }
+.side-menu__link:hover, .side-menu__link:focus-visible { background: var(--brand-50, #eaf5f7); }
+.side-menu__link[aria-current="page"] { background: var(--brand-50, #eaf5f7); color: var(--brand-700); box-shadow: inset 3px 0 0 var(--accent, #2e9e6b); }
+.side-menu__sub { margin: 0 0 6px 44px; border-left: 1px solid var(--line, #dbe7ea); }
+.side-menu__sub a { display: flex; align-items: center; min-height: 34px; padding: 0 12px; color: var(--muted, #4d6670); font-size: .9rem; text-decoration: none; }
+.side-menu__sub a:hover, .side-menu__sub a:focus-visible { color: var(--brand-700); background: var(--brand-50, #eaf5f7); border-radius: 0 8px 8px 0; }
+.side-menu__foot { display: grid; gap: 8px; padding: 16px 24px 24px; border-top: 1px solid var(--line, #dbe7ea); font-size: .9rem; }
+.side-menu__foot a { display: flex; align-items: center; gap: 10px; color: var(--brand-800); text-decoration: none; word-break: break-all; }
+.side-menu__foot .icon { width: 18px; height: 18px; color: var(--accent, #2e9e6b); flex-shrink: 0; }
+body.side-open { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .side-menu[open] { animation-duration: .01ms; } }
+@media print { .side-menu-btn, .side-menu { display: none !important; } }

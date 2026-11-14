@@ -1,0 +1,33 @@
+<%# Nút menu nổi bên trái (màn hình rộng) + ngăn kéo danh mục %>
+<% const sideIcons = { home: 'droplet', about: 'users', plant: 'zap', ir: 'growth', news: 'file', careers: 'briefcase', gallery: 'expand', contact: 'mail' }; %>
+<% const sideSub = {
+  ir: ['disclosure', 'financial', 'annual', 'agm', 'governance'].map((c) => [t('ir.categories.' + c), url('ir') + '?cat=' + c]),
+  news: ['company', 'operation', 'safety', 'community'].map((c) => [t('news.categories.' + c), url('news') + '?cat=' + c]),
+}; %>
+<button class="side-menu-btn" type="button" aria-haspopup="dialog" aria-controls="side-menu" aria-expanded="false" data-side-open>
+  <%- icon('menu') %><span><%= lang === 'en' ? 'Menu' : 'Danh mục' %></span>
+</button>
+<dialog class="side-menu" id="side-menu" aria-labelledby="side-menu-title">
+  <div class="side-menu__head">
+    <p class="side-menu__title" id="side-menu-title"><%= lang === 'en' ? 'Menu' : 'Danh mục' %></p>
+    <button class="side-menu__close" type="button" data-side-close aria-label="<%= t('nav.close') %>"><%- icon('x') %></button>
+  </div>
+  <nav aria-label="<%= lang === 'en' ? 'Site menu' : 'Danh mục trang' %>">
+    <ul class="side-menu__list">
+      <% [...navKeys, 'contact'].forEach((k) => { %>
+      <li>
+        <a class="side-menu__link" href="<%= url(k) %>" <%- page.key === k ? 'aria-current="page"' : '' %>><%- icon(sideIcons[k] || 'chevron-right') %><span><%= t('nav.' + k) %></span></a>
+        <% if (sideSub[k]) { %>
+        <ul class="side-menu__sub">
+          <% sideSub[k].forEach(([label, href]) => { %><li><a href="<%= href %>"><%= label %></a></li><% }) %>
+        </ul>
+        <% } %>
+      </li>
+      <% }) %>
+    </ul>
+  </nav>
+  <div class="side-menu__foot">
+    <a href="tel:<%= String(settings.phone || '').replace(/[^\d+]/g, '') %>"><%- icon('phone') %><%= settings.phone %></a>
+    <a href="mailto:<%= settings.email %>"><%- icon('mail') %><%= settings.email %></a>
+  </div>
+</dialog>
