@@ -1,11 +1,20 @@
 <%- include('partials/head') %>
 <%- include('partials/page-hero', { heroTitle: t('about.title'), heroLead: t('about.lead'), crumbs: [{ label: t('about.title') }] }) %>
 
-<section class="section">
+<% const aboutSections = [['history', t('about.historyTitle')], ['structure', t('about.org.title')], ['vision', t('about.visionTitle')], ['philosophy', t('about.philosophyTitle')]]; %>
+<nav class="about-nav" aria-label="<%= t('about.sectionNav') %>">
+  <div class="container">
+    <ul class="about-nav__list">
+      <% aboutSections.forEach(([id, label], i) => { %><li><a href="#<%= id %>" data-about-link><span class="about-nav__num"><%= String(i + 1).padStart(2, '0') %></span><%= label %></a></li><% }) %>
+    </ul>
+  </div>
+</nav>
+
+<section class="section about-section" id="history" aria-labelledby="history-title">
   <div class="container split split--top">
     <div class="split__text reveal">
-      <p class="eyebrow"><%= t('about.storyTitle') %></p>
-      <h2 class="section-title"><%= companyName %></h2>
+      <p class="eyebrow"><%= t('about.historyTitle') %></p>
+      <h2 class="section-title" id="history-title"><%= t('about.historyHeading') %></h2>
       <% t('about.story').forEach((p) => { %><p><%= p %></p><% }) %>
     </div>
     <aside class="profile-card reveal" aria-labelledby="profile-title">
@@ -23,42 +32,7 @@
   </div>
 </section>
 
-<section class="section section--tint">
-  <div class="container">
-    <div class="vm-grid">
-      <article class="vm-card reveal">
-        <span class="vm-card__icon"><%- icon('growth') %></span>
-        <h2><%= t('about.visionTitle') %></h2>
-        <p><%= t('about.vision') %></p>
-      </article>
-      <article class="vm-card vm-card--accent reveal">
-        <span class="vm-card__icon"><%- icon('zap') %></span>
-        <h2><%= t('about.missionTitle') %></h2>
-        <p><%= t('about.mission') %></p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="section-head section-head--center reveal">
-      <p class="eyebrow"><%= t('about.valuesTitle') %></p>
-      <h2 class="section-title"><%= lang === 'vi' ? 'Nền tảng cho mọi hoạt động' : 'The foundation of everything we do' %></h2>
-    </div>
-    <div class="card-grid card-grid--4 values">
-      <% t('about.values').forEach((v, i) => { %>
-        <article class="value-card reveal">
-          <span class="value-card__num"><%= String(i + 1).padStart(2, '0') %></span>
-          <h3><%= v.title %></h3>
-          <p><%= v.text %></p>
-        </article>
-      <% }) %>
-    </div>
-  </div>
-</section>
-
-<section class="section section--dark">
+<section class="section section--dark about-timeline" aria-label="<%= t('about.timelineTitle') %>">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow eyebrow--light"><%= t('about.timelineTitle') %></p>
@@ -75,7 +49,79 @@
   </div>
 </section>
 
-<section class="section">
+<% const org = t('about.org'); %>
+<section class="section about-section" id="structure" aria-labelledby="structure-title">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow"><%= org.title %></p>
+      <h2 class="section-title" id="structure-title"><%= org.heading %></h2>
+      <p class="lead"><%= org.lead %></p>
+    </div>
+    <div class="org reveal">
+      <% org.governance.forEach((g) => { %>
+        <div class="org__node org__node--gov"><strong><%= g.name %></strong><span><%= g.note %></span></div>
+        <span class="org__line" aria-hidden="true"></span>
+      <% }) %>
+      <div class="org__board">
+        <p class="org__board-title"><%= org.boardTitle %></p>
+        <ul class="org__people">
+          <% org.board.forEach((b) => { %><li><span><%= b.role %></span><strong><%= b.person %></strong></li><% }) %>
+        </ul>
+      </div>
+      <span class="org__line" aria-hidden="true"></span>
+      <ul class="org__units">
+        <% org.units.forEach((u) => { %>
+          <li class="org__unit"><span class="org__icon"><%- icon(u.icon) %></span><strong><%= u.name %></strong><span><%= u.note %></span></li>
+        <% }) %>
+      </ul>
+      <div class="org__union"><span class="org__icon"><%- icon('users') %></span><p><strong><%= org.union.name %></strong> · <%= org.union.note %></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint about-section" id="vision" aria-labelledby="vision-title">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow"><%= t('about.visionTitle') %></p>
+      <h2 class="section-title" id="vision-title"><%= t('about.visionHeading') %></h2>
+    </div>
+    <div class="vm-grid">
+      <article class="vm-card reveal">
+        <span class="vm-card__icon"><%- icon('growth') %></span>
+        <h3><%= t('about.visionTitle') %></h3>
+        <p><%= t('about.vision') %></p>
+        <ul class="vm-card__chips"><% t('about.visionPoints').forEach((v) => { %><li><%- icon('check') %><%= v %></li><% }) %></ul>
+      </article>
+      <article class="vm-card vm-card--accent reveal">
+        <span class="vm-card__icon"><%- icon('zap') %></span>
+        <h3><%= t('about.missionTitle') %></h3>
+        <p><%= t('about.mission') %></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section about-section" id="philosophy" aria-labelledby="philosophy-title">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow"><%= t('about.philosophyTitle') %></p>
+      <h2 class="section-title" id="philosophy-title"><span class="slogan">“<%= t('about.slogan') %>”</span></h2>
+      <p class="lead"><%= t('about.philosophyText') %></p>
+    </div>
+    <h3 class="values-title reveal"><%= t('about.valuesTitle') %></h3>
+    <div class="card-grid card-grid--4 values">
+      <% t('about.values').forEach((v, i) => { %>
+        <article class="value-card reveal">
+          <span class="value-card__num"><%= String(i + 1).padStart(2, '0') %></span>
+          <h3><%= v.title %></h3>
+          <p><%= v.text %></p>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
   <div class="container split">
     <div class="split__media reveal">
       <div class="rounded-media"><%- h.img('/media/anniversary/anniversary-04', lang === 'vi' ? 'Ban lãnh đạo Công ty tại lễ kỷ niệm 10 năm thành lập' : 'Company leadership at the 10th anniversary ceremony', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
@@ -95,7 +141,7 @@
   </div>
 </section>
 
-<section class="section section--tint">
+<section class="section">
   <div class="container">
     <div class="section-head section-head--row reveal">
       <div>
