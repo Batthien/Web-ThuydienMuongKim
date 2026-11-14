@@ -32,7 +32,7 @@
   --ease: cubic-bezier(.2, .7, .2, 1);
   --container: 1240px;
   --gutter: clamp(16px, 4vw, 32px);
-  --section: clamp(64px, 9vw, 120px);
+  --section: clamp(40px, 5vw, 72px);
   --header-h: 76px;
   --topbar-h: 0px; /* thanh thông tin trên cùng đã bỏ */
 }
@@ -187,7 +187,7 @@ main:focus { outline: none; }
 .section--dark { position: relative; isolation: isolate; background: var(--brand-950); color: #c9dde5; overflow: hidden; }
 .section--dark h2, .section--dark h3 { color: #fff; }
 .section--dark .lead { color: #a9c4cf; }
-.section-head { max-width: 760px; margin-bottom: clamp(40px, 5vw, 64px); }
+.section-head { max-width: 760px; margin-bottom: clamp(24px, 3vw, 40px); }
 .section-head--center { margin-inline: auto; text-align: center; }
 .section-head--center .eyebrow { justify-content: center; }
 .section-head--center .eyebrow::after { content: ""; width: 28px; height: 2px; background: linear-gradient(90deg, var(--brand-400), var(--accent)); border-radius: 2px; }
@@ -298,7 +298,7 @@ main:focus { outline: none; }
 .ir-cats a:hover { border-color: var(--brand-400); transform: translateX(4px); }
 
 /* CTA band */
-.cta-band { position: relative; isolation: isolate; color: #fff; padding-block: clamp(80px, 10vw, 140px); text-align: center; overflow: hidden; }
+.cta-band { position: relative; isolation: isolate; color: #fff; padding-block: clamp(56px, 7vw, 96px); text-align: center; overflow: hidden; }
 .cta-band__media { position: absolute; inset: 0; z-index: -1; }
 .cta-band__media img { width: 100%; height: 100%; object-fit: cover; }
 .cta-band__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(4, 31, 40, .92), rgba(18, 102, 127, .82)); }
@@ -898,7 +898,7 @@ body.side-open { overflow: hidden; }
 @media (max-width: 640px) { .page-hero--bare { min-height: 0; aspect-ratio: 4 / 3; } }
 
 /* Trang chủ – mục "Về chúng tôi": thu nhỏ khoảng trống, thẳng hàng với khối tin nổi bật */
-.about-intro { padding-top: clamp(16px, 2vw, 32px); padding-bottom: clamp(48px, 6vw, 80px); }
+.about-intro { padding-top: clamp(16px, 2vw, 32px); }
 .about-intro > .container { max-width: none; }
 .about-intro .split { gap: clamp(32px, 4vw, 64px); }
 .about-intro .collage__main { aspect-ratio: 16 / 11; }
