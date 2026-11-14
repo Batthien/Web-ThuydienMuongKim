@@ -891,3 +891,8 @@ body.side-open { overflow: hidden; }
   .org__units { grid-template-columns: 1fr; }
   .org__node { padding: 14px 18px; }
 }
+
+/* Ảnh đầu trang con chỉ chạy ảnh (không chữ) */
+.page-hero--bare { min-height: min(62vh, 600px); padding: 0; }
+.page-hero--bare .page-hero__media::after { background: linear-gradient(0deg, rgba(4, 31, 40, .45), transparent 30%); }
+@media (max-width: 640px) { .page-hero--bare { min-height: 0; aspect-ratio: 4 / 3; } }

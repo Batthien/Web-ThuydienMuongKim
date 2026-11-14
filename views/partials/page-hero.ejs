@@ -1,7 +1,7 @@
-<%# locals: heroTitle, heroLead, crumbs [{label, href}] %>
-<section class="page-hero">
+<%# locals: heroTitle, heroLead, crumbs [{label, href}], bare (chỉ chạy ảnh, chữ ẩn cho SEO) %>
+<section class="page-hero<%= locals.bare ? ' page-hero--bare' : '' %>">
   <%- include('hero-slides', { mediaCls: 'page-hero__media' }) %>
-  <div class="container page-hero__content">
+  <div class="container page-hero__content<%= locals.bare ? ' sr-only' : '' %>">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
         <li><a href="<%= url('home') %>"><%= t('common.home') %></a></li>
