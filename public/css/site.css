@@ -904,3 +904,10 @@ body.side-open { overflow: hidden; }
 .about-intro .collage__main { aspect-ratio: 16 / 11; }
 .about-intro .split__text .lead { max-width: 62ch; }
 @media (min-width: 1360px) { .about-intro > .container { padding-inline: 104px; } }
+
+/* Khối tin nổi bật: lưới đều 2 cột bằng nhau × 3 hàng */
+@media (min-width: 641px) {
+  .spotlight__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(240px, 22vw, 400px); }
+  .spotlight__grid > .spot { grid-column: auto; grid-row: auto; }
+  .spot__title { font-size: clamp(1.1rem, 1.5vw, 1.45rem); }
+}

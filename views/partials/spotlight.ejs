@@ -10,7 +10,7 @@
         <div class="spot__slides">
           <% tile.items.forEach((it, i) => { %>
           <a class="spot__slide<%= i === 0 ? ' is-active' : '' %>" href="<%= it.href %>"<%- it.external ? ' target="_blank" rel="noopener"' : '' %><%- i === 0 ? '' : ' tabindex="-1" aria-hidden="true"' %> data-spot-slide>
-            <span class="spot__media"><%- h.img(it.image, '', { sizes: ti === 0 ? '(min-width: 1024px) 760px, 100vw' : '(min-width: 1024px) 420px, 100vw', width: 1280 }) %></span>
+            <span class="spot__media"><%- h.img(it.image, '', { sizes: '(min-width: 641px) 50vw, 100vw', width: 1280 }) %></span>
             <span class="spot__body">
               <span class="spot__meta"><%- icon(it.icon) %><%= it.meta %></span>
               <span class="spot__title"><%= it.title %></span>

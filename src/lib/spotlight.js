@@ -13,7 +13,7 @@ const pickImage = (list, i) => {
 };
 
 /**
- * Trả về các ô theo thứ tự hiển thị: Tin tức, Nhà máy, Cổ đông, Tuyển dụng, Thư viện.
+ * Trả về các ô theo thứ tự hiển thị (lưới 2 cột × 3 hàng): Tin tức, Giới thiệu, Nhà máy, Cổ đông, Tuyển dụng, Thư viện.
  * Mỗi ô: { key, label, href, items: [{ image, title, meta, href, external }] }
  */
 function build({ t, url, loc, posts, docs, jobs, IR_CATEGORIES }) {
@@ -26,6 +26,19 @@ function build({ t, url, loc, posts, docs, jobs, IR_CATEGORIES }) {
     meta: date(p.published_at),
     icon: 'calendar',
     href: url('news', p.slug),
+  }));
+
+  const about = [
+    { id: 'history', image: '/media/anniversary/anniversary-04', title: t('about.historyTitle') },
+    { id: 'structure', image: '/media/office/office-01', title: t('about.org.title') },
+    { id: 'vision', image: '/media/dam/dam-02', title: t('about.visionTitle') },
+    { id: 'philosophy', image: '/media/plant/plant-01', title: t('about.philosophyTitle') },
+  ].filter((x) => exists(x.image)).map((x) => ({
+    image: x.image,
+    title: x.title,
+    meta: t('nav.about'),
+    icon: 'users',
+    href: `${url('about')}#${x.id}`,
   }));
 
   const plant = [
@@ -84,6 +97,7 @@ function build({ t, url, loc, posts, docs, jobs, IR_CATEGORIES }) {
 
   return [
     { key: 'news', label: t('nav.news'), href: url('news'), items: news },
+    { key: 'about', label: t('nav.about'), href: url('about'), items: about },
     { key: 'plant', label: t('nav.plant'), href: url('plant'), items: plant },
     { key: 'ir', label: t('nav.ir'), href: url('ir'), items: ir },
     { key: 'careers', label: t('nav.careers'), href: url('careers'), items: careers },
