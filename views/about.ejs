@@ -1,15 +1,6 @@
 <%- include('partials/head') %>
 <%- include('partials/page-hero', { heroTitle: t('about.title'), heroLead: t('about.lead'), crumbs: [{ label: t('about.title') }] }) %>
 
-<% const aboutSections = [['history', t('about.historyTitle')], ['structure', t('about.org.title')], ['vision', t('about.visionTitle')], ['philosophy', t('about.philosophyTitle')]]; %>
-<nav class="about-nav" aria-label="<%= t('about.sectionNav') %>">
-  <div class="container">
-    <ul class="about-nav__list">
-      <% aboutSections.forEach(([id, label], i) => { %><li><a href="#<%= id %>" data-about-link><span class="about-nav__num"><%= String(i + 1).padStart(2, '0') %></span><%= label %></a></li><% }) %>
-    </ul>
-  </div>
-</nav>
-
 <section class="section about-section" id="history" aria-labelledby="history-title">
   <div class="container split split--top">
     <div class="split__text reveal">

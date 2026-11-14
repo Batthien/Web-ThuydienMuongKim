@@ -845,15 +845,7 @@ body.side-open { overflow: hidden; }
 @media (min-width: 1360px) { .spotlight > .container { padding-inline: 104px; } }
 
 /* ---- Trang Giới thiệu: thanh mục, cơ cấu tổ chức, tầm nhìn, triết lý ---- */
-.about-nav { position: sticky; top: var(--header-h); z-index: 30; background: rgba(255, 255, 255, .94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-.about-nav__list { display: flex; gap: 6px; margin: 0; padding: 10px 0; list-style: none; overflow-x: auto; scrollbar-width: none; }
-.about-nav__list::-webkit-scrollbar { display: none; }
-.about-nav__list a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px; border-radius: 999px; color: var(--brand-900); font-weight: 600; white-space: nowrap; text-decoration: none; transition: background .2s, color .2s; }
-.about-nav__list a:hover { background: var(--sky-100); }
-.about-nav__list a[aria-current="true"] { background: var(--brand-800); color: #fff; }
-.about-nav__num { font-size: .75rem; font-weight: 700; color: var(--accent); }
-.about-nav__list a[aria-current="true"] .about-nav__num { color: var(--accent-soft); }
-.about-section { scroll-margin-top: calc(var(--header-h) + 72px); }
+.about-section { scroll-margin-top: calc(var(--header-h) + 16px); }
 
 .vm-card h3 { font-size: 1.6rem; }
 .vm-card--accent h3 { color: #fff; }
@@ -898,5 +890,4 @@ body.side-open { overflow: hidden; }
   .org__people { grid-template-columns: 1fr; }
   .org__units { grid-template-columns: 1fr; }
   .org__node { padding: 14px 18px; }
-  .about-nav__list a { padding: 0 14px; }
 }

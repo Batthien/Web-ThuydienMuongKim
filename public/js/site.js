@@ -296,17 +296,6 @@
     }
   }
 
-  // ---- Trang Giới thiệu: tô sáng mục đang xem trên thanh mục ----
-  const aboutLinks = [...document.querySelectorAll('[data-about-link]')];
-  if (aboutLinks.length && 'IntersectionObserver' in window) {
-    const byId = new Map(aboutLinks.map((a) => [a.getAttribute('href').slice(1), a]));
-    const mark = (id) => aboutLinks.forEach((a) => (a === byId.get(id) ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
-    const spy = new IntersectionObserver((entries) => {
-      entries.filter((e) => e.isIntersecting).forEach((e) => mark(e.target.id));
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    byId.forEach((a, id) => { const el = document.getElementById(id); if (el) spy.observe(el); });
-  }
-
   // ---- Menu di động ----
   const toggle = document.querySelector('[data-nav-toggle]');
   const nav = document.getElementById('main-nav');
