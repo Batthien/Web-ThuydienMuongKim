@@ -838,3 +838,8 @@ body.image-edit-mode .spot__media::after { pointer-events: none; }
 body.side-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .side-menu[open] { animation-duration: .01ms; } }
 @media print { .side-menu-btn, .side-menu { display: none !important; } }
+
+/* Khối tin nổi bật giãn toàn màn hình; chừa chỗ cho nút Danh mục bên trái */
+.spotlight > .container { max-width: none; }
+@media (min-width: 1024px) { .spotlight__grid { grid-auto-rows: clamp(220px, 16vw, 360px); } }
+@media (min-width: 1360px) { .spotlight > .container { padding-inline: 104px; } }
