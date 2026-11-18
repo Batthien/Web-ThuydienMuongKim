@@ -33,8 +33,6 @@
       try { await img.decode(); } catch { /* vẫn chuyển ảnh nếu decode lỗi */ }
       imgs[current].classList.remove('is-active');
       img.classList.add('is-active');
-      dots[current]?.removeAttribute('aria-current');
-      dots[next]?.setAttribute('aria-current', 'true');
       current = next;
     };
     const schedule = () => {
@@ -225,7 +223,6 @@
   // ---- Tin nổi bật theo mục: mỗi ô tự chuyển tin, các ô lệch nhịp nhau ----
   document.querySelectorAll('[data-spot]').forEach((tile, index) => {
     const slides = [...tile.querySelectorAll('[data-spot-slide]')];
-    const dots = [...tile.querySelectorAll('[data-spot-go]')];
     if (slides.length < 2) return;
     const DELAY = 5000;
     let current = 0;
@@ -240,8 +237,6 @@
         s.classList.toggle('is-active', on);
         if (on) { s.removeAttribute('tabindex'); s.removeAttribute('aria-hidden'); } else { s.tabIndex = -1; s.setAttribute('aria-hidden', 'true'); }
       });
-      dots[current]?.removeAttribute('aria-current');
-      dots[next]?.setAttribute('aria-current', 'true');
       current = next;
     };
     const schedule = (wait = DELAY) => {
@@ -254,7 +249,6 @@
     tile.addEventListener('mouseleave', () => { hold = false; schedule(); });
     tile.addEventListener('focusin', () => { hold = true; clearTimeout(timer); });
     tile.addEventListener('focusout', () => { hold = false; schedule(); });
-    dots.forEach((d) => d.addEventListener('click', () => go(Number(d.dataset.spotGo))));
     document.addEventListener('visibilitychange', () => schedule());
     document.addEventListener('image-edit-change', () => schedule());
     schedule(DELAY + index * 900);

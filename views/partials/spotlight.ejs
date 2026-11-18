@@ -19,13 +19,6 @@
           </a>
           <% }) %>
         </div>
-        <% if (tile.items.length > 1) { %>
-        <div class="spot__dots">
-          <% tile.items.forEach((it, i) => { %>
-          <button type="button" class="spot__dot" data-spot-go="<%= i %>"<%- i === 0 ? ' aria-current="true"' : '' %> aria-label="<%= tile.label %>: <%= it.title %>"></button>
-          <% }) %>
-        </div>
-        <% } %>
       </article>
       <% }) %>
     </div>
