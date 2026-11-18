@@ -54,19 +54,4 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="container split">
-    <div class="split__text reveal">
-      <p class="eyebrow"><%= vi ? 'An toàn' : 'Safety' %></p>
-      <h2 class="section-title"><%= t('plant.safetyTitle') %></h2>
-      <p class="lead"><%= t('plant.safetyText') %></p>
-      <a class="link-arrow" href="<%= url('news') %>?cat=safety"><%= t('news.categories.safety') %> <%- icon('arrow-right') %></a>
-    </div>
-    <div class="split__media mini-grid reveal">
-      <% safety.slice(0, 4).forEach((p) => { %>
-        <figure><%- h.img(p.src, t('gallery.albums.safety'), { sizes: '(min-width: 1024px) 280px, 50vw', width: 640 }) %></figure>
-      <% }) %>
-    </div>
-  </div>
-</section>
 <%- include('partials/foot') %>

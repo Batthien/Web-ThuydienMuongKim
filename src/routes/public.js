@@ -91,7 +91,7 @@ function createRouter(lang) {
     },
     plant(req, res) {
       setPage(res, 'plant', { title: t('plant.overviewTitle'), description: t('plant.overviewLead'), image: h.imgUrl('/media/plant/plant-04', 1280) });
-      res.render('plant', { safety: h.gallery.filter((g) => g.album === 'safety') });
+      res.render('plant');
     },
     ir(req, res) {
       setPage(res, 'ir', { title: t('ir.title'), description: t('ir.lead') });

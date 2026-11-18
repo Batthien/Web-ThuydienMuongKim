@@ -45,7 +45,6 @@ function build({ t, url, loc, posts, docs, jobs, IR_CATEGORIES }) {
     { image: '/media/plant/plant-03', title: t('plant.houseTitle') },
     { image: '/media/dam/dam-01', title: t('plant.damTitle') },
     { image: '/media/plant/plant-04', title: t('plant.specsTitle') },
-    { image: '/media/safety/safety-04', title: t('plant.safetyTitle'), href: url('plant') },
     { image: '/media/plant-mk2/plant-mk2-01', title: t('plant.mk2.title'), href: url('plant', 'muong-kim-2') },
   ].filter((x) => exists(x.image)).map((x) => ({
     image: x.image,
