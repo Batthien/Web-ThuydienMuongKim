@@ -78,10 +78,9 @@ function createRouter(lang) {
 
   router.get('/', (req, res) => {
     setPage(res, 'home', { title: t('home.title') });
-    const production = db.prepare('SELECT year, sort, plant_vi, plant_en, output_plan, output_actual, revenue_plan, revenue_actual FROM production ORDER BY year, sort, id').all();
     const docs = q.latestDocs.all(4);
     const tiles = spotlight.build({ t, url: res.locals.url, loc: res.locals.loc, posts: q.latestPosts.all(5), docs, jobs: q.jobs.all().slice(0, 4), IR_CATEGORIES });
-    res.render('home', { docs, IR_CATEGORIES, production, spotlight: tiles });
+    res.render('home', { docs, IR_CATEGORIES, spotlight: tiles });
   });
 
   const pages = {

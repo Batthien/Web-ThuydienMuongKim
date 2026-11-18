@@ -35,7 +35,7 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
     ok(r.status === 200 && !/undefined|NaN|\[object Object\]/.test(body.replace(/<script[\s\S]*?<\/script>/g, '')), `${r.status} ${p}`);
   }
   ok((await req('/')).status === 302, 'Trang gốc chuyển hướng theo ngôn ngữ');
-  ok((await (await req('/vi')).text()).includes('id="ket-qua-sxkd"'), 'Trang chủ có biểu đồ kết quả SXKD');
+  ok(!(await (await req('/vi')).text()).includes('id="ket-qua-sxkd"'), 'Trang chủ không còn biểu đồ kết quả SXKD');
   ok((await req('/vi/khong-ton-tai')).status === 404, '404 cho trang không tồn tại');
   ok((await req('/en/gioi-thieu')).status === 404, '404 khi dùng slug sai ngôn ngữ');
 
@@ -106,8 +106,7 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   sf.set('prod_title_en', '');
   r = await req('/admin/settings', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: sf });
   html = await (await req('/vi')).text();
-  ok(r.status === 302 && html.includes('Tiêu đề thử &lt;nghiệm&gt;') && html.includes('Giới thiệu thử nghiệm'), 'Sửa tiêu đề và giới thiệu trong CMS, trang chủ cập nhật');
-  ok((await (await req('/en')).text()).includes('Production &amp; business results'), 'Để trống thì dùng lại nội dung mặc định');
+  ok(r.status === 302 && !html.includes('Tiêu đề thử') && !html.includes('data-prod'), 'Trang chủ đã bỏ mục biểu đồ sản xuất');
   ok((await (await req('/admin/settings')).text()).includes('value="5200823899"'), 'Các cấu hình khác không bị mất');
 
   console.log('Căn chỉnh ảnh');

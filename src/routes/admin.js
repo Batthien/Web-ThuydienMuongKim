@@ -140,7 +140,7 @@ const RESOURCES = {
       ['output_actual', 'SL thực hiện (kWh)', (v) => fmtNum(v)], ['output_plan', 'SL kế hoạch (kWh)', (v) => fmtNum(v)],
       ['revenue_actual', 'DT thực hiện (tr.đ)', (v) => fmtNum(v)], ['revenue_plan', 'DT kế hoạch (tr.đ)', (v) => fmtNum(v)],
     ],
-    publicUrl: () => '/vi#ket-qua-sxkd',
+    publicUrl: () => '/vi',
     fields: [
       { name: 'year', label: 'Năm', type: 'number', required: true },
       { name: 'plant', label: 'Tên nhà máy', type: 'text', i18n: true, required: true },
