@@ -25,12 +25,15 @@
     </div>
     <ul class="plant-list">
       <% t('plant.plants').forEach((p, i) => { %>
-        <li class="plant-card reveal" id="<%= p.id %>">
+        <li class="plant-card reveal"<%- p.detail ? '' : ` id="${p.id}"` %>>
           <span class="plant-card__num"><%= String(i + 1).padStart(2, '0') %></span>
           <h3><%= p.name %></h3>
           <% if (i === 0) { %>
             <p><%= h.formatNumber(settings.capacity_mw, L) %> MW · <%= settings.units %> <%= t('common.units') %> · <%= vi ? 'vận hành từ' : 'in operation since' %> <%= settings.year_operation %></p>
             <a class="link-arrow" href="#thong-so"><%= t('plant.specsTitle') %> <%- icon('arrow-right') %></a>
+          <% } else if (p.detail) { const d = t('plant.' + p.detail); %>
+            <p><%= d.specs[0].value %> · <%= d.specs[1].value %></p>
+            <a class="link-arrow" href="#<%= p.id %>"><%= t('common.readMore') %> <%- icon('arrow-right') %></a>
           <% } else { %>
             <p class="muted"><%= t('plant.plantsPending') %></p>
           <% } %>
@@ -135,6 +138,46 @@
         </a>
       <% }) %>
     </div>
+  </div>
+</section>
+<% const mk2 = t('plant.mk2'); const mk2Photos = h.gallery.filter((g) => g.album === 'plant-mk2'); %>
+<section class="section plant-detail" id="muong-kim-2" aria-labelledby="mk2-title">
+  <div class="container">
+    <div class="split split--top plant-detail__intro">
+      <div class="split__text reveal">
+        <p class="eyebrow"><%= mk2.eyebrow %></p>
+        <h2 class="section-title" id="mk2-title"><%= mk2.title %></h2>
+        <p class="lead"><%= mk2.lead %></p>
+        <p><%= mk2.text %></p>
+      </div>
+      <% if (mk2Photos[0]) { %>
+      <div class="split__media reveal">
+        <div class="rounded-media"><%- h.img(mk2Photos[0].src, mk2.captions[0], { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
+      </div>
+      <% } %>
+    </div>
+    <dl class="spec-grid plant-detail__specs">
+      <% mk2.specs.forEach((sp) => { %>
+        <div class="spec reveal">
+          <span class="spec__icon"><%- icon(sp.icon) %></span>
+          <dt><%= sp.label %></dt>
+          <dd><%= sp.value %></dd>
+        </div>
+      <% }) %>
+    </dl>
+    <p class="plant-detail__source muted"><%= mk2.source %></p>
+    <% if (mk2Photos.length > 1) { %>
+    <h3 class="plant-detail__photos-title reveal"><%= mk2.photosTitle %></h3>
+    <div class="mosaic" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
+      <% mk2Photos.slice(1).forEach((p, i) => { const cap = mk2.captions[mk2Photos.indexOf(p)] || mk2.title; %>
+        <a class="mosaic__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= cap %>">
+          <%- h.img(p.src, cap, { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
+          <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
+          <span class="sr-only"><%= t('gallery.open') %></span>
+        </a>
+      <% }) %>
+    </div>
+    <% } %>
   </div>
 </section>
 <%- include('partials/foot') %>

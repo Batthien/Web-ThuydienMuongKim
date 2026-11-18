@@ -919,3 +919,10 @@ body.side-open { overflow: hidden; }
 .plant-anchor { scroll-margin-top: var(--header-h); }
 @media (max-width: 1023px) { .plant-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .plant-list { grid-template-columns: 1fr; } }
+
+/* Trang Nhà máy: mục giới thiệu Nhà máy Mường Kim II */
+.plant-detail { scroll-margin-top: var(--header-h); border-top: 1px solid var(--line); }
+.plant-detail__intro { margin-bottom: clamp(24px, 3vw, 40px); }
+.plant-detail__specs { margin-top: 8px; }
+.plant-detail__source { margin: 14px 0 0; font-size: .85rem; font-style: italic; }
+.plant-detail__photos-title { margin: clamp(28px, 4vw, 48px) 0 18px; font-size: 1.3rem; color: var(--brand-900); }

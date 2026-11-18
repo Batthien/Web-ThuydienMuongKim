@@ -127,6 +127,23 @@ if (process.argv.includes('--logo')) {
   return;
 }
 
+// Chỉ xử lý (lại) một album, không đụng tới ảnh khác:  node scripts/import-media.js --album plant-mk2
+const albumArg = process.argv.indexOf('--album');
+if (albumArg !== -1) {
+  const album = process.argv[albumArg + 1];
+  if (!manifest[album]) { console.error('Không có album trong manifest:', album); process.exit(1); }
+  (async () => {
+    fs.rmSync(path.join(OUT, album), { recursive: true, force: true });
+    const items = [];
+    for (let i = 0; i < manifest[album].length; i++) { items.push(await processImage(manifest[album][i], album, i)); process.stdout.write('.'); }
+    const file = path.join(ROOT, 'content', 'gallery.json');
+    const gallery = JSON.parse(fs.readFileSync(file, 'utf8')).filter((g) => g.album !== album).concat(items);
+    fs.writeFileSync(file, JSON.stringify(gallery, null, 2));
+    console.log(`\nĐã xử lý ${items.length} ảnh album ${album}`);
+  })().catch((e) => { console.error(e); process.exit(1); });
+  return;
+}
+
 (async () => {
   fs.rmSync(OUT, { recursive: true, force: true });
   const gallery = [];
