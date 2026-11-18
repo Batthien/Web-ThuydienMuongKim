@@ -28,7 +28,8 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   console.log('Trang công khai');
   const pages = ['/vi', '/en', '/vi/gioi-thieu', '/en/about', '/vi/nha-may', '/en/power-plant', '/vi/co-dong', '/en/investors',
     '/vi/tin-tuc', '/en/news', '/vi/tuyen-dung', '/en/careers', '/vi/thu-vien', '/en/gallery', '/vi/lien-he', '/en/contact',
-    '/vi/tin-tuc/ky-niem-10-nam-thanh-lap-cong-ty', '/en/news/ky-niem-10-nam-thanh-lap-cong-ty', '/sitemap.xml', '/robots.txt'];
+    '/vi/tin-tuc/ky-niem-10-nam-thanh-lap-cong-ty', '/en/news/ky-niem-10-nam-thanh-lap-cong-ty', '/sitemap.xml', '/robots.txt',
+    '/vi/nha-may/muong-kim', '/vi/nha-may/muong-kim-2', '/vi/nha-may/phieng-luc', '/vi/nha-may/ho-bon-2', '/en/power-plant/muong-kim', '/en/power-plant/muong-kim-2'];
   for (const p of pages) {
     const r = await req(p);
     const body = await r.text();
@@ -36,6 +37,15 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   }
   ok((await req('/')).status === 302, 'Trang gốc chuyển hướng theo ngôn ngữ');
   ok(!(await (await req('/vi')).text()).includes('id="ket-qua-sxkd"'), 'Trang chủ không còn biểu đồ kết quả SXKD');
+  {
+    const mk1 = await (await req('/vi/nha-may/muong-kim')).text();
+    const mk2 = await (await req('/vi/nha-may/muong-kim-2')).text();
+    const all = await (await req('/vi/nha-may')).text();
+    ok(mk1.includes('Công trình thủy điện trên suối Nậm Mu') && !mk1.includes('Giới thiệu chung'), 'Trang Mường Kim chỉ có thông tin Mường Kim');
+    ok(mk2.includes('12 MW') && !mk2.includes('Công trình thủy điện trên suối Nậm Mu'), 'Trang Mường Kim II chỉ có thông tin Mường Kim II');
+    ok(all.includes('href="/vi/nha-may/muong-kim-2"') && !all.includes('12 MW · 3 tổ × 4 MW</dd>'), 'Trang Nhà máy chung có thẻ dẫn tới từng nhà máy');
+    ok((await req('/vi/nha-may/khong-co')).status === 404, 'Nhà máy không tồn tại trả về 404');
+  }
   ok((await req('/vi/khong-ton-tai')).status === 404, '404 cho trang không tồn tại');
   ok((await req('/en/gioi-thieu')).status === 404, '404 khi dùng slug sai ngôn ngữ');
 

@@ -908,14 +908,7 @@ body.side-open { overflow: hidden; }
 
 /* Trang Nhà máy: danh sách cụm nhà máy */
 .plant-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
-.plant-card { position: relative; display: grid; align-content: start; gap: 8px; padding: 26px 24px; border-radius: var(--radius-lg); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); scroll-margin-top: calc(var(--header-h) + 24px); transition: box-shadow .3s, border-color .3s; }
-.plant-card:first-child { background: linear-gradient(140deg, var(--brand-800), var(--brand-600)); color: #e0eef3; border: 0; }
-.plant-card:first-child h3, .plant-card:first-child .link-arrow { color: #fff; }
-.plant-card h3 { margin: 0; font-size: 1.12rem; line-height: 1.35; }
-.plant-card p { margin: 0; font-size: .95rem; }
 .plant-card__num { font-weight: 800; font-size: .85rem; color: var(--accent); }
-.plant-card:first-child .plant-card__num { color: var(--accent-soft); }
-.plant-card:target { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-sm); }
 .plant-anchor { scroll-margin-top: var(--header-h); }
 @media (max-width: 1023px) { .plant-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .plant-list { grid-template-columns: 1fr; } }
@@ -930,3 +923,33 @@ body.side-open { overflow: hidden; }
 .plant-detail__intro .split__text .lead,
 .plant-detail__intro .split__text p:not(.eyebrow) { font-size: 1.08rem; line-height: 1.75; color: var(--muted); text-align: justify; hyphens: auto; margin: 0 0 1em; }
 .plant-detail__intro .split__text p:last-child { margin-bottom: 0; }
+
+/* Trang Nhà máy: thẻ nhà máy là liên kết sang trang riêng; thanh chuyển nhà máy; trang chưa có thông tin */
+.plant-list > li { display: flex; }
+.plant-list .plant-card { display: flex; flex-direction: column; width: 100%; padding: 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; text-decoration: none; color: inherit; background: #fff; border: 1px solid var(--line); }
+.plant-card:hover { border-color: var(--brand-400); box-shadow: var(--shadow); transform: translateY(-3px); }
+.plant-card { transition: box-shadow .3s, border-color .3s, transform .3s; }
+.plant-card__media { display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--mist); }
+.plant-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.plant-card:hover .plant-card__media img { transform: scale(1.05); }
+.plant-card:not(.plant-card--photo) .plant-card__body { padding-top: 26px; }
+.plant-card:not(.plant-card--photo)::before { content: ""; display: block; aspect-ratio: 16 / 10; background: linear-gradient(140deg, var(--brand-800), var(--brand-600)); }
+.plant-card__body { display: grid; gap: 8px; padding: 20px 22px 24px; }
+.plant-card:not(.plant-card--photo) .plant-card__body { padding-top: 20px; }
+.plant-card__num { font-weight: 800; font-size: .85rem; color: var(--accent); }
+.plant-card__name { font-weight: 700; font-size: 1.1rem; line-height: 1.35; color: var(--ink); }
+.plant-card__text { font-size: .95rem; color: var(--muted); }
+.plant-card .link-arrow { margin-top: 4px; }
+.plant-tabs { position: sticky; top: var(--header-h); z-index: 30; background: rgba(255, 255, 255, .95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.plant-tabs__list { display: flex; gap: 6px; margin: 0; padding: 10px 0; list-style: none; overflow-x: auto; scrollbar-width: none; }
+.plant-tabs__list::-webkit-scrollbar { display: none; }
+.plant-tabs__list a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; color: var(--brand-900); font-weight: 600; font-size: .95rem; white-space: nowrap; text-decoration: none; transition: background .2s, color .2s; }
+.plant-tabs__list a:hover { background: var(--sky-100); }
+.plant-tabs__list a[aria-current="page"] { background: var(--brand-800); color: #fff; }
+.plant-tabs__num { font-size: .75rem; font-weight: 700; color: var(--accent); }
+.plant-tabs__list a[aria-current="page"] .plant-tabs__num { color: var(--accent-soft); }
+.plant-pending__box { display: grid; justify-items: center; gap: 12px; padding: clamp(32px, 5vw, 56px); text-align: center; border-radius: var(--radius-lg); background: var(--mist); border: 1px dashed var(--brand-400); }
+.plant-pending__box .section-title { margin: 0; }
+.plant-pending__icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: var(--sky-100); color: var(--brand-700); }
+.plant-pending__icon .icon { width: 30px; height: 30px; }
+.plant-detail { border-top: 0; }

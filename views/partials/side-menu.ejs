@@ -1,7 +1,7 @@
 <%# Nút menu nổi bên trái (màn hình rộng) + ngăn kéo danh mục %>
 <% const sideIcons = { home: 'droplet', about: 'users', plant: 'zap', ir: 'growth', news: 'file', careers: 'briefcase', gallery: 'expand', contact: 'mail' }; %>
 <% const sideSub = {
-  plant: t('plant.plants').map((p) => [p.name, url('plant') + '#' + p.id]),
+  plant: t('plant.plants').map((p) => [p.name, url('plant', p.id)]),
   ir: ['disclosure', 'financial', 'annual', 'agm', 'governance'].map((c) => [t('ir.categories.' + c), url('ir') + '?cat=' + c]),
   news: ['company', 'operation', 'safety', 'community'].map((c) => [t('news.categories.' + c), url('news') + '?cat=' + c]),
 }; %>

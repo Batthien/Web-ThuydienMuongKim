@@ -27,6 +27,7 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
   const routes = [];
   for (const lang of ['vi', 'en']) {
     for (const key of Object.keys(ROUTES)) routes.push(url(lang, key));
+    for (const p of require('../locales/vi').plant.plants) routes.push(url(lang, 'plant', p.id));
     for (const p of db.prepare("SELECT slug FROM posts WHERE status='published' AND published_at <= date('now','+7 hours')").all()) routes.push(url(lang, 'news', p.slug));
     for (const j of db.prepare("SELECT slug FROM jobs WHERE status='published'").all()) routes.push(url(lang, 'careers', j.slug));
   }

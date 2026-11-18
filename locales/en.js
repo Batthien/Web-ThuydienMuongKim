@@ -168,12 +168,16 @@ module.exports = {
     safetyTitle: 'Safety comes first',
     safetyText: 'The Company runs regular occupational safety, firefighting and rescue training for all employees, and works closely with authorities on disaster prevention and dam safety.',
     galleryTitle: 'Plant photos',
+    overviewTitle: 'Our hydropower plants',
+    overviewLead: 'The Muong Kim, Muong Kim II, Phieng Luc and Ho Bon 2 hydropower plant cluster. Choose a plant to see its details.',
     plantsTitle: 'Our plants',
     plantsHeading: 'Hydropower plant cluster',
     plantsPending: 'Details coming soon.',
     mk2: {
       eyebrow: 'Our second plant',
       title: 'Muong Kim II Hydropower Plant',
+      introTitle: 'Overview',
+      specsHeading: 'Muong Kim II at a glance',
       lead: 'A hydropower step on the Nam Kim stream — a left tributary of the Nam Mu — located about 430 m downstream of the Muong Kim plant, beside National Road 32 in Muong Kim Commune, Lai Chau Province.',
       text: 'The plant harnesses the natural flow and gradient of the Nam Kim stream with a diversion scheme: water passes from a full-width overflow spillway dam through the intake, a 1,573 m headrace tunnel, a surge tower and the penstock to three horizontal-axis Francis units. Power is stepped up at a 6.3/110 kV substation and fed into the national grid.',
       specs: [

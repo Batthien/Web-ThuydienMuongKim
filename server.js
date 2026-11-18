@@ -89,6 +89,7 @@ app.get('/sitemap.xml', (req, res) => {
   const entries = [];
   const add = (vi, en, lastmod) => entries.push({ vi, en, lastmod });
   for (const key of Object.keys(ROUTES)) add(url('vi', key), url('en', key));
+  for (const p of require('./locales/vi').plant.plants) add(url('vi', 'plant', p.id), url('en', 'plant', p.id));
   for (const p of db.prepare("SELECT slug, updated_at FROM posts WHERE status='published'").all()) {
     add(url('vi', 'news', p.slug), url('en', 'news', p.slug), p.updated_at.slice(0, 10));
   }

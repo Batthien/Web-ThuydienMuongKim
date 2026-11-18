@@ -168,12 +168,16 @@ module.exports = {
     safetyTitle: 'An toàn là ưu tiên hàng đầu',
     safetyText: 'Công ty duy trì công tác huấn luyện an toàn, phòng cháy chữa cháy và cứu nạn cứu hộ định kỳ cho toàn bộ người lao động; phối hợp chặt chẽ với cơ quan chức năng trong công tác phòng chống thiên tai, an toàn đập.',
     galleryTitle: 'Hình ảnh nhà máy',
+    overviewTitle: 'Các nhà máy thủy điện',
+    overviewLead: 'Cụm nhà máy thủy điện Mường Kim, Mường Kim II, Phiêng Lúc và Hồ Bốn 2. Chọn một nhà máy để xem thông tin chi tiết.',
     plantsTitle: 'Các nhà máy',
     plantsHeading: 'Cụm nhà máy thủy điện',
     plantsPending: 'Thông tin chi tiết đang được cập nhật.',
     mk2: {
       eyebrow: 'Nhà máy thứ hai',
       title: 'Nhà máy Thủy điện Mường Kim II',
+      introTitle: 'Giới thiệu chung',
+      specsHeading: 'Thông số công trình Mường Kim II',
       lead: 'Bậc thủy điện trên suối Nậm Kim — nhánh trái của dòng Nậm Mu, nằm ngay hạ lưu Nhà máy Thủy điện Mường Kim khoảng 430 m, cạnh Quốc lộ 32, thuộc xã Mường Kim, tỉnh Lai Châu.',
       text: 'Nhà máy khai thác dòng chảy và độ dốc tự nhiên của suối Nậm Kim theo sơ đồ đường dẫn: nước từ đập tràn xả lũ toàn tuyến qua cửa nhận nước, đường hầm dài 1.573 m, tháp điều áp và đường ống áp lực tới 3 tổ máy tua-bin Francis trục ngang. Điện năng được nâng áp qua trạm biến áp 6,3/110 kV và hòa vào lưới điện quốc gia.',
       specs: [

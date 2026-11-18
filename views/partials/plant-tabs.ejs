@@ -1,0 +1,10 @@
+<%# Thanh chuyển nhanh giữa các nhà máy (mỗi nhà máy một trang riêng). locals: current (id nhà máy đang xem) %>
+<nav class="plant-tabs" aria-label="<%= t('plant.plantsTitle') %>">
+  <div class="container">
+    <ul class="plant-tabs__list">
+      <% t('plant.plants').forEach((p, i) => { %>
+        <li><a href="<%= url('plant', p.id) %>" <%- locals.current === p.id ? 'aria-current="page"' : '' %>><span class="plant-tabs__num"><%= String(i + 1).padStart(2, '0') %></span><%= p.name %></a></li>
+      <% }) %>
+    </ul>
+  </div>
+</nav>

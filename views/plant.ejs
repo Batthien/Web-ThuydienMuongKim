@@ -2,21 +2,16 @@
 <%
   const L = t('locale');
   const vi = lang === 'vi';
-  const specs = [
-    ['gauge', t('plant.specs.capacity'), h.formatNumber(settings.capacity_mw, L) + ' MW'],
-    ['cog', t('plant.specs.units'), settings.units + ' ' + t('common.units')],
-    ['zap', t('plant.specs.turbine'), vi ? settings.turbine_vi : settings.turbine_en],
-    ['growth', t('plant.specs.output'), h.formatNumber(settings.annual_output_kwh, L) + ' kWh/' + (vi ? 'năm' : 'year')],
-    ['droplet', t('plant.specs.river'), vi ? settings.river_vi : settings.river_en],
-    ['shield', t('plant.specs.dam'), vi ? settings.dam_vi : settings.dam_en],
-    ['calendar', t('plant.specs.operation'), settings.year_operation],
-    ['users', t('plant.specs.buyer'), vi ? settings.buyer_vi : settings.buyer_en],
-    ['pin', t('plant.specs.location'), vi ? settings.address_vi : settings.address_en],
-  ];
+  const mk2 = t('plant.mk2');
+  // Ảnh đại diện và dòng tóm tắt của từng nhà máy (nhà máy chưa có thông tin hiển thị "đang cập nhật")
+  const cover = { 'muong-kim': '/media/plant/plant-03', 'muong-kim-2': '/media/plant-mk2/plant-mk2-01' };
+  const summary = {
+    'muong-kim': `${h.formatNumber(settings.capacity_mw, L)} MW · ${settings.units} ${t('common.units')} · ${vi ? 'vận hành từ' : 'in operation since'} ${settings.year_operation}`,
+    'muong-kim-2': `${mk2.specs[0].value} · ${mk2.specs[1].value}`,
+  };
 %>
-<%- include('partials/page-hero', { heroTitle: t('plant.title'), heroLead: t('plant.lead'), crumbs: [{ label: t('nav.plant') }] }) %>
+<%- include('partials/page-hero', { heroTitle: t('plant.overviewTitle'), heroLead: t('plant.overviewLead'), crumbs: [{ label: t('nav.plant') }] }) %>
 
-<%# Cụm nhà máy: mỗi ô có id để menu Danh mục trỏ tới %>
 <section class="section plants" aria-labelledby="plants-title">
   <div class="container">
     <div class="section-head reveal">
@@ -25,65 +20,19 @@
     </div>
     <ul class="plant-list">
       <% t('plant.plants').forEach((p, i) => { %>
-        <li class="plant-card reveal"<%- p.detail ? '' : ` id="${p.id}"` %>>
-          <span class="plant-card__num"><%= String(i + 1).padStart(2, '0') %></span>
-          <h3><%= p.name %></h3>
-          <% if (i === 0) { %>
-            <p><%= h.formatNumber(settings.capacity_mw, L) %> MW · <%= settings.units %> <%= t('common.units') %> · <%= vi ? 'vận hành từ' : 'in operation since' %> <%= settings.year_operation %></p>
-            <a class="link-arrow" href="#thong-so"><%= t('plant.specsTitle') %> <%- icon('arrow-right') %></a>
-          <% } else if (p.detail) { const d = t('plant.' + p.detail); %>
-            <p><%= d.specs[0].value %> · <%= d.specs[1].value %></p>
-            <a class="link-arrow" href="#<%= p.id %>"><%= t('common.readMore') %> <%- icon('arrow-right') %></a>
-          <% } else { %>
-            <p class="muted"><%= t('plant.plantsPending') %></p>
-          <% } %>
+        <li>
+          <a class="plant-card reveal<%= cover[p.id] ? ' plant-card--photo' : '' %>" href="<%= url('plant', p.id) %>">
+            <% if (cover[p.id]) { %><span class="plant-card__media"><%- h.img(cover[p.id], '', { sizes: '(min-width: 1024px) 300px, (min-width: 561px) 50vw, 100vw', width: 640 }) %></span><% } %>
+            <span class="plant-card__body">
+              <span class="plant-card__num"><%= String(i + 1).padStart(2, '0') %></span>
+              <span class="plant-card__name"><%= p.name %></span>
+              <span class="plant-card__text<%= summary[p.id] ? '' : ' muted' %>"><%= summary[p.id] || t('plant.plantsPending') %></span>
+              <span class="link-arrow"><%= t('common.readMore') %> <%- icon('arrow-right') %></span>
+            </span>
+          </a>
         </li>
       <% }) %>
     </ul>
-  </div>
-</section>
-
-<section class="section section--tint plant-anchor" id="thong-so">
-  <div class="container">
-    <div class="section-head reveal">
-      <p class="eyebrow"><%= t('plant.specsTitle') %></p>
-      <h2 class="section-title"><%= vi ? 'Công trình thủy điện trên suối Nậm Mu' : 'A hydropower scheme on the Nam Mu stream' %></h2>
-    </div>
-    <dl class="spec-grid">
-      <% specs.forEach(([ic, label, value]) => { %>
-        <div class="spec reveal">
-          <span class="spec__icon"><%- icon(ic) %></span>
-          <dt><%= label %></dt>
-          <dd><%= value %></dd>
-        </div>
-      <% }) %>
-    </dl>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container split">
-    <div class="split__media reveal">
-      <div class="rounded-media"><%- h.img('/media/dam/dam-01', vi ? 'Đập tràn tự do xả lũ trên suối Nậm Mu' : 'Free-overflow spillway on the Nam Mu stream in flood', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
-    </div>
-    <div class="split__text reveal">
-      <p class="eyebrow"><%= vi ? 'Công trình đầu mối' : 'Headworks' %></p>
-      <h2 class="section-title"><%= t('plant.damTitle') %></h2>
-      <p class="lead"><%= t('plant.damText') %></p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container split split--reverse">
-    <div class="split__media reveal">
-      <div class="rounded-media"><%- h.img('/media/plant/plant-03', vi ? 'Nhà máy đặt 3 tổ máy Francis trục ngang' : 'Powerhouse with three horizontal Francis units', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
-    </div>
-    <div class="split__text reveal">
-      <p class="eyebrow"><%= vi ? 'Nhà máy' : 'Powerhouse' %></p>
-      <h2 class="section-title"><%= t('plant.houseTitle') %></h2>
-      <p class="lead"><%= t('plant.houseText') %></p>
-    </div>
   </div>
 </section>
 
@@ -118,66 +67,6 @@
         <figure><%- h.img(p.src, t('gallery.albums.safety'), { sizes: '(min-width: 1024px) 280px, 50vw', width: 640 }) %></figure>
       <% }) %>
     </div>
-  </div>
-</section>
-
-<section class="section section--tint">
-  <div class="container">
-    <div class="section-head section-head--row reveal">
-      <div>
-        <p class="eyebrow"><%= t('nav.gallery') %></p>
-        <h2 class="section-title"><%= t('plant.galleryTitle') %></h2>
-      </div>
-      <a class="link-arrow" href="<%= url('gallery') %>"><%= t('common.viewAll') %> <%- icon('arrow-right') %></a>
-    </div>
-    <div class="gallery-grid gallery-grid--masonry" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
-      <% photos.forEach((p) => { %>
-        <a class="gallery-grid__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-caption="<%= t('gallery.albums.' + p.album) %>">
-          <%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: '(min-width: 1024px) 400px, 50vw', width: 640 }) %>
-          <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
-        </a>
-      <% }) %>
-    </div>
-  </div>
-</section>
-<% const mk2 = t('plant.mk2'); const mk2Photos = h.gallery.filter((g) => g.album === 'plant-mk2'); %>
-<section class="section plant-detail" id="muong-kim-2" aria-labelledby="mk2-title">
-  <div class="container">
-    <div class="split split--top plant-detail__intro">
-      <div class="split__text reveal">
-        <p class="eyebrow"><%= mk2.eyebrow %></p>
-        <h2 class="section-title" id="mk2-title"><%= mk2.title %></h2>
-        <p class="lead"><%= mk2.lead %></p>
-        <p><%= mk2.text %></p>
-      </div>
-      <% if (mk2Photos[0]) { %>
-      <div class="split__media reveal">
-        <div class="rounded-media"><%- h.img(mk2Photos[0].src, mk2.captions[0], { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
-      </div>
-      <% } %>
-    </div>
-    <dl class="spec-grid plant-detail__specs">
-      <% mk2.specs.forEach((sp) => { %>
-        <div class="spec reveal">
-          <span class="spec__icon"><%- icon(sp.icon) %></span>
-          <dt><%= sp.label %></dt>
-          <dd><%= sp.value %></dd>
-        </div>
-      <% }) %>
-    </dl>
-    <p class="plant-detail__source muted"><%= mk2.source %></p>
-    <% if (mk2Photos.length > 1) { %>
-    <h3 class="plant-detail__photos-title reveal"><%= mk2.photosTitle %></h3>
-    <div class="mosaic" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
-      <% mk2Photos.slice(1).forEach((p, i) => { const cap = mk2.captions[mk2Photos.indexOf(p)] || mk2.title; %>
-        <a class="mosaic__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= cap %>">
-          <%- h.img(p.src, cap, { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
-          <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
-          <span class="sr-only"><%= t('gallery.open') %></span>
-        </a>
-      <% }) %>
-    </div>
-    <% } %>
   </div>
 </section>
 <%- include('partials/foot') %>

@@ -90,9 +90,8 @@ function createRouter(lang) {
       res.render('about', { culture: [...pick('anniversary', 4), ...pick('sports', 3), ...pick('travel', 2)] });
     },
     plant(req, res) {
-      setPage(res, 'plant', { title: t('plant.title'), description: t('plant.lead'), image: h.imgUrl('/media/plant/plant-04', 1280) });
-      const photos = h.gallery.filter((g) => ['dam', 'plant', 'office'].includes(g.album));
-      res.render('plant', { photos, safety: h.gallery.filter((g) => g.album === 'safety') });
+      setPage(res, 'plant', { title: t('plant.overviewTitle'), description: t('plant.overviewLead'), image: h.imgUrl('/media/plant/plant-04', 1280) });
+      res.render('plant', { safety: h.gallery.filter((g) => g.album === 'safety') });
     },
     ir(req, res) {
       setPage(res, 'ir', { title: t('ir.title'), description: t('ir.lead') });
@@ -142,6 +141,16 @@ function createRouter(lang) {
         published: post.published_at,
       }, post.slug);
       return res.render('post', { post, related: q.related.all(post.id, post.category) });
+    }
+    if (key === 'plant') {
+      const plant = t('plant.plants').find((p) => p.id === req.params.slug);
+      if (!plant) return next();
+      const mk2 = t('plant.mk2');
+      const lead = plant.id === 'muong-kim' ? t('plant.lead') : plant.id === 'muong-kim-2' ? mk2.lead : t('plant.plantsPending');
+      const albums = { 'muong-kim': ['dam', 'plant', 'office'], 'muong-kim-2': ['plant-mk2'] }[plant.id] || [];
+      const photos = h.gallery.filter((g) => albums.includes(g.album));
+      setPage(res, 'plant', { title: plant.name, description: h.truncate(lead, 160), ...(photos[0] && { image: h.imgUrl(photos[0].src, 1280) }) }, plant.id);
+      return res.render('plant-detail', { plant, photos });
     }
     if (key === 'careers') {
       const job = q.jobBySlug.get(req.params.slug);
