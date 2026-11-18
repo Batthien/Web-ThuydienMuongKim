@@ -168,6 +168,15 @@ module.exports = {
     safetyTitle: 'Safety comes first',
     safetyText: 'The Company runs regular occupational safety, firefighting and rescue training for all employees, and works closely with authorities on disaster prevention and dam safety.',
     galleryTitle: 'Plant photos',
+    plantsTitle: 'Our plants',
+    plantsHeading: 'Hydropower plant cluster',
+    plantsPending: 'Details coming soon.',
+    plants: [
+      { id: 'muong-kim', name: 'Muong Kim Hydropower Plant' },
+      { id: 'muong-kim-2', name: 'Muong Kim II Hydropower Plant' },
+      { id: 'phieng-luc', name: 'Phieng Luc Hydropower Plant' },
+      { id: 'ho-bon-2', name: 'Ho Bon 2 Hydropower Plant' },
+    ],
   },
   ir: {
     title: 'Investor Relations',

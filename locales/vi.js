@@ -168,6 +168,15 @@ module.exports = {
     safetyTitle: 'An toàn là ưu tiên hàng đầu',
     safetyText: 'Công ty duy trì công tác huấn luyện an toàn, phòng cháy chữa cháy và cứu nạn cứu hộ định kỳ cho toàn bộ người lao động; phối hợp chặt chẽ với cơ quan chức năng trong công tác phòng chống thiên tai, an toàn đập.',
     galleryTitle: 'Hình ảnh nhà máy',
+    plantsTitle: 'Các nhà máy',
+    plantsHeading: 'Cụm nhà máy thủy điện',
+    plantsPending: 'Thông tin chi tiết đang được cập nhật.',
+    plants: [
+      { id: 'muong-kim', name: 'Nhà máy Thủy điện Mường Kim' },
+      { id: 'muong-kim-2', name: 'Nhà máy Thủy điện Mường Kim II' },
+      { id: 'phieng-luc', name: 'Nhà máy Thủy điện Phiêng Lúc' },
+      { id: 'ho-bon-2', name: 'Nhà máy Thủy điện Hồ Bốn 2' },
+    ],
   },
   ir: {
     title: 'Quan hệ cổ đông',

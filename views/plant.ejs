@@ -16,7 +16,31 @@
 %>
 <%- include('partials/page-hero', { heroTitle: t('plant.title'), heroLead: t('plant.lead'), crumbs: [{ label: t('nav.plant') }] }) %>
 
-<section class="section">
+<%# Cụm nhà máy: mỗi ô có id để menu Danh mục trỏ tới %>
+<section class="section plants" aria-labelledby="plants-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow"><%= t('plant.plantsTitle') %></p>
+      <h2 class="section-title" id="plants-title"><%= t('plant.plantsHeading') %></h2>
+    </div>
+    <ul class="plant-list">
+      <% t('plant.plants').forEach((p, i) => { %>
+        <li class="plant-card reveal" id="<%= p.id %>">
+          <span class="plant-card__num"><%= String(i + 1).padStart(2, '0') %></span>
+          <h3><%= p.name %></h3>
+          <% if (i === 0) { %>
+            <p><%= h.formatNumber(settings.capacity_mw, L) %> MW · <%= settings.units %> <%= t('common.units') %> · <%= vi ? 'vận hành từ' : 'in operation since' %> <%= settings.year_operation %></p>
+            <a class="link-arrow" href="#thong-so"><%= t('plant.specsTitle') %> <%- icon('arrow-right') %></a>
+          <% } else { %>
+            <p class="muted"><%= t('plant.plantsPending') %></p>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</section>
+
+<section class="section section--tint plant-anchor" id="thong-so">
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><%= t('plant.specsTitle') %></p>
@@ -34,7 +58,7 @@
   </div>
 </section>
 
-<section class="section section--tint">
+<section class="section">
   <div class="container split">
     <div class="split__media reveal">
       <div class="rounded-media"><%- h.img('/media/dam/dam-01', vi ? 'Đập tràn tự do xả lũ trên suối Nậm Mu' : 'Free-overflow spillway on the Nam Mu stream in flood', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
