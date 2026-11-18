@@ -270,6 +270,8 @@
       sideBtn.focus();
     });
     sideMenu.querySelector('[data-side-close]')?.addEventListener('click', close);
+    // Bấm một mục: đóng ngăn kéo rồi để trình duyệt chuyển trang / cuộn tới mục
+    sideMenu.addEventListener('click', (e) => { if (e.target.closest('a[href]')) close(); });
     // Bấm ra ngoài ngăn kéo (vùng nền mờ) để đóng
     sideMenu.addEventListener('click', (e) => {
       const r = sideMenu.getBoundingClientRect();

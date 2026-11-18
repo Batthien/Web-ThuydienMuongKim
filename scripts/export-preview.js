@@ -55,7 +55,8 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
       .replace(/<img ([^>]*?)src="([^"]+?)(-(?:640|1280|1920)\.webp)"/g, '<img $1data-k="$2" src="$2$3"')
       .replace(IMG_RE, (m) => tokenFor(m))
       .replace(/href="\/admin[^"]*"/g, 'href="#" data-preview-disabled')
-      .replace(/href="(\/(?:vi|en)(?:\/[^"#?]*)?)(?:\?[^"#]*)?(#[^"]*)?"/g, (m, p) => `href="#${p}"`)
+      .replace(/href="(\/(?:vi|en)(?:\/[^"#?]*)?)(?:\?[^"#]*)?(#[^"]*)?"/g, (m, p, a) => `href="#${p}${a || ''}"`)
+      .replace(/(<a\b[^>]*?\s)href="#([A-Za-z][\w-]*)"/g, (m, pre, a) => `${pre}href="#${r}#${a}"`) // liên kết <a> tới mục trong cùng trang (không đụng biểu tượng <use>)
       .replace(/action="[^"]*"/g, 'action="#" data-preview-form');
     pages[r] = { title, bodyClass, body };
     process.stdout.write('.');
@@ -110,7 +111,8 @@ const runSite = () => {
 ${siteJs}
 };
 function render() {
-  let route = decodeURIComponent(location.hash.slice(1)) || '/vi';
+  const full = decodeURIComponent(location.hash.slice(1)) || '/vi';
+  let [route, anchor] = full.split('#');
   if (!PAGES[route]) route = route.startsWith('/en') ? '/en' : '/vi';
   const p = PAGES[route];
   const root = document.getElementById('preview-root');
@@ -126,7 +128,10 @@ function render() {
   }, true));
   runSite();
   // Về đầu trang mới (sau khi nội dung đã dựng xong)
-  requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+  requestAnimationFrame(() => {
+    const el = anchor && document.getElementById(anchor);
+    if (el) el.scrollIntoView({ behavior: 'instant' }); else window.scrollTo({ top: 0, behavior: 'instant' });
+  });
 }
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.addEventListener('hashchange', render);
