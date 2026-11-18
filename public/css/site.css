@@ -926,3 +926,7 @@ body.side-open { overflow: hidden; }
 .plant-detail__specs { margin-top: 8px; }
 .plant-detail__source { margin: 14px 0 0; font-size: .85rem; font-style: italic; }
 .plant-detail__photos-title { margin: clamp(28px, 4vw, 48px) 0 18px; font-size: 1.3rem; color: var(--brand-900); }
+/* Mường Kim II: hai đoạn giới thiệu cùng cỡ chữ, căn đều 2 bên */
+.plant-detail__intro .split__text .lead,
+.plant-detail__intro .split__text p:not(.eyebrow) { font-size: 1.08rem; line-height: 1.75; color: var(--muted); text-align: justify; hyphens: auto; margin: 0 0 1em; }
+.plant-detail__intro .split__text p:last-child { margin-bottom: 0; }
