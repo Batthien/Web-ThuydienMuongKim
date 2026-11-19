@@ -100,6 +100,7 @@ module.exports = {
     ],
     sectionNav: 'Sections on this page',
     historyTitle: 'Company history',
+    photosHeading: 'Our plants and dams',
     historyHeading: 'More than a decade of steady operation',
     timelineTitle: 'Milestones',
     timeline: [

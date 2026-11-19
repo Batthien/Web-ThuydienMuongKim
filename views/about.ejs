@@ -21,9 +21,22 @@
       </dl>
     </aside>
   </div>
+  <% if (plantsStrip.length) { %>
+  <div class="container">
+    <ul class="plant-strip">
+      <% plantsStrip.forEach((p, i) => { %>
+        <li class="plant-strip__item reveal" style="--i:<%= i %>">
+          <%- h.img(p.src, p.plant, { sizes: '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
+          <span class="plant-strip__name"><%= p.plant %></span>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+  <% } %>
 </section>
 
 <section class="section section--dark about-timeline" aria-label="<%= t('about.timelineTitle') %>">
+  <div class="about-timeline__bg" aria-hidden="true"><%- h.img(timelineBg, '', { sizes: '100vw' }) %></div>
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow eyebrow--light"><%= t('about.timelineTitle') %></p>
@@ -76,6 +89,16 @@
       <p class="eyebrow"><%= t('about.visionTitle') %></p>
       <h2 class="section-title" id="vision-title"><%= t('about.visionHeading') %></h2>
     </div>
+    <% if (damRow.length) { %>
+    <div class="photo-row" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
+      <% damRow.forEach((p) => { %>
+        <a class="photo-row__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= p.caption %>">
+          <%- h.img(p.src, p.caption, { sizes: '(min-width: 1024px) 400px, 100vw', width: 640 }) %>
+          <span class="photo-row__cap"><%= p.plant %></span>
+        </a>
+      <% }) %>
+    </div>
+    <% } %>
     <div class="vm-grid">
       <article class="vm-card reveal">
         <span class="vm-card__icon"><%- icon('growth') %></span>
@@ -112,40 +135,21 @@
   </div>
 </section>
 
-<section class="section section--tint">
-  <div class="container split">
-    <div class="split__media reveal">
-      <div class="rounded-media"><%- h.img('/media/anniversary/anniversary-04', lang === 'vi' ? 'Ban lãnh đạo Công ty tại lễ kỷ niệm 10 năm thành lập' : 'Company leadership at the 10th anniversary ceremony', { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
-    </div>
-    <div class="split__text reveal">
-      <p class="eyebrow"><%= t('about.leaderTitle') %></p>
-      <div class="leader">
-        <span class="leader__avatar" aria-hidden="true"><img src="/img/mark.png" alt="" width="64" height="64"></span>
-        <div>
-          <h2 class="leader__name"><%= lang === 'vi' ? 'Ông ' : 'Mr. ' %><%= settings.director %></h2>
-          <p class="leader__role"><%= t('about.fields.repRole') %></p>
-        </div>
-      </div>
-      <p class="muted"><%= t('about.leaderNote') %></p>
-      <a class="link-arrow" href="<%= url('ir') %>?cat=governance"><%= t('ir.categories.governance') %> <%- icon('arrow-right') %></a>
-    </div>
-  </div>
-</section>
-
-<section class="section">
+<% if (gallery.length) { %>
+<section class="section section--tint about-photos" aria-labelledby="about-photos-title">
   <div class="container">
     <div class="section-head section-head--row reveal">
       <div>
-        <p class="eyebrow"><%= t('about.cultureTitle') %></p>
-        <h2 class="section-title"><%= lang === 'vi' ? 'Một tập thể — một gia đình' : 'One team — one family' %></h2>
-        <p class="lead"><%= t('about.cultureText') %></p>
+        <p class="eyebrow"><%= t('nav.gallery') %></p>
+        <h2 class="section-title" id="about-photos-title"><%= t('about.photosHeading') %></h2>
       </div>
-      <a class="link-arrow" href="<%= url('gallery') %>"><%= t('nav.gallery') %> <%- icon('arrow-right') %></a>
+      <a class="link-arrow" href="<%= url('gallery') %>"><%= t('common.viewAll') %> <%- icon('arrow-right') %></a>
     </div>
     <div class="mosaic" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
-      <% culture.forEach((p, i) => { %>
-        <a class="mosaic__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= t('gallery.albums.' + p.album) %>">
-          <%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
+      <% gallery.forEach((p, i) => { %>
+        <a class="mosaic__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= p.caption %>">
+          <%- h.img(p.src, p.caption, { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
+          <span class="mosaic__cap"><%= p.plant %></span>
           <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
           <span class="sr-only"><%= t('gallery.open') %></span>
         </a>
@@ -153,4 +157,5 @@
     </div>
   </div>
 </section>
+<% } %>
 <%- include('partials/foot') %>

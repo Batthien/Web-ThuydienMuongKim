@@ -87,8 +87,24 @@ function createRouter(lang) {
   const pages = {
     about(req, res) {
       setPage(res, 'about', { title: t('about.title'), description: t('about.lead') });
-      const pick = (album, n) => h.gallery.filter((g) => g.album === album).slice(0, n);
-      res.render('about', { culture: [...pick('anniversary', 4), ...pick('sports', 3), ...pick('travel', 2)] });
+      // Ảnh nhà máy & đập của cả cụm, kèm chú thích
+      const plantName = (album) => ({ 'plant-mk2': t('plant.mk2.title'), 'plant-pl': t('plant.pl.title'), 'plant-hb2': t('plant.hb2.title') }[album] || t('plant.title'));
+      const caps = { 'plant-mk2': t('plant.mk2.captions'), 'plant-pl': t('plant.pl.captions'), 'plant-hb2': t('plant.hb2.captions') };
+      const photo = (src) => {
+        const g = h.gallery.find((x) => x.src === src);
+        if (!g) return null;
+        const i = Number(src.slice(-2)) - 1;
+        const caption = caps[g.album] ? caps[g.album][i] : g.album === 'dam' ? `${plantName(g.album)} — ${t('plant.damTitle')}` : plantName(g.album);
+        return { src, plant: plantName(g.album), caption: caption || plantName(g.album) };
+      };
+      const list = (arr) => arr.map(photo).filter(Boolean);
+      res.render('about', {
+        plantsStrip: list(['/media/plant/plant-03', '/media/plant-mk2/plant-mk2-01', '/media/plant-pl/plant-pl-01', '/media/plant-hb2/plant-hb2-01']),
+        timelineBg: '/media/dam/dam-02',
+        damRow: list(['/media/dam/dam-01', '/media/plant-pl/plant-pl-05', '/media/plant-hb2/plant-hb2-03']),
+        gallery: list(['/media/plant-pl/plant-pl-04', '/media/plant-mk2/plant-mk2-03', '/media/plant/plant-04', '/media/plant-mk2/plant-mk2-05',
+          '/media/plant-pl/plant-pl-07', '/media/plant-hb2/plant-hb2-05', '/media/plant/plant-02', '/media/plant-pl/plant-pl-06', '/media/plant-mk2/plant-mk2-08']),
+      });
     },
     plant(req, res) {
       setPage(res, 'plant', { title: t('plant.overviewTitle'), description: t('plant.overviewLead'), image: h.imgUrl('/media/plant/plant-04', 1280) });

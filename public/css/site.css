@@ -983,3 +983,17 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .ir-lock .btn--ghost { border: 1.5px solid var(--brand-600); color: var(--brand-800); background: #fff; }
 .ir-lock .btn--ghost:hover { background: var(--sky-100); }
 .page-hero__lead { text-align: start; }
+
+/* Trang Giới thiệu: ảnh nhà máy & đập */
+.plant-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: clamp(28px, 4vw, 48px) 0 0; padding: 0; list-style: none; }
+.plant-strip__item { position: relative; overflow: hidden; border-radius: var(--radius); aspect-ratio: 4 / 3; background: var(--mist); box-shadow: var(--shadow-sm); }
+.plant-strip__item img, .photo-row__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.plant-strip__item:hover img, .photo-row__item:hover img { transform: scale(1.05); }
+.plant-strip__name, .photo-row__cap, .mosaic__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 14px 12px; color: #fff; font-weight: 600; font-size: .9rem; line-height: 1.3; text-align: start; background: linear-gradient(0deg, rgba(4, 30, 38, .85), transparent); pointer-events: none; }
+.about-timeline { position: relative; isolation: isolate; overflow: hidden; }
+.about-timeline__bg { position: absolute; inset: 0; z-index: -1; opacity: .18; }
+.about-timeline__bg img { width: 100%; height: 100%; object-fit: cover; }
+.photo-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: clamp(24px, 3vw, 40px); }
+.photo-row__item { position: relative; display: block; overflow: hidden; border-radius: var(--radius-lg); aspect-ratio: 16 / 10; cursor: zoom-in; box-shadow: var(--shadow-sm); }
+@media (max-width: 900px) { .plant-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .photo-row { grid-template-columns: 1fr; } .plant-strip { gap: 10px; } .plant-strip__name { font-size: .8rem; padding: 22px 10px 8px; } }

@@ -100,6 +100,7 @@ module.exports = {
     ],
     sectionNav: 'Các mục trong trang giới thiệu',
     historyTitle: 'Lịch sử công ty',
+    photosHeading: 'Hình ảnh nhà máy và công trình đập',
     historyHeading: 'Hơn một thập kỷ vận hành bền bỉ',
     timelineTitle: 'Dấu mốc phát triển',
     timeline: [
