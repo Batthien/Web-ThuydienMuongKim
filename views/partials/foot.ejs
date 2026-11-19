@@ -33,7 +33,7 @@
     <div>
       <h2 class="site-footer__title"><%= t('footer.contact') %></h2>
       <ul class="site-footer__contact">
-        <li><%- icon('pin') %><span><%= lang === 'en' ? settings.address_en : settings.address_vi %></span></li>
+        <li><%- icon('pin') %><a href="<%= (settings.map_url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(settings.map_query || ''))) %>" target="_blank" rel="noopener" title="<%= t('contact.mapOpen') %>"><%= lang === 'en' ? settings.address_en : settings.address_vi %></a></li>
         <li><%- icon('phone') %><a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%= settings.phone %></a></li>
         <li><%- icon('mail') %><a href="mailto:<%= settings.email %>"><%= settings.email %></a></li>
       </ul>

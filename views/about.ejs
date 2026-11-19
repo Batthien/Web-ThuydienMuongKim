@@ -15,7 +15,7 @@
         <div><dt><%= t('about.fields.nameEn') %></dt><dd><%= settings.company_name_en %></dd></div>
         <div><dt><%= t('about.fields.tax') %></dt><dd><%= settings.tax_code %></dd></div>
         <div><dt><%= t('about.fields.rep') %></dt><dd><%= lang === 'vi' ? 'Ông ' : 'Mr. ' %><%= settings.director %> – <%= t('about.fields.repRole') %></dd></div>
-        <div><dt><%= t('about.fields.address') %></dt><dd><%= lang === 'en' ? settings.address_en : settings.address_vi %></dd></div>
+        <div><dt><%= t('about.fields.address') %></dt><dd><a href="<%= (settings.map_url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(settings.map_query || ''))) %>" target="_blank" rel="noopener" title="<%= t('contact.mapOpen') %>"><%= lang === 'en' ? settings.address_en : settings.address_vi %></a></dd></div>
         <div><dt><%= t('about.fields.phone') %></dt><dd><a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%= settings.phone %></a></dd></div>
         <div><dt><%= t('about.fields.email') %></dt><dd><a href="mailto:<%= settings.email %>"><%= settings.email %></a></dd></div>
       </dl>
