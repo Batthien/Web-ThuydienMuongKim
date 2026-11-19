@@ -101,7 +101,6 @@ function createRouter(lang) {
       res.render('about', {
         plantsStrip: list(['/media/plant/plant-03', '/media/plant-mk2/plant-mk2-01', '/media/plant-pl/plant-pl-01', '/media/plant-hb2/plant-hb2-01']),
         timelineBg: '/media/dam/dam-02',
-        damRow: list(['/media/dam/dam-01', '/media/plant-pl/plant-pl-05', '/media/plant-hb2/plant-hb2-03']),
         gallery: list(['/media/plant-pl/plant-pl-04', '/media/plant-mk2/plant-mk2-03', '/media/plant/plant-04', '/media/plant-mk2/plant-mk2-05',
           '/media/plant-pl/plant-pl-07', '/media/plant-hb2/plant-hb2-05', '/media/plant/plant-02', '/media/plant-pl/plant-pl-06', '/media/plant-mk2/plant-mk2-08']),
       });

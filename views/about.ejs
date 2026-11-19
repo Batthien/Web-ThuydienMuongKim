@@ -89,16 +89,6 @@
       <p class="eyebrow"><%= t('about.visionTitle') %></p>
       <h2 class="section-title" id="vision-title"><%= t('about.visionHeading') %></h2>
     </div>
-    <% if (damRow.length) { %>
-    <div class="photo-row" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
-      <% damRow.forEach((p) => { %>
-        <a class="photo-row__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= p.caption %>">
-          <%- h.img(p.src, p.caption, { sizes: '(min-width: 1024px) 400px, 100vw', width: 640 }) %>
-          <span class="photo-row__cap"><%= p.plant %></span>
-        </a>
-      <% }) %>
-    </div>
-    <% } %>
     <div class="vm-grid">
       <article class="vm-card reveal">
         <span class="vm-card__icon"><%- icon('growth') %></span>
