@@ -12,7 +12,7 @@ const spotlight = require('../lib/spotlight');
 const NEWS_PER_PAGE = 9;
 const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community'];
 const IR_CATEGORIES = ['disclosure', 'financial', 'annual', 'agm', 'governance'];
-const ALBUMS = ['dam', 'plant', 'plant-mk2', 'office', 'safety', 'anniversary', 'site', 'sports', 'travel'];
+const ALBUMS = ['dam', 'plant', 'plant-mk2', 'plant-pl', 'office', 'safety', 'anniversary', 'site', 'sports', 'travel'];
 
 const q = {
   latestPosts: db.prepare(`SELECT * FROM posts WHERE status='published' AND published_at <= date('now','+7 hours')
@@ -145,9 +145,8 @@ function createRouter(lang) {
     if (key === 'plant') {
       const plant = t('plant.plants').find((p) => p.id === req.params.slug);
       if (!plant) return next();
-      const mk2 = t('plant.mk2');
-      const lead = plant.id === 'muong-kim' ? t('plant.lead') : plant.id === 'muong-kim-2' ? mk2.lead : t('plant.plantsPending');
-      const albums = { 'muong-kim': ['dam', 'plant', 'office'], 'muong-kim-2': ['plant-mk2'] }[plant.id] || [];
+      const lead = plant.id === 'muong-kim' ? t('plant.lead') : plant.detail ? t('plant.' + plant.detail).lead : t('plant.plantsPending');
+      const albums = plant.id === 'muong-kim' ? ['dam', 'plant', 'office'] : plant.album ? [plant.album] : [];
       const photos = h.gallery.filter((g) => albums.includes(g.album));
       setPage(res, 'plant', { title: plant.name, description: h.truncate(lead, 160), ...(photos[0] && { image: h.imgUrl(photos[0].src, 1280) }) }, plant.id);
       return res.render('plant-detail', { plant, photos });

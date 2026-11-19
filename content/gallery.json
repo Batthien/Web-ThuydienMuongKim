@@ -700,5 +700,102 @@
       1920
     ],
     "ratio": 2.2222
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-01",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.6393
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-02",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3347
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-03",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.4639
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-06",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-07",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.8907
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-08",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3785
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-09",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 0.75
+  },
+  {
+    "album": "plant-pl",
+    "src": "/media/plant-pl/plant-pl-10",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 0.75
   }
 ]

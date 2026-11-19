@@ -3,9 +3,9 @@
   const L = t('locale');
   const vi = lang === 'vi';
   const id = plant.id;
-  const mk2 = t('plant.mk2');
+  const d = plant.detail ? t('plant.' + plant.detail) : null; // nội dung chi tiết (Mường Kim II, Phiêng Lúc...)
   // Dòng dưới tiêu đề: tóm tắt ngắn, không lặp lại đoạn giới thiệu bên dưới
-  const heroLead = id === 'muong-kim' ? t('plant.lead') : id === 'muong-kim-2' ? `${mk2.specs[0].value} · ${mk2.specs[1].value} · ${mk2.specs[4].value}` : t('plant.plantsPending');
+  const heroLead = id === 'muong-kim' ? t('plant.lead') : d ? `${d.specs[0].value} · ${d.specs[1].value} · ${d.specs[4].value}` : t('plant.plantsPending');
 %>
 <%- include('partials/page-hero', { heroTitle: plant.name, heroLead, crumbs: [{ label: t('nav.plant'), href: url('plant') }, { label: plant.name }] }) %>
 <%- include('partials/plant-tabs', { current: id }) %>
@@ -88,19 +88,19 @@
   </div>
 </section>
 
-<% } else if (id === 'muong-kim-2') { const mk2Photos = photos; %>
-<section class="section plant-detail" aria-labelledby="mk2-title">
+<% } else if (d) { %>
+<section class="section plant-detail" aria-labelledby="detail-title">
   <div class="container">
     <div class="split split--top plant-detail__intro">
       <div class="split__text reveal">
-        <p class="eyebrow"><%= mk2.eyebrow %></p>
-        <h2 class="section-title" id="mk2-title"><%= mk2.introTitle %></h2>
-        <p class="lead"><%= mk2.lead %></p>
-        <p><%= mk2.text %></p>
+        <p class="eyebrow"><%= d.eyebrow %></p>
+        <h2 class="section-title" id="detail-title"><%= d.introTitle %></h2>
+        <p class="lead"><%= d.lead %></p>
+        <p><%= d.text %></p>
       </div>
-      <% if (mk2Photos[0]) { %>
+      <% if (photos[0]) { %>
       <div class="split__media reveal">
-        <div class="rounded-media"><%- h.img(mk2Photos[0].src, mk2.captions[0], { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
+        <div class="rounded-media"><%- h.img(photos[0].src, d.captions[0], { sizes: '(min-width: 1024px) 560px, 100vw' }) %></div>
       </div>
       <% } %>
     </div>
@@ -111,10 +111,10 @@
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow"><%= t('plant.specsTitle') %></p>
-      <h2 class="section-title"><%= mk2.specsHeading %></h2>
+      <h2 class="section-title"><%= d.specsHeading %></h2>
     </div>
     <dl class="spec-grid">
-      <% mk2.specs.forEach((sp) => { %>
+      <% d.specs.forEach((sp) => { %>
         <div class="spec reveal">
           <span class="spec__icon"><%- icon(sp.icon) %></span>
           <dt><%= sp.label %></dt>
@@ -122,22 +122,22 @@
         </div>
       <% }) %>
     </dl>
-    <p class="plant-detail__source muted"><%= mk2.source %></p>
+    <p class="plant-detail__source muted"><%= d.source %></p>
   </div>
 </section>
 
-<% if (mk2Photos.length > 1) { %>
+<% if (photos.length > 1) { %>
 <section class="section">
   <div class="container">
     <div class="section-head section-head--row reveal">
       <div>
         <p class="eyebrow"><%= t('nav.gallery') %></p>
-        <h2 class="section-title"><%= mk2.photosTitle %></h2>
+        <h2 class="section-title"><%= d.photosTitle %></h2>
       </div>
       <a class="link-arrow" href="<%= url('gallery') %>"><%= t('common.viewAll') %> <%- icon('arrow-right') %></a>
     </div>
     <div class="mosaic" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
-      <% mk2Photos.slice(1).forEach((p, i) => { const cap = mk2.captions[mk2Photos.indexOf(p)] || mk2.title; %>
+      <% photos.slice(1).forEach((p, i) => { const cap = d.captions[photos.indexOf(p)] || d.title; %>
         <a class="mosaic__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= cap %>">
           <%- h.img(p.src, cap, { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
           <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>

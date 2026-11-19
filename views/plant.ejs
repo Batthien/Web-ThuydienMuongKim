@@ -2,13 +2,16 @@
 <%
   const L = t('locale');
   const vi = lang === 'vi';
-  const mk2 = t('plant.mk2');
   // Ảnh đại diện và dòng tóm tắt của từng nhà máy (nhà máy chưa có thông tin hiển thị "đang cập nhật")
-  const cover = { 'muong-kim': '/media/plant/plant-03', 'muong-kim-2': '/media/plant-mk2/plant-mk2-01' };
-  const summary = {
-    'muong-kim': `${h.formatNumber(settings.capacity_mw, L)} MW · ${settings.units} ${t('common.units')} · ${vi ? 'vận hành từ' : 'in operation since'} ${settings.year_operation}`,
-    'muong-kim-2': `${mk2.specs[0].value} · ${mk2.specs[1].value}`,
-  };
+  const cover = { 'muong-kim': '/media/plant/plant-03' };
+  const summary = { 'muong-kim': `${h.formatNumber(settings.capacity_mw, L)} MW · ${settings.units} ${t('common.units')} · ${vi ? 'vận hành từ' : 'in operation since'} ${settings.year_operation}` };
+  for (const p of t('plant.plants')) {
+    if (!p.detail) continue;
+    const d = t('plant.' + p.detail);
+    summary[p.id] = `${d.specs[0].value} · ${d.specs[1].value}`;
+    const first = h.gallery.find((g) => g.album === p.album);
+    if (first) cover[p.id] = first.src;
+  }
 %>
 <%- include('partials/page-hero', { heroTitle: t('plant.overviewTitle'), heroLead: t('plant.overviewLead'), crumbs: [{ label: t('nav.plant') }] }) %>
 

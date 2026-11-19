@@ -25,7 +25,14 @@ async function processImage(src, album, index) {
   const h0 = swap ? meta.width : meta.height;
   const widths = [];
   for (const w of WIDTHS) {
-    if (w > w0 && widths.length) break;
+    if (w > w0 && widths.length) {
+      // Ảnh gốc nhỏ hơn cỡ kế tiếp nhưng vẫn lớn hơn đáng kể cỡ trước: xuất thêm bản giữ nguyên kích thước gốc
+      if (w0 >= widths[widths.length - 1] * 1.3) {
+        await input.clone().webp({ quality: 74, effort: 5 }).toFile(path.join(dir, `${base}-${w}.webp`));
+        widths.push(w);
+      }
+      break;
+    }
     const target = Math.min(w, w0);
     await input.clone().resize({ width: target, withoutEnlargement: true })
       .webp({ quality: 74, effort: 5 })
