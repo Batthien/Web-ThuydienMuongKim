@@ -314,6 +314,7 @@ module.exports = {
     infoTitle: 'Contact details',
     formTitle: 'Send us a message',
     mapTitle: 'Location map',
+    mapOpen: 'Open in Google Maps / Directions',
     hours: 'Office hours', hoursValue: 'Monday – Friday: 7:30 – 17:00 (GMT+7)',
     topics: { general: 'General enquiry', partnership: 'Partnership – equipment & materials supply', investor: 'Shareholders – investors', other: 'Other' },
   },

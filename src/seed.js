@@ -13,7 +13,8 @@ const settings = {
   address_en: 'Trong La Village, Khao Mang Commune, Lao Cai Province, Vietnam',
   phone: '024.62.86.88.99',
   email: 'muongkimhp.jsc@gmail.com',
-  map_query: 'Khao Mang, Lào Cai, Việt Nam',
+  map_query: 'VVGR+GQ4, QL32, Khao Mang, Lào Cai, Việt Nam',
+  map_url: 'https://maps.app.goo.gl/8UznC7w2AXNzMnGA9',
   // Thông số nhà máy (số dùng dấu chấm thập phân, hiển thị theo ngôn ngữ)
   capacity_mw: '13.5',
   units: '3',

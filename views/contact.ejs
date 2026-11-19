@@ -20,8 +20,10 @@
   </div>
 </section>
 
+<% const mapLink = settings.map_url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(settings.map_query)); %>
 <section class="map-section" aria-label="<%= t('contact.mapTitle') %>">
-  <iframe title="<%= t('contact.mapTitle') %>" src="https://www.google.com/maps?q=<%= encodeURIComponent(settings.map_query) %>&hl=<%= lang %>&z=12&output=embed"
+  <iframe title="<%= t('contact.mapTitle') %>" src="https://www.google.com/maps?q=<%= encodeURIComponent(settings.map_query) %>&hl=<%= lang %>&z=15&output=embed"
     loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+  <a class="btn btn--primary map-section__open" href="<%= mapLink %>" target="_blank" rel="noopener"><%- icon('pin') %><span><%= t('contact.mapOpen') %></span></a>
 </section>
 <%- include('partials/foot') %>

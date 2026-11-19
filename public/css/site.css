@@ -1008,3 +1008,9 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 /* Thẻ Tầm nhìn nền đậm (cùng màu Sứ mệnh): nhãn trên nền đậm */
 .vm-card--accent .vm-card__chips li { background: rgba(255, 255, 255, .14); color: #fff; }
 .vm-card--accent .vm-card__chips .icon { color: var(--accent-soft); }
+
+/* Bản đồ: nút mở Google Maps */
+.map-section { position: relative; }
+.map-section__open { position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); gap: 8px; white-space: nowrap; box-shadow: 0 10px 28px -10px rgba(6, 47, 60, .7); }
+.map-section__open .icon { width: 18px; height: 18px; }
+@media (max-width: 560px) { .map-section__open { bottom: 16px; font-size: .9rem; } }

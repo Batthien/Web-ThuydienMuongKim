@@ -314,6 +314,7 @@ module.exports = {
     infoTitle: 'Thông tin liên hệ',
     formTitle: 'Gửi tin nhắn cho chúng tôi',
     mapTitle: 'Bản đồ vị trí',
+    mapOpen: 'Mở Google Maps / Chỉ đường',
     hours: 'Giờ làm việc', hoursValue: 'Thứ Hai – Thứ Sáu: 7:30 – 17:00',
     topics: { general: 'Thông tin chung', partnership: 'Hợp tác – cung cấp vật tư, thiết bị', investor: 'Cổ đông – nhà đầu tư', other: 'Khác' },
   },

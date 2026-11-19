@@ -333,7 +333,7 @@ const SETTING_GROUPS = [
     ['company_name_vi', 'Tên công ty (Tiếng Việt)'], ['company_name_en', 'Tên công ty (English)'], ['short_name', 'Tên ngắn'],
     ['tax_code', 'Mã số thuế'], ['director', 'Giám đốc / Người đại diện'],
     ['address_vi', 'Địa chỉ (Tiếng Việt)'], ['address_en', 'Địa chỉ (English)'],
-    ['phone', 'Điện thoại'], ['email', 'Email'], ['map_query', 'Từ khoá bản đồ Google Maps'], ['facebook_url', 'Facebook (URL)'],
+    ['phone', 'Điện thoại'], ['email', 'Email'], ['map_query', 'Vị trí trên bản đồ (mã Plus Code hoặc địa chỉ, vd VVGR+GQ4, QL32, Khao Mang, Lào Cai)'], ['map_url', 'Đường dẫn Google Maps (nút "Mở Google Maps")'], ['facebook_url', 'Facebook (URL)'],
   ]],
   ['Thông số nhà máy', [
     ['capacity_mw', 'Tổng công suất (MW) — dùng dấu chấm thập phân, vd 13.5'], ['units', 'Số tổ máy'],
@@ -360,6 +360,8 @@ router.post('/settings', requireCsrf, (req, res) => {
   for (const [, fields] of SETTING_GROUPS) for (const [k] of fields) values[k] = String(req.body[k] ?? '').trim();
   values.capacity_mw = values.capacity_mw.replace(',', '.');
   values.annual_output_kwh = values.annual_output_kwh.replace(/[^\d]/g, '');
+  // Chỉ nhận đường dẫn Google Maps
+  if (values.map_url && !/^https:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps|(www\.)?google\.[a-z.]+\/maps)\b/i.test(values.map_url)) values.map_url = '';
   saveSettings(values);
   flash(req, 'success', 'Đã lưu cấu hình.');
   res.redirect('/admin/settings');
