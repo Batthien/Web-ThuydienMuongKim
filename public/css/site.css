@@ -969,3 +969,6 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .mosaic--even { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 240px; }
 .mosaic--even .mosaic__item:first-child { grid-column: auto; grid-row: auto; }
 @media (max-width: 760px) { .mosaic--even { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 180px; } }
+
+/* Thẻ nhà máy: tên nhà máy căn trái (không giãn chữ) */
+.plant-card__name, .plant-card__text { text-align: start; }

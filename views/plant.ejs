@@ -27,7 +27,6 @@
           <a class="plant-card reveal<%= cover[p.id] ? ' plant-card--photo' : '' %>" href="<%= url('plant', p.id) %>">
             <% if (cover[p.id]) { %><span class="plant-card__media"><%- h.img(cover[p.id], '', { sizes: '(min-width: 1024px) 300px, (min-width: 561px) 50vw, 100vw', width: 640 }) %></span><% } %>
             <span class="plant-card__body">
-              <span class="plant-card__num"><%= String(i + 1).padStart(2, '0') %></span>
               <span class="plant-card__name"><%= p.name %></span>
               <span class="plant-card__text<%= summary[p.id] ? '' : ' muted' %>"><%= summary[p.id] || t('plant.plantsPending') %></span>
               <span class="link-arrow"><%= t('common.readMore') %> <%- icon('arrow-right') %></span>
