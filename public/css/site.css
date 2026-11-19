@@ -956,3 +956,9 @@ body.side-open { overflow: hidden; }
 
 /* Thẻ giá trị (trang chủ): nội dung căn đều 2 bên */
 .feature-card p { text-align: justify; hyphens: auto; }
+
+/* Toàn web: nội dung (đoạn văn, danh sách, mô tả) căn đều 2 bên.
+   Tiêu đề, nút, nhãn ngắn không bị ảnh hưởng; các khối vốn căn giữa vẫn giữ căn giữa. */
+main p, main li, main blockquote, .prose { text-align: justify; hyphens: auto; }
+.section-head--center p, .cta-band p, .empty-state p, .error-page p, .plant-pending__box p,
+.org li, .prod-tile p, .donut__label p { text-align: center; }
