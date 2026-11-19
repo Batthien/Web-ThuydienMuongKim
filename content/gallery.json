@@ -331,56 +331,6 @@
     "ratio": 1.7746
   },
   {
-    "album": "site",
-    "src": "/media/site/site-01",
-    "widths": [
-      640,
-      1280,
-      1920
-    ],
-    "ratio": 1.7746
-  },
-  {
-    "album": "site",
-    "src": "/media/site/site-02",
-    "widths": [
-      640,
-      1280,
-      1920
-    ],
-    "ratio": 1.7746
-  },
-  {
-    "album": "site",
-    "src": "/media/site/site-03",
-    "widths": [
-      640,
-      1280,
-      1920
-    ],
-    "ratio": 1.7746
-  },
-  {
-    "album": "site",
-    "src": "/media/site/site-04",
-    "widths": [
-      640,
-      1280,
-      1920
-    ],
-    "ratio": 1.7746
-  },
-  {
-    "album": "site",
-    "src": "/media/site/site-05",
-    "widths": [
-      640,
-      1280,
-      1920
-    ],
-    "ratio": 1.7746
-  },
-  {
     "album": "sports",
     "src": "/media/sports/sports-01",
     "widths": [

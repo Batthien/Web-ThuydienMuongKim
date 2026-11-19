@@ -1,7 +1,7 @@
 // Các mục chính của Thư viện ảnh và album ảnh thuộc mỗi mục (thứ tự = thứ tự hiển thị)
 const GALLERY_CATS = [
   ['plant', ['dam', 'plant', 'plant-mk2', 'plant-pl', 'plant-hb2']],
-  ['office', ['office', 'site']],
+  ['office', ['office']],
   ['union', ['anniversary', 'sports', 'travel']],
   ['5s', []],
   ['safety', []],
