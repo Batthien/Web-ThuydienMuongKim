@@ -1004,3 +1004,7 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .gallery-empty { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 8px 0 0; padding: 56px 24px; border: 1.5px dashed var(--line); border-radius: var(--radius-lg); color: var(--muted); text-align: center; }
 .gallery-empty[hidden] { display: none; }
 .gallery-empty .icon { width: 28px; height: 28px; color: var(--brand-400); }
+
+/* Thẻ Tầm nhìn nền đậm (cùng màu Sứ mệnh): nhãn trên nền đậm */
+.vm-card--accent .vm-card__chips li { background: rgba(255, 255, 255, .14); color: #fff; }
+.vm-card--accent .vm-card__chips .icon { color: var(--accent-soft); }
