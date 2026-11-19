@@ -9,7 +9,7 @@
 <%# Dải chữ chạy: nội dung sửa trong Quản trị → Cấu hình %>
 <% const tickerItems = String(settings['ticker_' + lang] || settings.ticker_vi || '').split(/\r?\n/).map((x) => x.trim()).filter(Boolean); %>
 <% if (tickerItems.length) { %>
-<section class="ticker" aria-label="<%= lang === 'en' ? 'Our power plants' : 'Các nhà máy' %>">
+<section class="ticker" aria-label="<%= lang === 'en' ? 'Our companies' : 'Các công ty' %>">
   <div class="ticker__track">
     <% for (let copy = 0; copy < 2; copy++) { %>
     <ul class="ticker__list"<%- copy ? ' aria-hidden="true"' : '' %>>

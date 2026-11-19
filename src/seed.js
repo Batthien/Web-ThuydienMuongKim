@@ -36,16 +36,16 @@ const settings = {
   prod_lead_en: en.prod.lead,
   // Dải chữ chạy dưới ảnh đầu trang chủ — mỗi dòng một mục
   ticker_vi: [
-    'Nhà máy Thủy điện Mường Kim',
-    'Nhà máy Thủy điện Mường Kim II',
-    'Nhà máy Thủy điện Phiêng Lúc',
-    'Nhà máy Thủy điện Hồ Bốn 2',
+    'Công ty cổ phần Thủy điện Mường Kim',
+    'Công ty cổ phần Thủy điện Than Uyên',
+    'Công ty cổ phần Thủy điện Phiêng Lúc',
+    'Công ty cổ phần Thủy điện Nậm Kim',
   ].join('\n'),
   ticker_en: [
-    'Muong Kim Hydropower Plant',
-    'Muong Kim II Hydropower Plant',
-    'Phieng Luc Hydropower Plant',
-    'Ho Bon 2 Hydropower Plant',
+    'Muong Kim Hydropower JSC',
+    'Than Uyen Hydropower JSC',
+    'Phieng Luc Hydropower JSC',
+    'Nam Kim Hydropower JSC',
   ].join('\n'),
 };
 
