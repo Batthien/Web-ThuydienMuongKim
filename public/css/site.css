@@ -953,3 +953,6 @@ body.side-open { overflow: hidden; }
 .plant-pending__icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: var(--sky-100); color: var(--brand-700); }
 .plant-pending__icon .icon { width: 30px; height: 30px; }
 .plant-detail { border-top: 0; }
+
+/* Thẻ giá trị (trang chủ): nội dung căn đều 2 bên */
+.feature-card p { text-align: justify; hyphens: auto; }
