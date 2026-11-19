@@ -23,7 +23,7 @@
       <select id="role" name="role" <%- isSelf ? 'disabled' : '' %> <%- errors.role ? 'aria-invalid="true"' : '' %>>
         <% Object.entries(ROLES).forEach(([k, label]) => { %><option value="<%= k %>" <%= u.role === k ? 'selected' : '' %>><%= label %></option><% }) %>
       </select>
-      <p class="field__hint"><%= isSelf ? 'Bạn không thể tự đổi vai trò của mình.' : 'Biên tập viên chỉ được viết và đăng tin tức.' %></p>
+      <p class="field__hint"><%= isSelf ? 'Bạn không thể tự đổi vai trò của mình.' : 'Biên tập viên: viết và đăng tin tức. Lãnh đạo, Cổ đông: chỉ xem mục Cổ đông trên website (không vào được trang quản trị nội dung).' %></p>
       <%- err('role') %>
     </div>
     <div class="grid-2">

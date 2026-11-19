@@ -248,6 +248,11 @@ module.exports = {
   },
   ir: {
     title: 'Quan hệ cổ đông',
+    lockedTitle: 'Mục dành riêng cho cổ đông',
+    lockedText: 'Thông tin trong mục Cổ đông chỉ dành cho cổ đông và Ban lãnh đạo Công ty. Vui lòng đăng nhập bằng tài khoản được Công ty cấp.',
+    lockedNoPerm: 'Tài khoản bạn đang dùng không có quyền xem mục này. Vui lòng đăng nhập bằng tài khoản cổ đông hoặc liên hệ Công ty.',
+    lockedLogin: 'Đăng nhập để xem',
+    lockedContact: 'Liên hệ Công ty',
     lead: 'Thông tin dành cho cổ đông và nhà đầu tư của Công ty cổ phần Thủy điện Mường Kim.',
     all: 'Tất cả',
     categories: {

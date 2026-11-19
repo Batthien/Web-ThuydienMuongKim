@@ -91,6 +91,8 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   ok(r.status === 302, 'Tải tài liệu cổ đông');
   html = await (await req('/vi/co-dong?cat=financial')).text();
   ok(html.includes('Báo cáo tài chính 2025'), 'Tài liệu hiển thị ở trang Cổ đông');
+  const docUrl = (html.match(/\/uploads\/docs\/[^"]+/) || [])[0];
+  ok(docUrl && (await req(docUrl)).status === 200, 'Quản trị viên tải được tệp tài liệu cổ đông');
   r = await req('/admin/messages/2/attachment');
   ok(r.status === 200, 'Tải CV ứng viên');
   ok((await req('/uploads/cv/' + 'x.pdf')).status === 404, 'Thư mục CV không công khai');
@@ -146,10 +148,21 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   ok(r.status === 422, 'Báo lỗi khi tạo tài khoản sai (422)');
   r = await req('/admin/users', form({ username: 'bientap', display_name: 'Biên tập', password: 'editor-password-1', confirm: 'editor-password-1', role: 'editor' }));
   ok(r.status === 302, 'Tạo tài khoản Biên tập viên');
+  r = await req('/admin/users', form({ username: 'codong', display_name: 'Cổ đông', password: 'holder-password-1', confirm: 'holder-password-1', role: 'shareholder' }));
+  ok(r.status === 302, 'Tạo tài khoản Cổ đông');
+  r = await req('/admin/users', form({ username: 'lanhdao', display_name: 'Lãnh đạo', password: 'leader-password-1', confirm: 'leader-password-1', role: 'leader' }));
+  ok(r.status === 302, 'Tạo tài khoản Lãnh đạo');
   r = await req('/admin/users/1/delete', form({}));
   ok(r.status === 302 && (await (await req('/admin/users')).text()).includes('Không thể xoá tài khoản đang đăng nhập'), 'Không cho xoá chính mình');
   await req('/admin/logout', form({}));
   ok((await (await req('/vi')).text()).includes('/admin/login'), 'Website hiện nút Đăng nhập khi chưa đăng nhập');
+  // --- Khách chưa đăng nhập không xem được mục Cổ đông ---
+  html = await (await req('/vi/co-dong')).text();
+  ok(!html.includes('Báo cáo tài chính 2025') && html.includes('/admin/login?next=%2Fvi%2Fco-dong'), 'Khách: mục Cổ đông bị khoá, có nút đăng nhập');
+  ok(!(await (await req('/en/investors')).text()).includes('Báo cáo tài chính 2025'), 'Khách: trang Investors (EN) bị khoá');
+  ok(!(await (await req('/vi')).text()).includes('Báo cáo tài chính 2025'), 'Khách: trang chủ không lộ tên tài liệu cổ đông');
+  r = await req(docUrl);
+  ok(r.status === 302 && r.headers.get('location').startsWith('/admin/login'), 'Khách: không tải được tệp tài liệu (chuyển đăng nhập)');
   html = await (await req('/admin/login')).text();
   csrf = csrfFrom(html);
   r = await req('/admin/login', form({ username: 'bientap', password: 'editor-password-1', next: '/admin' }));
@@ -163,6 +176,27 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   for (const p of ['/admin', '/admin/messages', '/admin/documents', '/admin/settings', '/admin/users', '/admin/messages/2/attachment']) {
     const res = await req(p);
     ok(res.status === 302 && res.headers.get('location') === '/admin/posts', `Biên tập viên bị chặn ${p}`);
+  }
+  r = await req('/vi/co-dong');
+  ok(r.status === 403 && !(await r.text()).includes('Báo cáo tài chính 2025'), 'Biên tập viên không xem được mục Cổ đông');
+  ok((await req(docUrl)).status === 403, 'Biên tập viên không tải được tệp tài liệu');
+
+  // --- Tài khoản Cổ đông / Lãnh đạo: chỉ xem mục Cổ đông ---
+  for (const [username, password, label] of [['codong', 'holder-password-1', 'Cổ đông'], ['lanhdao', 'leader-password-1', 'Lãnh đạo']]) {
+    csrf = csrfFrom(await (await req('/admin/account')).text()); // mã chống giả mạo của phiên hiện tại
+    r = await req('/admin/logout', form({}));
+    ok(r.status === 302, `Đăng xuất trước khi thử ${label}`);
+    html = await (await req('/admin/login?next=%2Fvi%2Fco-dong')).text();
+    csrf = csrfFrom(html);
+    r = await req('/admin/login', form({ username, password, next: '/vi/co-dong' }));
+    ok(r.status === 302 && r.headers.get('location') === '/vi/co-dong', `${label} đăng nhập → mục Cổ đông`);
+    ok((await (await req('/vi/co-dong')).text()).includes('Báo cáo tài chính 2025'), `${label} xem được tài liệu`);
+    ok((await req(docUrl)).status === 200, `${label} tải được tệp tài liệu`);
+    for (const p of ['/admin', '/admin/posts', '/admin/documents', '/admin/users']) {
+      const res = await req(p);
+      ok(res.status === 302 && res.headers.get('location') === '/vi/co-dong', `${label} không vào được ${p}`);
+    }
+    ok((await req('/admin/account')).status === 200, `${label} đổi được mật khẩu`);
   }
 
   server.close();

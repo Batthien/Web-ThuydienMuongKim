@@ -972,3 +972,14 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 
 /* Thẻ nhà máy: tên nhà máy căn trái (không giãn chữ) */
 .plant-card__name, .plant-card__text { text-align: start; }
+
+/* Mục Cổ đông khi chưa đăng nhập */
+.ir-lock { display: grid; justify-items: center; gap: 14px; padding: clamp(32px, 5vw, 56px); text-align: center; border-radius: var(--radius-lg); background: var(--mist); border: 1px solid var(--line); }
+.ir-lock .section-title { margin: 0; }
+.ir-lock p { text-align: center; max-width: 56ch; margin: 0; }
+.ir-lock__icon { display: grid; place-items: center; width: 68px; height: 68px; border-radius: 20px; background: var(--brand-800); color: #fff; }
+.ir-lock__icon .icon { width: 32px; height: 32px; }
+.ir-lock__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 6px; }
+.ir-lock .btn--ghost { border: 1.5px solid var(--brand-600); color: var(--brand-800); background: #fff; }
+.ir-lock .btn--ghost:hover { background: var(--sky-100); }
+.page-hero__lead { text-align: start; }

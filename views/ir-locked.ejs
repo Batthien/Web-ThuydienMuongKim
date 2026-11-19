@@ -1,0 +1,18 @@
+<%- include('partials/head') %>
+<%# Mục Cổ đông khi chưa đăng nhập / tài khoản không có quyền %>
+<%- include('partials/page-hero', { heroTitle: t('ir.title'), heroLead: t('ir.lead'), crumbs: [{ label: t('nav.ir') }] }) %>
+
+<section class="section">
+  <div class="container container--narrow">
+    <div class="ir-lock reveal">
+      <span class="ir-lock__icon"><%- icon('shield') %></span>
+      <h2 class="section-title"><%= t('ir.lockedTitle') %></h2>
+      <p class="lead"><%= isLoggedIn ? t('ir.lockedNoPerm') : t('ir.lockedText') %></p>
+      <div class="ir-lock__actions">
+        <a class="btn btn--primary" href="<%= loginUrl %>" rel="nofollow"><span><%= t('ir.lockedLogin') %></span><%- icon('arrow-right') %></a>
+        <a class="btn btn--ghost" href="<%= url('contact') %>"><span><%= t('ir.lockedContact') %></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include('partials/foot') %>

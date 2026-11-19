@@ -248,6 +248,11 @@ module.exports = {
   },
   ir: {
     title: 'Investor Relations',
+    lockedTitle: 'For shareholders only',
+    lockedText: 'Investor relations information is available only to shareholders and the Company’s management. Please sign in with the account provided by the Company.',
+    lockedNoPerm: 'The account you are using does not have access to this section. Please sign in with a shareholder account or contact the Company.',
+    lockedLogin: 'Sign in to view',
+    lockedContact: 'Contact us',
     lead: 'Information for shareholders and investors of Muong Kim Hydropower JSC.',
     all: 'All',
     categories: {

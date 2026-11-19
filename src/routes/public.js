@@ -78,7 +78,8 @@ function createRouter(lang) {
 
   router.get('/', (req, res) => {
     setPage(res, 'home', { title: t('home.title') });
-    const docs = q.latestDocs.all(4);
+    // Tên tài liệu cổ đông chỉ hiện cho người có quyền xem
+    const docs = res.locals.canViewIR ? q.latestDocs.all(4) : [];
     const tiles = spotlight.build({ t, url: res.locals.url, loc: res.locals.loc, posts: q.latestPosts.all(5), docs, jobs: q.jobs.all().slice(0, 4), IR_CATEGORIES });
     res.render('home', { docs, IR_CATEGORIES, spotlight: tiles });
   });
@@ -95,6 +96,11 @@ function createRouter(lang) {
     },
     ir(req, res) {
       setPage(res, 'ir', { title: t('ir.title'), description: t('ir.lead') });
+      if (!res.locals.canViewIR) {
+        res.set('Cache-Control', 'private, no-store');
+        return res.status(res.locals.isLoggedIn ? 403 : 200).render('ir-locked', { loginUrl: '/admin/login?next=' + encodeURIComponent(req.originalUrl) });
+      }
+      res.set('Cache-Control', 'private, no-store');
       const cat = IR_CATEGORIES.includes(req.query.cat) ? req.query.cat : '';
       const year = Number.parseInt(req.query.year, 10) || 0;
       res.render('ir', { docs: q.docs.all(cat, cat, year, year), years: q.docYears.all().map((r) => r.year), cat, year, IR_CATEGORIES });

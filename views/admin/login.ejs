@@ -1,7 +1,7 @@
 <%- include('_head', { title: 'Đăng nhập', bare: true }) %>
 <div class="login-card">
   <img class="login-card__logo" src="/img/logo.webp" alt="Thủy điện Mường Kim" width="520" height="242">
-  <h1>Đăng nhập quản trị</h1>
+  <h1><%= /^\/(vi\/co-dong|en\/investors)/.test(next) ? 'Đăng nhập mục Cổ đông' : 'Đăng nhập quản trị' %></h1>
   <% if (error) { %><div class="notice notice--error" role="alert"><%- icon('alert') %><span><%= error %></span></div><% } %>
   <form method="post" action="/admin/login" class="stack">
     <input type="hidden" name="_csrf" value="<%= csrf %>">

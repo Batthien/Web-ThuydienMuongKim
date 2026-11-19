@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const rateLimit = require('express-rate-limit');
 const { db, getSettings, saveSettings } = require('../db');
 const { csrfToken, requireCsrf, requireAdmin } = require('../lib/security');
+const { ROLES, VIEWER_ROLES, isIrPath } = require('../lib/access');
 const { dirs, docUpload, imageUpload, saveImage, removeFile } = require('../lib/uploads');
 const h = require('../lib/helpers');
 const mailer = require('../lib/mailer');
@@ -38,14 +39,15 @@ const flash = (req, type, text) => { req.session.flash = { type, text }; };
 const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: 'draft-8', legacyHeaders: false });
 
 router.get('/login', (req, res) => {
-  if (req.session.userId) return res.redirect('/admin');
+  if (req.session.userId) return res.redirect(isIrPath(req.query.next) ? req.query.next : '/admin');
   res.render('admin/login', { error: null, next: req.query.next || '/admin' });
 });
 
 router.post('/login', loginLimiter, requireCsrf, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE username = ?').get(String(req.body.username || '').trim());
   const ok = user && bcrypt.compareSync(String(req.body.password || ''), user.password_hash);
-  const next = /^\/admin(\/|$)/.test(req.body.next || '') ? req.body.next : '/admin';
+  const wanted = String(req.body.next || '');
+  const next = /^\/admin(\/|$)/.test(wanted) || isIrPath(wanted) ? wanted : '/admin';
   if (!ok) {
     res.status(401);
     return res.render('admin/login', { error: 'Tên đăng nhập hoặc mật khẩu không đúng.', next });
@@ -54,7 +56,9 @@ router.post('/login', loginLimiter, requireCsrf, (req, res) => {
   req.session.username = user.username;
   req.session.csrf = null; // đổi token sau khi đăng nhập
   db.prepare("UPDATE users SET last_login_at = datetime('now') WHERE id = ?").run(user.id);
-  res.redirect(user.role === 'admin' ? next : '/admin/posts');
+  if (user.role === 'admin') return res.redirect(next);
+  if (VIEWER_ROLES.includes(user.role)) return res.redirect(isIrPath(next) ? next : '/vi/co-dong');
+  res.redirect(isIrPath(next) ? next : '/admin/posts');
 });
 
 router.post('/logout', requireCsrf, (req, res) => {
@@ -65,7 +69,7 @@ router.post('/logout', requireCsrf, (req, res) => {
 router.use(requireAdmin);
 
 // ================= Phân quyền =================
-const ROLES = { admin: 'Quản trị viên', editor: 'Biên tập viên' };
+// Vai trò: xem src/lib/access.js (Lãnh đạo, Cổ đông chỉ được xem mục Cổ đông và đổi mật khẩu)
 // Biên tập viên chỉ được quản lý tin tức (và đổi mật khẩu của mình)
 const EDITOR_PATHS = [/^\/posts(\/|$)/, /^\/upload-image$/, /^\/account$/];
 
@@ -78,7 +82,12 @@ router.use((req, res, next) => {
   req.user = user;
   res.locals.me = user;
   res.locals.ROLES = ROLES;
-  if (user.role === 'admin' || EDITOR_PATHS.some((r) => r.test(req.path))) return next();
+  if (user.role === 'admin') return next();
+  if (VIEWER_ROLES.includes(user.role)) {
+    if (req.path === '/account') return next();
+    return res.redirect('/vi/co-dong');
+  }
+  if (EDITOR_PATHS.some((r) => r.test(req.path))) return next();
   if (req.path !== '/') flash(req, 'error', 'Tài khoản Biên tập viên không có quyền truy cập mục này.');
   res.redirect('/admin/posts');
 });

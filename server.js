@@ -13,6 +13,7 @@ const adminRouter = require('./src/routes/admin');
 const framing = require('./src/lib/framing');
 const pkg = require('./package.json');
 const logoWheel = require('./content/logo-wheel.json');
+const { roleOf, canViewIR } = require('./src/lib/access');
 
 const app = express();
 const ASSET_VERSION = `${pkg.version}-${Date.now().toString(36)}`;
@@ -46,7 +47,6 @@ app.use(compression());
 const long = { maxAge: '30d', immutable: true };
 app.use('/media', express.static(path.join(__dirname, 'public/media'), long));
 app.use('/uploads/images', express.static(path.join(config.uploadDir, 'images'), long));
-app.use('/uploads/docs', express.static(path.join(config.uploadDir, 'docs'), { maxAge: '1d' }));
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: config.isProd ? '7d' : 0 }));
 
 app.use(express.urlencoded({ extended: false, limit: '300kb' }));
@@ -59,17 +59,25 @@ app.use(cookieSession({
   maxAge: 8 * 60 * 60 * 1000,
 }));
 
+// Tài liệu cổ đông: chỉ Quản trị viên, Lãnh đạo, Cổ đông mới tải được (kể cả khi có sẵn đường dẫn)
+app.use('/uploads/docs', (req, res, next) => {
+  if (canViewIR(roleOf(req))) return next();
+  if (!req.session || !req.session.userId) return res.redirect('/admin/login?next=' + encodeURIComponent('/vi/co-dong'));
+  res.status(403).type('text/plain').send('Forbidden');
+}, express.static(path.join(config.uploadDir, 'docs'), { maxAge: 0, setHeaders: (r) => r.set('Cache-Control', 'private, no-store') }));
+
 app.use((req, res, next) => {
   res.locals.siteUrl = config.siteUrl;
   res.locals.currentPath = req.path.replace(/\/$/, '') || '/';
   res.locals.assetVersion = ASSET_VERSION;
   res.locals.logoWheel = logoWheel;
   res.locals.isLoggedIn = Boolean(req.session && req.session.userId);
+  res.locals.userRole = roleOf(req);
+  res.locals.canViewIR = canViewIR(res.locals.userRole);
   // Chỉ Quản trị viên mới có công cụ căn chỉnh ảnh trên trang
   res.locals.imageEditor = null;
   if (res.locals.isLoggedIn) {
-    const user = db.prepare('SELECT role FROM users WHERE id = ?').get(req.session.userId);
-    if (user && user.role === 'admin') res.locals.imageEditor = { slots: framing.SLOTS, maxZoom: framing.MAX_ZOOM };
+    if (res.locals.userRole === 'admin') res.locals.imageEditor = { slots: framing.SLOTS, maxZoom: framing.MAX_ZOOM };
   }
   res.locals.icon = (name, cls = '') => `<svg class="icon ${cls}" aria-hidden="true" focusable="false"><use href="#i-${name}"/></svg>`;
   next();
