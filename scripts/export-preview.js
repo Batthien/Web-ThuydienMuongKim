@@ -51,9 +51,9 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
     body = body
       .replace(/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" class="svg-sprite"[\s\S]*?<\/svg>/, '')
       .replace(/<script(?![^>]*application\/json)[^>]*>[\s\S]*?<\/script>/g, '') // giữ lại thẻ dữ liệu JSON của biểu đồ
-      .replace(/ (?:srcset|sizes)="[^"]*"/g, '') // mỗi ảnh chỉ còn 1 nguồn để nhúng trực tiếp
+      .replace(/ (?:data-)?(?:srcset|sizes)="[^"]*"/g, '') // mỗi ảnh chỉ còn 1 nguồn để nhúng trực tiếp
       // Đánh dấu ảnh để áp dụng căn chỉnh đã lưu (đường dẫn ảnh sẽ được thay bằng dữ liệu nhúng)
-      .replace(/<img ([^>]*?)src="([^"]+?)(-(?:640|1280|1920)\.webp)"/g, '<img $1data-k="$2" src="$2$3"')
+      .replace(/<img ([^>]*?)(data-src|(?<![\w-])src)="([^"]+?)(-(?:640|1280|1920)\.webp)"/g, '<img $1data-k="$3" $2="$3$4"')
       .replace(IMG_RE, (m) => tokenFor(m))
       .replace(/href="\/admin[^"]*"/g, 'href="#" data-preview-disabled')
       .replace(/href="(\/(?:vi|en)(?:\/[^"#?]*)?)(?:\?[^"#]*)?(#[^"]*)?"/g, (m, p, a) => `href="#${p}${a || ''}"`)
@@ -108,6 +108,33 @@ ${sprite}
 <script>
 const PAGES = ${JSON.stringify(pages).replace(/</g, '\\u003c')};
 const IMGS = ${JSON.stringify(imgData)};
+// Mỗi lần chuyển trang, mã của website chạy lại trên cùng một tài liệu: ghi nhận hẹn giờ / sự kiện / bộ quan sát
+// của trang trước để dọn đi, tránh chồng chất làm chậm dần.
+const tracked = { timers: [], intervals: [], listeners: [], observers: [] };
+const nativeST = window.setTimeout, nativeSI = window.setInterval, nativeAEL = EventTarget.prototype.addEventListener;
+const NativeIO = window.IntersectionObserver;
+function sandbox(fn) {
+  window.setTimeout = (...a) => { const id = nativeST.apply(window, a); tracked.timers.push(id); return id; };
+  window.setInterval = (...a) => { const id = nativeSI.apply(window, a); tracked.intervals.push(id); return id; };
+  EventTarget.prototype.addEventListener = function (type, cb, opts) {
+    if (this === window || this === document || (window.MediaQueryList && this instanceof MediaQueryList)) tracked.listeners.push([this, type, cb, opts]);
+    return nativeAEL.call(this, type, cb, opts);
+  };
+  if (NativeIO) window.IntersectionObserver = function (cb, o) { const io = new NativeIO(cb, o); tracked.observers.push(io); return io; };
+  try { fn(); } finally {
+    EventTarget.prototype.addEventListener = nativeAEL;
+    if (NativeIO) window.IntersectionObserver = NativeIO;
+    // setTimeout giữ bản ghi nhận vì trình chiếu tự hẹn giờ lại liên tục
+  }
+}
+function cleanup() {
+  tracked.timers.forEach((id) => clearTimeout(id));
+  tracked.intervals.forEach((id) => clearInterval(id));
+  tracked.listeners.forEach(([t, type, cb, opts]) => t.removeEventListener(type, cb, opts));
+  tracked.observers.forEach((io) => io.disconnect());
+  tracked.timers = []; tracked.intervals = []; tracked.listeners = []; tracked.observers = [];
+}
+window.__mkImg = (u) => u.replace(/mkimg(\\d+)/, (m, i) => IMGS[i]);
 const runSite = () => {
 ${siteJs}
 };
@@ -117,7 +144,8 @@ function render() {
   if (!PAGES[route]) route = route.startsWith('/en') ? '/en' : '/vi';
   const p = PAGES[route];
   const root = document.getElementById('preview-root');
-  root.innerHTML = p.body.replace(/mkimg(\\d+)/g, (m, i) => IMGS[i]); // ảnh nhúng trực tiếp (data URI), chạy được cả khi mở file từ ổ đĩa
+  cleanup(); // dọn mã của trang trước
+  root.innerHTML = p.body.replace(/(data-src=")?mkimg(\\d+)/g, (m, pre, i) => (pre ? m : IMGS[i])); // ảnh nhúng trực tiếp; ảnh hoãn giữ mã tới khi cần
   document.title = p.title.replace(/&amp;/g, '&');
   document.body.className = p.bodyClass;
   document.documentElement.lang = route.slice(1, 3);
@@ -127,7 +155,7 @@ function render() {
   root.querySelectorAll('form[data-preview-form]').forEach((f) => f.addEventListener('submit', (e) => {
     e.preventDefault(); e.stopImmediatePropagation(); alert('Bản xem thử: biểu mẫu chưa gửi được. Trên website thật, tin nhắn sẽ được gửi tới Công ty.');
   }, true));
-  runSite();
+  sandbox(runSite);
   // Về đầu trang mới (sau khi nội dung đã dựng xong)
   requestAnimationFrame(() => {
     const el = anchor && document.getElementById(anchor);

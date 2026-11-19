@@ -62,7 +62,7 @@ function formatBytes(n) {
  * Ảnh responsive. base = '/media/plant/plant-01' (không đuôi) — các bản -640/-1280/-1920.webp.
  * Ảnh ngoài hệ thống (đường dẫn có đuôi) được dùng nguyên bản.
  */
-function img(base, alt, { sizes = '100vw', cls = '', eager = false, width, height } = {}) {
+function img(base, alt, { sizes = '100vw', cls = '', eager = false, defer = false, width, height } = {}) {
   if (!base) return '';
   const attrs = [];
   if (/\.(webp|jpe?g|png|gif|svg|avif)$/i.test(base)) {
@@ -72,8 +72,10 @@ function img(base, alt, { sizes = '100vw', cls = '', eager = false, width, heigh
     const widths = g ? g.widths : [640, 1280];
     const ratio = g ? g.ratio : 16 / 9;
     const largest = widths[widths.length - 1];
-    attrs.push(`src="${base}-${widths.includes(1280) ? 1280 : largest}.webp"`);
-    attrs.push(`srcset="${widths.map((w) => `${base}-${w}.webp ${w}w`).join(', ')}"`);
+    // defer: ảnh ẩn trong trình chiếu — chưa tải cho tới khi sắp hiển thị (site.js gọi loadImg)
+    const p = defer ? 'data-' : '';
+    attrs.push(`${p}src="${base}-${widths.includes(1280) ? 1280 : largest}.webp"`);
+    attrs.push(`${p}srcset="${widths.map((w) => `${base}-${w}.webp ${w}w`).join(', ')}"`);
     attrs.push(`sizes="${sizes}"`);
     attrs.push(`width="${width || 1280}" height="${height || Math.round((width || 1280) / ratio)}"`);
   }

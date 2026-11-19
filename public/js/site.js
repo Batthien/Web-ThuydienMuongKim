@@ -9,6 +9,16 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  // Nạp ảnh đang hoãn (data-src) — dùng cho trình chiếu đầu trang và các ô tin nổi bật
+  const loadImg = (img) => {
+    if (!img || !img.dataset.src) return;
+    const fix = window.__mkImg || ((u) => u); // bản xem thử 1 file: đổi mã ảnh thành dữ liệu nhúng
+    if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+    img.src = fix(img.dataset.src);
+    delete img.dataset.src; delete img.dataset.srcset;
+  };
+  const afterLoad = (fn) => (document.readyState === 'complete' ? setTimeout(fn, 800) : window.addEventListener('load', fn, { once: true }));
+
   // ---- Trình chiếu ảnh nền (Đập & Nhà máy) ----
   const slideBox = document.querySelector('[data-slides]');
   const slideCtl = document.querySelector('[data-slide-controls]');
@@ -23,14 +33,14 @@
     let paused = false;
 
     // Ảnh sau được tải ngầm sau khi trang tải xong để không làm chậm ảnh đầu
-    const preload = (i) => { const img = imgs[(i + imgs.length) % imgs.length]; if (img) img.loading = 'eager'; };
-    window.addEventListener('load', () => preload(1), { once: true });
+    const preload = (i) => loadImg(imgs[(i + imgs.length) % imgs.length]);
+    afterLoad(() => preload(1));
 
     const go = async (n) => {
       const next = (n + imgs.length) % imgs.length;
       if (next === current) return;
       const img = imgs[next];
-      img.loading = 'eager';
+      loadImg(img);
       try { await img.decode(); } catch { /* vẫn chuyển ảnh nếu decode lỗi */ }
       imgs[current].classList.remove('is-active');
       img.classList.add('is-active');
@@ -235,8 +245,8 @@
     const go = (n) => {
       const next = (n + slides.length) % slides.length;
       if (next === current) return;
-      const img = slides[next].querySelector('img');
-      if (img) img.loading = 'eager';
+      loadImg(slides[next].querySelector('img'));
+      loadImg(slides[(next + 1) % slides.length].querySelector('img')); // tải trước tin kế tiếp
       [[slides[current], false], [slides[next], true]].forEach(([s, on]) => {
         s.classList.toggle('is-active', on);
         if (on) { s.removeAttribute('tabindex'); s.removeAttribute('aria-hidden'); } else { s.tabIndex = -1; s.setAttribute('aria-hidden', 'true'); }
@@ -248,7 +258,7 @@
       if (!hold && !document.hidden && !document.body.classList.contains('image-edit-mode')) timer = setTimeout(() => { go(current + 1); schedule(); }, wait);
     };
     // Tải trước ảnh kế tiếp khi trang đã tải xong
-    window.addEventListener('load', () => { const img = slides[1].querySelector('img'); if (img) img.loading = 'eager'; }, { once: true });
+    afterLoad(() => loadImg(slides[1].querySelector('img')));
     tile.addEventListener('mouseenter', () => { hold = true; clearTimeout(timer); });
     tile.addEventListener('mouseleave', () => { hold = false; schedule(); });
     tile.addEventListener('focusin', () => { hold = true; clearTimeout(timer); });

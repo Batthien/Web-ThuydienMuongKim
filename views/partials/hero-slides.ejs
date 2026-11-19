@@ -8,7 +8,7 @@
 %>
 <div class="<%= mediaCls %> hero-slides" data-slides aria-hidden="true">
   <% slides.forEach((s, i) => { %>
-    <%- h.img(s, '', { sizes: '100vw', eager: i === 0, cls: 'hero-slides__img' + (i === 0 ? ' is-active' : '') }) %>
+    <%- h.img(s, '', { sizes: '100vw', eager: i === 0, defer: i > 0, cls: 'hero-slides__img' + (i === 0 ? ' is-active' : '') }) %>
   <% }) %>
 </div>
 <div class="hero-controls" data-slide-controls>
