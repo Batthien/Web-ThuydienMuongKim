@@ -862,5 +862,160 @@
       1280
     ],
     "ratio": 2.1441
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-01",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-02",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 2.1441
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-03",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.6393
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7778
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-06",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 2.1677
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-07",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-08",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.8907
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-09",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-10",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 2.2222
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-11",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-12",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-13",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3347
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-14",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-15",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "hero",
+    "src": "/media/hero/hero-16",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.6966
   }
 ]

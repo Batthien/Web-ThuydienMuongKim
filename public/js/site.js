@@ -23,7 +23,8 @@
     let paused = false;
 
     // Ảnh sau được tải ngầm sau khi trang tải xong để không làm chậm ảnh đầu
-    window.addEventListener('load', () => imgs.forEach((img) => { img.loading = 'eager'; }), { once: true });
+    const preload = (i) => { const img = imgs[(i + imgs.length) % imgs.length]; if (img) img.loading = 'eager'; };
+    window.addEventListener('load', () => preload(1), { once: true });
 
     const go = async (n) => {
       const next = (n + imgs.length) % imgs.length;
@@ -33,7 +34,10 @@
       try { await img.decode(); } catch { /* vẫn chuyển ảnh nếu decode lỗi */ }
       imgs[current].classList.remove('is-active');
       img.classList.add('is-active');
+      dots[current]?.removeAttribute('aria-current');
+      dots[next]?.setAttribute('aria-current', 'true');
       current = next;
+      preload(next + 1); // tải trước ảnh tiếp theo
     };
     const schedule = () => {
       clearTimeout(timer);

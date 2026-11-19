@@ -1,6 +1,7 @@
-<%# Trình chiếu ảnh nền: Đập tràn & Nhà máy. locals: mediaCls ('hero__media' | 'page-hero__media') %>
+<%# Trình chiếu ảnh đầu trang: ảnh trong album "hero" (thư mục ANH DEP). locals: mediaCls ('hero__media' | 'page-hero__media') %>
 <%
-  const slides = [
+  const heroAlbum = h.gallery.filter((g) => g.album === 'hero').map((g) => g.src);
+  const slides = heroAlbum.length ? heroAlbum : [
     '/media/dam/dam-01', '/media/plant/plant-03', '/media/dam/dam-02',
     '/media/plant/plant-04', '/media/plant/plant-01', '/media/plant/plant-02',
   ];
