@@ -21,16 +21,12 @@
 
   // ---- Trình chiếu ảnh nền (Đập & Nhà máy) ----
   const slideBox = document.querySelector('[data-slides]');
-  const slideCtl = document.querySelector('[data-slide-controls]');
-  if (slideBox && slideCtl) {
+  if (slideBox) {
     const imgs = [...slideBox.querySelectorAll('img')];
-    const dots = [...slideCtl.querySelectorAll('[data-slide-go]')];
-    const toggleBtn = slideCtl.querySelector('[data-slide-toggle]');
     const DELAY = 2000; // mỗi ảnh hiển thị 2 giây
     let current = 0;
     let timer = null;
-    // Luôn tự chạy (có nút tạm dừng); khi người dùng bật giảm chuyển động, CSS bỏ hiệu ứng phóng to
-    let paused = false;
+    // Luôn tự chạy; khi người dùng bật giảm chuyển động, CSS bỏ hiệu ứng phóng to
 
     // Ảnh sau được tải ngầm sau khi trang tải xong để không làm chậm ảnh đầu
     const preload = (i) => loadImg(imgs[(i + imgs.length) % imgs.length]);
@@ -44,27 +40,18 @@
       try { await img.decode(); } catch { /* vẫn chuyển ảnh nếu decode lỗi */ }
       imgs[current].classList.remove('is-active');
       img.classList.add('is-active');
-      dots[current]?.removeAttribute('aria-current');
-      dots[next]?.setAttribute('aria-current', 'true');
       current = next;
       preload(next + 1); // tải trước ảnh tiếp theo
     };
     const schedule = () => {
       clearTimeout(timer);
-      if (!paused && !document.hidden && !document.body.classList.contains('image-edit-mode')) timer = setTimeout(async () => { await go(current + 1); schedule(); }, DELAY);
+      if (!document.hidden && !document.body.classList.contains('image-edit-mode')) timer = setTimeout(async () => { await go(current + 1); schedule(); }, DELAY);
     };
-    const setPaused = (p) => {
-      paused = p;
-      slideCtl.classList.toggle('is-paused', p);
-      toggleBtn.setAttribute('aria-label', p ? toggleBtn.dataset.labelPlay : toggleBtn.dataset.labelPause);
+    if (imgs.length > 1) {
+      document.addEventListener('visibilitychange', schedule);
+      document.addEventListener('image-edit-change', schedule);
       schedule();
-    };
-
-    toggleBtn.addEventListener('click', () => setPaused(!paused));
-    dots.forEach((d) => d.addEventListener('click', () => { go(Number(d.dataset.slideGo)); schedule(); }));
-    document.addEventListener('visibilitychange', schedule);
-    document.addEventListener('image-edit-change', schedule);
-    setPaused(paused);
+    }
   }
 
   // ---- Biểu đồ kết quả sản xuất kinh doanh (SVG thuần) ----
