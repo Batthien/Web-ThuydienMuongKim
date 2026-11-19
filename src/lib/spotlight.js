@@ -47,6 +47,7 @@ function build({ t, url, loc, posts, docs, jobs, IR_CATEGORIES }) {
     { image: '/media/plant/plant-04', title: t('plant.specsTitle') },
     { image: '/media/plant-mk2/plant-mk2-01', title: t('plant.mk2.title'), href: url('plant', 'muong-kim-2') },
     { image: '/media/plant-pl/plant-pl-01', title: t('plant.pl.title'), href: url('plant', 'phieng-luc') },
+    { image: '/media/plant-hb2/plant-hb2-01', title: t('plant.hb2.title'), href: url('plant', 'ho-bon-2') },
   ].filter((x) => exists(x.image)).map((x) => ({
     image: x.image,
     title: x.title,

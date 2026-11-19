@@ -12,7 +12,7 @@ const spotlight = require('../lib/spotlight');
 const NEWS_PER_PAGE = 9;
 const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community'];
 const IR_CATEGORIES = ['disclosure', 'financial', 'annual', 'agm', 'governance'];
-const ALBUMS = ['dam', 'plant', 'plant-mk2', 'plant-pl', 'office', 'safety', 'anniversary', 'site', 'sports', 'travel'];
+const ALBUMS = ['dam', 'plant', 'plant-mk2', 'plant-pl', 'plant-hb2', 'office', 'safety', 'anniversary', 'site', 'sports', 'travel'];
 
 const q = {
   latestPosts: db.prepare(`SELECT * FROM posts WHERE status='published' AND published_at <= date('now','+7 hours')

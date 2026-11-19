@@ -797,5 +797,70 @@
       1920
     ],
     "ratio": 0.75
+  },
+  {
+    "album": "plant-hb2",
+    "src": "/media/plant-hb2/plant-hb2-01",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant-hb2",
+    "src": "/media/plant-hb2/plant-hb2-02",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant-hb2",
+    "src": "/media/plant-hb2/plant-hb2-03",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 2.1441
+  },
+  {
+    "album": "plant-hb2",
+    "src": "/media/plant-hb2/plant-hb2-04",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 2.1441
+  },
+  {
+    "album": "plant-hb2",
+    "src": "/media/plant-hb2/plant-hb2-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.3333
+  },
+  {
+    "album": "plant-hb2",
+    "src": "/media/plant-hb2/plant-hb2-06",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 2.1641
+  },
+  {
+    "album": "plant-hb2",
+    "src": "/media/plant-hb2/plant-hb2-07",
+    "widths": [
+      640,
+      1280
+    ],
+    "ratio": 2.1441
   }
 ]

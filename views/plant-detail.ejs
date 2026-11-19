@@ -136,7 +136,7 @@
       </div>
       <a class="link-arrow" href="<%= url('gallery') %>"><%= t('common.viewAll') %> <%- icon('arrow-right') %></a>
     </div>
-    <div class="mosaic" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
+    <div class="mosaic<%= photos.length - 1 === 9 ? '' : ' mosaic--even' %>" data-lightbox data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
       <% photos.slice(1).forEach((p, i) => { const cap = d.captions[photos.indexOf(p)] || d.title; %>
         <a class="mosaic__item reveal" href="<%= h.imgUrl(p.src, 1920) %>" data-lightbox-item data-caption="<%= cap %>">
           <%- h.img(p.src, cap, { sizes: i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw', width: 640 }) %>
