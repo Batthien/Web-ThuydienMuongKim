@@ -299,6 +299,8 @@ module.exports = {
   },
   gallery: {
     title: 'Photo gallery',
+    cats: { all: 'All', plant: 'Power plants', office: 'Office', union: 'Trade union', '5s': '5S', safety: 'Safety', fire: 'Fire safety' },
+    empty: 'Photos for this section are coming soon.',
     lead: 'Photos of the plant, structures and company activities.',
     albums: {
       all: 'All', dam: 'Spillway dam', plant: 'Powerhouse', 'plant-mk2': 'Muong Kim II plant', 'plant-pl': 'Phieng Luc plant', 'plant-hb2': 'Ho Bon 2 plant', office: 'Operations area', safety: 'Fire safety',

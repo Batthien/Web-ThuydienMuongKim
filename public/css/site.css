@@ -997,3 +997,10 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .photo-row__item { position: relative; display: block; overflow: hidden; border-radius: var(--radius-lg); aspect-ratio: 16 / 10; cursor: zoom-in; box-shadow: var(--shadow-sm); }
 @media (max-width: 900px) { .plant-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .photo-row { grid-template-columns: 1fr; } .plant-strip { gap: 10px; } .plant-strip__name { font-size: .8rem; padding: 22px 10px 8px; } }
+
+/* Thư viện: số ảnh trên nút lọc, thông báo mục chưa có ảnh */
+.tabs__count { display: inline-grid; place-items: center; min-width: 22px; height: 20px; margin-left: 4px; padding: 0 6px; border-radius: 999px; background: rgba(11, 79, 99, .1); font-size: .72rem; font-weight: 700; }
+[aria-pressed="true"] > .tabs__count { background: rgba(255, 255, 255, .22); }
+.gallery-empty { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 8px 0 0; padding: 56px 24px; border: 1.5px dashed var(--line); border-radius: var(--radius-lg); color: var(--muted); text-align: center; }
+.gallery-empty[hidden] { display: none; }
+.gallery-empty .icon { width: 28px; height: 28px; color: var(--brand-400); }

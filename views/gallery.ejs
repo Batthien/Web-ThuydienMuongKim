@@ -4,21 +4,22 @@
 <section class="section">
   <div class="container">
     <div class="tabs" role="toolbar" aria-label="<%= t('gallery.title') %>" data-filter>
-      <button type="button" aria-pressed="true" data-album="all"><%= t('gallery.albums.all') %></button>
-      <% ALBUMS.forEach((a) => { %>
-        <button type="button" aria-pressed="false" data-album="<%= a %>"><%= t('gallery.albums.' + a) %></button>
+      <button type="button" aria-pressed="true" data-album="all"><%= t('gallery.cats.all') %> <span class="tabs__count"><%= photos.length %></span></button>
+      <% cats.forEach((c) => { %>
+        <button type="button" aria-pressed="false" data-album="<%= c %>"><%= t('gallery.cats.' + c) %> <span class="tabs__count"><%= counts[c] %></span></button>
       <% }) %>
     </div>
     <div class="gallery-grid gallery-grid--masonry" data-lightbox
       data-label-close="<%= t('gallery.close') %>" data-label-prev="<%= t('gallery.prev') %>" data-label-next="<%= t('gallery.next') %>">
       <% photos.forEach((p) => { %>
-        <a class="gallery-grid__item" href="<%= h.imgUrl(p.src, 1920) %>" data-album="<%= p.album %>" data-caption="<%= t('gallery.albums.' + p.album) %>">
+        <a class="gallery-grid__item" href="<%= h.imgUrl(p.src, 1920) %>" data-album="<%= p.cat %>" data-caption="<%= t('gallery.albums.' + p.album) %>">
           <%- h.img(p.src, t('gallery.albums.' + p.album), { sizes: '(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw', width: 640 }) %>
           <span class="gallery-grid__zoom" aria-hidden="true"><%- icon('expand') %></span>
           <span class="sr-only"><%= t('gallery.open') %></span>
         </a>
       <% }) %>
     </div>
+    <p class="gallery-empty" data-gallery-empty hidden><%- icon('expand') %><span><%= t('gallery.empty') %></span></p>
   </div>
 </section>
 <%- include('partials/foot') %>

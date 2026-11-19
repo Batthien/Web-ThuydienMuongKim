@@ -1,7 +1,7 @@
 // Khối "tin nổi bật" trên trang chủ: mỗi ô là một mục của website, trong ô tự chuyển lần lượt các tin
 const h = require('./helpers');
 
-const GALLERY_ALBUMS = ['dam', 'plant', 'office', 'safety', 'anniversary', 'sports', 'travel'];
+const { GALLERY_CATS } = require('./gallery-cats');
 const IR_FALLBACK_IMAGES = ['/media/office/office-06', '/media/plant/plant-01', '/media/dam/dam-01', '/media/plant/plant-04', '/media/office/office-01'];
 const CAREER_IMAGES = ['/media/plant/plant-02', '/media/sports/sports-01', '/media/office/office-06'];
 
@@ -89,9 +89,9 @@ function build({ t, url, loc, posts, docs, jobs, IR_CATEGORIES }) {
       href: url('careers'),
     }];
 
-  const gallery = GALLERY_ALBUMS.map((a) => ({ a, src: firstOf(a) })).filter((x) => x.src).map(({ a, src }) => ({
+  const gallery = GALLERY_CATS.map(([c, albums]) => ({ c, src: albums.map(firstOf).find(Boolean) })).filter((x) => x.src).map(({ c, src }) => ({
     image: src,
-    title: t('gallery.albums.' + a),
+    title: t('gallery.cats.' + c),
     meta: t('gallery.title'),
     icon: 'expand',
     href: url('gallery'),

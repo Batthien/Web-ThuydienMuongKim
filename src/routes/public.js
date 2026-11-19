@@ -8,11 +8,11 @@ const { csrfToken, requireCsrf } = require('../lib/security');
 const { cvUpload, dirs, removeFile } = require('../lib/uploads');
 const mailer = require('../lib/mailer');
 const spotlight = require('../lib/spotlight');
+const { GALLERY_CATS, catOf } = require('../lib/gallery-cats');
 
 const NEWS_PER_PAGE = 9;
 const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community'];
 const IR_CATEGORIES = ['disclosure', 'financial', 'annual', 'agm', 'governance'];
-const ALBUMS = ['dam', 'plant', 'plant-mk2', 'plant-pl', 'plant-hb2', 'office', 'safety', 'anniversary', 'site', 'sports', 'travel'];
 
 const q = {
   latestPosts: db.prepare(`SELECT * FROM posts WHERE status='published' AND published_at <= date('now','+7 hours')
@@ -135,7 +135,9 @@ function createRouter(lang) {
     },
     gallery(req, res) {
       setPage(res, 'gallery', { title: t('gallery.title'), description: t('gallery.lead') });
-      res.render('gallery', { photos: h.gallery.filter((g) => ALBUMS.includes(g.album)), ALBUMS });
+      const photos = h.gallery.map((g) => ({ ...g, cat: catOf(g.album) })).filter((g) => g.cat);
+      const counts = Object.fromEntries(GALLERY_CATS.map(([c]) => [c, photos.filter((p) => p.cat === c).length]));
+      res.render('gallery', { photos, cats: GALLERY_CATS.map(([c]) => c), counts });
     },
     contact(req, res, extra = {}) {
       setPage(res, 'contact', { title: t('contact.title'), description: t('contact.lead') });

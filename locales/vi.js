@@ -299,6 +299,8 @@ module.exports = {
   },
   gallery: {
     title: 'Thư viện ảnh',
+    cats: { all: 'Tất cả', plant: 'Nhà máy', office: 'Văn phòng', union: 'Công đoàn', '5s': '5S', safety: 'An toàn', fire: 'PCCC' },
+    empty: 'Hình ảnh của mục này đang được cập nhật.',
     lead: 'Hình ảnh nhà máy, công trình và hoạt động của Công ty.',
     albums: {
       all: 'Tất cả', dam: 'Đập tràn', plant: 'Nhà máy', 'plant-mk2': 'Nhà máy Mường Kim II', 'plant-pl': 'Nhà máy Phiêng Lúc', 'plant-hb2': 'Nhà máy Hồ Bốn 2', office: 'Khu điều hành', safety: 'An toàn – PCCC',

@@ -372,7 +372,10 @@
       if (!btn) return;
       const album = btn.dataset.album;
       filter.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-      items.forEach((it) => { it.hidden = album !== 'all' && it.dataset.album !== album; });
+      let shown = 0;
+      items.forEach((it) => { it.hidden = album !== 'all' && it.dataset.album !== album; if (!it.hidden) shown += 1; });
+      const empty = document.querySelector('[data-gallery-empty]');
+      if (empty) empty.hidden = shown > 0;
     });
   }
 
