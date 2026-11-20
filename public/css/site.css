@@ -1026,7 +1026,7 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 }
 
 /* Chân trang: viền thẳng (không lượn sóng), gọn hơn */
-.site-footer { padding-top: 40px; border-top: 3px solid var(--accent); }
+.site-footer { padding-top: 40px; border-top: 0; }
 .site-footer__wave { display: none; }
 .site-footer__grid { gap: 28px; padding-bottom: 28px; font-size: .92rem; }
 .footer-logo { margin-bottom: 12px; padding: 8px 12px; }
