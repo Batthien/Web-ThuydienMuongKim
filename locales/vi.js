@@ -254,6 +254,9 @@ module.exports = {
     lockedNoPerm: 'Tài khoản bạn đang dùng không có quyền xem mục này. Vui lòng đăng nhập bằng tài khoản cổ đông hoặc liên hệ Công ty.',
     lockedLogin: 'Đăng nhập để xem',
     lockedContact: 'Liên hệ Công ty',
+    companiesLabel: 'Chọn công ty',
+    changePw: 'Bạn đang dùng mật khẩu ban đầu (số CCCD). Để bảo mật, nên đổi sang mật khẩu riêng.',
+    changePwLink: 'Đổi mật khẩu',
     lead: 'Thông tin dành cho cổ đông và nhà đầu tư của Công ty cổ phần Thủy điện Mường Kim.',
     all: 'Tất cả',
     categories: {

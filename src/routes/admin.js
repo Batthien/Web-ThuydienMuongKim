@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const rateLimit = require('express-rate-limit');
 const { db, getSettings, saveSettings } = require('../db');
 const { csrfToken, requireCsrf, requireAdmin } = require('../lib/security');
-const { ROLES, VIEWER_ROLES, isIrPath } = require('../lib/access');
+const { ROLES, VIEWER_ROLES, COMPANIES, COMPANY_CODES, nameKey, isIrPath } = require('../lib/access');
 const { dirs, docUpload, imageUpload, saveImage, removeFile } = require('../lib/uploads');
 const h = require('../lib/helpers');
 const mailer = require('../lib/mailer');
@@ -44,8 +44,19 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', loginLimiter, requireCsrf, (req, res) => {
-  const user = db.prepare('SELECT * FROM users WHERE username = ?').get(String(req.body.username || '').trim());
-  const ok = user && bcrypt.compareSync(String(req.body.password || ''), user.password_hash);
+  const input = String(req.body.username || '').trim();
+  const pw = String(req.body.password || '');
+  let user = db.prepare('SELECT * FROM users WHERE username = ?').get(input.toLowerCase());
+  let ok = Boolean(user && bcrypt.compareSync(pw, user.password_hash));
+  if (!ok) {
+    // Cổ đông: đăng nhập bằng Họ tên (có/không dấu) + số CCCD; trùng tên thì phân biệt bằng số CCCD
+    const key = nameKey(input);
+    const digits = pw.replace(/\D/g, '');
+    const candidates = key ? db.prepare("SELECT * FROM users WHERE name_key = ? AND role = 'shareholder' LIMIT 20").all(key) : [];
+    for (const c of candidates) {
+      if (bcrypt.compareSync(pw, c.password_hash) || (digits && digits !== pw && bcrypt.compareSync(digits, c.password_hash))) { user = c; ok = true; break; }
+    }
+  }
   const wanted = String(req.body.next || '');
   const next = /^\/admin(\/|$)/.test(wanted) || isIrPath(wanted) ? wanted : '/admin';
   if (!ok) {
@@ -163,9 +174,10 @@ const RESOURCES = {
   documents: {
     table: 'documents', label: 'Tài liệu cổ đông', singular: 'tài liệu', order: 'published_at DESC, id DESC',
     upload: docUpload.single('file_upload'),
-    columns: [['title_vi', 'Tài liệu'], ['category', 'Danh mục', (v) => tvi('ir.categories.' + v)], ['year', 'Năm'], ['published_at', 'Ngày công bố']],
+    columns: [['title_vi', 'Tài liệu'], ['company', 'Công ty', (v) => (COMPANIES.find((c) => c.code === v) || {}).short_vi || v], ['category', 'Danh mục', (v) => tvi('ir.categories.' + v)], ['year', 'Năm'], ['published_at', 'Ngày công bố']],
     publicUrl: (row) => '/uploads/docs/' + row.file,
     fields: [
+      { name: 'company', label: 'Thuộc công ty', type: 'select', options: COMPANIES.map((c) => [c.code, c.vi]), help: 'Chỉ cổ đông của công ty này (và Quản trị viên, Lãnh đạo) xem được tài liệu.' },
       { name: 'title', label: 'Tên tài liệu', type: 'text', i18n: true, required: true },
       { name: 'category', label: 'Danh mục', type: 'select', options: IR_CATEGORIES.map((c) => [c, tvi('ir.categories.' + c)]) },
       { name: 'year', label: 'Năm', type: 'number', required: true },
@@ -224,6 +236,8 @@ for (const [key, R] of Object.entries(RESOURCES)) {
     if ('slug' in row) row.slug = uniqueSlug(R.table, h.slugify(row.slug || row.title_vi), id);
     if ('quantity' in row) row.quantity = Math.max(1, Number.parseInt(row.quantity, 10) || 1);
     if ('year' in row) row.year = Number.parseInt(row.year, 10) || new Date().getFullYear();
+    // Ô chọn: chỉ nhận giá trị có trong danh sách (mặc định lấy lựa chọn đầu tiên)
+    for (const f of R.fields) if (f.type === 'select' && !f.options.some(([v]) => v === row[f.name])) row[f.name] = f.options[0][0];
 
     // Tệp đính kèm
     if (R.fields.some((f) => f.type === 'image')) {
@@ -371,19 +385,33 @@ router.post('/settings', requireCsrf, (req, res) => {
 const USERNAME_RE = /^[a-z0-9._-]{3,32}$/;
 const adminCount = () => db.prepare("SELECT COUNT(*) n FROM users WHERE role = 'admin'").get().n;
 
+const linksOf = (id) => db.prepare('SELECT company FROM user_companies WHERE user_id = ?').all(id).map((r) => r.company);
+const setLinks = (id, codes) => {
+  db.prepare('DELETE FROM user_companies WHERE user_id = ?').run(id);
+  const ins = db.prepare('INSERT OR IGNORE INTO user_companies (user_id, company) VALUES (?, ?)');
+  codes.forEach((c) => ins.run(id, c));
+};
+const pickCompanies = (v) => [].concat(v || []).map(String).filter((c) => COMPANY_CODES.includes(c));
+
 router.get('/users', (req, res) => {
-  const rows = db.prepare('SELECT id, username, display_name, role, last_login_at, created_at FROM users ORDER BY role, username').all();
-  res.render('admin/users', { rows });
+  const role = ROLES[req.query.role] ? req.query.role : '';
+  const company = COMPANY_CODES.includes(req.query.company) ? req.query.company : '';
+  let rows = db.prepare('SELECT id, username, display_name, role, last_login_at, initial_pw, created_at FROM users ORDER BY role, display_name, username').all();
+  rows = rows.map((u) => ({ ...u, companies: linksOf(u.id) }))
+    .filter((u) => (!role || u.role === role) && (!company || u.companies.includes(company)));
+  const counts = Object.fromEntries(Object.keys(ROLES).map((r) => [r, db.prepare('SELECT COUNT(*) n FROM users WHERE role = ?').get(r).n]));
+  res.render('admin/users', { rows, role, company, counts, COMPANIES });
 });
 
 router.get('/users/new', (req, res) => {
-  res.render('admin/user-form', { u: { role: 'editor' }, errors: {}, isNew: true });
+  res.render('admin/user-form', { u: { role: 'editor', companies: [] }, errors: {}, isNew: true, COMPANIES });
 });
 
 router.get('/users/:id/edit', (req, res, next) => {
   const u = db.prepare('SELECT id, username, display_name, role FROM users WHERE id = ?').get(req.params.id);
   if (!u) return next();
-  res.render('admin/user-form', { u, errors: {}, isNew: false });
+  u.companies = linksOf(u.id);
+  res.render('admin/user-form', { u, errors: {}, isNew: false, COMPANIES });
 });
 
 function saveUser(req, res, next) {
@@ -396,6 +424,7 @@ function saveUser(req, res, next) {
     username: existing ? existing.username : String(req.body.username || '').trim().toLowerCase(),
     display_name: String(req.body.display_name || '').trim().slice(0, 80),
     role: isSelf ? existing.role : (ROLES[req.body.role] ? req.body.role : 'editor'),
+    companies: pickCompanies(req.body.companies),
   };
   const password = String(req.body.password || '');
   const errors = {};
@@ -412,15 +441,19 @@ function saveUser(req, res, next) {
   }
   if (Object.keys(errors).length) {
     res.status(422);
-    return res.render('admin/user-form', { u, errors, isNew: !existing });
+    return res.render('admin/user-form', { u, errors, isNew: !existing, COMPANIES });
   }
+  const key = nameKey(u.display_name || u.username);
+  let uid = id;
   if (existing) {
-    db.prepare('UPDATE users SET display_name = ?, role = ? WHERE id = ?').run(u.display_name, u.role, id);
-    if (password) db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(bcrypt.hashSync(password, 12), id);
+    db.prepare('UPDATE users SET display_name = ?, role = ?, name_key = ? WHERE id = ?').run(u.display_name, u.role, key, id);
+    if (password) db.prepare('UPDATE users SET password_hash = ?, initial_pw = 0 WHERE id = ?').run(bcrypt.hashSync(password, 12), id);
   } else {
-    db.prepare('INSERT INTO users (username, password_hash, role, display_name) VALUES (?, ?, ?, ?)')
-      .run(u.username, bcrypt.hashSync(password, 12), u.role, u.display_name);
+    uid = Number(db.prepare('INSERT INTO users (username, password_hash, role, display_name, name_key) VALUES (?, ?, ?, ?, ?)')
+      .run(u.username, bcrypt.hashSync(password, 12), u.role, u.display_name, key).lastInsertRowid);
   }
+  // Công ty của cổ đông (vai trò khác không cần)
+  setLinks(uid, u.role === 'shareholder' ? u.companies : []);
   flash(req, 'success', existing ? `Đã cập nhật tài khoản ${u.username}.` : `Đã tạo tài khoản ${u.username}.`);
   res.redirect('/admin/users');
 }
@@ -440,6 +473,52 @@ router.post('/users/:id/delete', requireCsrf, (req, res) => {
   res.redirect('/admin/users');
 });
 
+// ================= Nhập danh sách cổ đông (dán từ Excel: Họ tên | Số CCCD) =================
+router.get('/shareholders/import', (req, res) => {
+  res.render('admin/shareholders-import', { COMPANIES, company: COMPANY_CODES[0], text: '', result: null, error: null });
+});
+
+router.post('/shareholders/import', requireCsrf, (req, res) => {
+  const company = COMPANY_CODES.includes(req.body.company) ? req.body.company : '';
+  const text = String(req.body.list || '');
+  if (!company || !text.trim()) {
+    return res.status(422).render('admin/shareholders-import', { COMPANIES, company: company || COMPANY_CODES[0], text, result: null, error: 'Chọn công ty và dán danh sách cổ đông.' });
+  }
+  const result = { created: [], linked: [], already: [], skipped: [] };
+  const findByKey = db.prepare("SELECT * FROM users WHERE name_key = ? AND role = 'shareholder'");
+  const usernameTaken = db.prepare('SELECT 1 FROM users WHERE username = ?');
+  const insertUser = db.prepare("INSERT INTO users (username, password_hash, role, display_name, name_key, initial_pw) VALUES (?, ?, 'shareholder', ?, ?, 1)");
+  const hasLink = db.prepare('SELECT 1 FROM user_companies WHERE user_id = ? AND company = ?');
+  const addLink = db.prepare('INSERT OR IGNORE INTO user_companies (user_id, company) VALUES (?, ?)');
+  text.split(/\r?\n/).forEach((raw, i) => {
+    const line = raw.trim();
+    if (!line) return;
+    const parts = line.split(/\t|;|,(?=\s*\d)/).map((x) => x.trim()).filter(Boolean);
+    const name = (parts[0] || '').replace(/\s+/g, ' ').slice(0, 80);
+    const id = (parts[1] || '').replace(/\D/g, '');
+    const key = nameKey(name);
+    if (!key || !/^(\d{9}|\d{12})$/.test(id)) {
+      if (i === 0 && !/\d/.test(line)) return; // dòng tiêu đề
+      result.skipped.push({ line: i + 1, name: name || line.slice(0, 40), reason: !key ? 'Thiếu họ tên' : 'Số CCCD/CMND phải gồm 12 (hoặc 9) chữ số' });
+      return;
+    }
+    // Cùng họ tên và cùng số CCCD -> cùng một người (có thể đã là cổ đông công ty khác)
+    const same = findByKey.all(key).find((c) => bcrypt.compareSync(id, c.password_hash));
+    if (same) {
+      if (hasLink.get(same.id, company)) result.already.push(name);
+      else { addLink.run(same.id, company); result.linked.push(name); }
+      return;
+    }
+    let username = 'cd.' + key.slice(0, 24);
+    for (let n = 2; usernameTaken.get(username); n += 1) username = 'cd.' + key.slice(0, 24) + '.' + n;
+    const uid = Number(insertUser.run(username, bcrypt.hashSync(id, 10), name, key).lastInsertRowid);
+    addLink.run(uid, company);
+    result.created.push(name);
+  });
+  // Không giữ lại danh sách (có số CCCD) trong form sau khi nhập
+  res.render('admin/shareholders-import', { COMPANIES, company, text: '', result, error: null });
+});
+
 // ================= Tài khoản =================
 router.get('/account', (req, res) => res.render('admin/account', { error: null }));
 
@@ -451,7 +530,7 @@ router.post('/account', requireCsrf, (req, res) => {
   else if (password.length < 10) error = 'Mật khẩu mới cần ít nhất 10 ký tự.';
   else if (password !== confirm) error = 'Xác nhận mật khẩu không khớp.';
   if (error) return res.status(422).render('admin/account', { error });
-  db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(bcrypt.hashSync(password, 12), user.id);
+  db.prepare('UPDATE users SET password_hash = ?, initial_pw = 0 WHERE id = ?').run(bcrypt.hashSync(password, 12), user.id);
   flash(req, 'success', 'Đã đổi mật khẩu.');
   res.redirect('/admin/account');
 });

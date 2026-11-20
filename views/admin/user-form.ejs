@@ -26,6 +26,13 @@
       <p class="field__hint"><%= isSelf ? 'Bạn không thể tự đổi vai trò của mình.' : 'Biên tập viên: viết và đăng tin tức. Lãnh đạo, Cổ đông: chỉ xem mục Cổ đông trên website (không vào được trang quản trị nội dung).' %></p>
       <%- err('role') %>
     </div>
+    <fieldset class="field company-checks">
+      <legend>Cổ đông của công ty <small>(chỉ áp dụng cho vai trò Cổ đông)</small></legend>
+      <% COMPANIES.forEach((c) => { %>
+        <label class="check"><input type="checkbox" name="companies" value="<%= c.code %>" <%= (u.companies || []).includes(c.code) ? 'checked' : '' %>> <%= c.vi %></label>
+      <% }) %>
+      <p class="field__hint">Cổ đông chỉ xem được tài liệu của các công ty được đánh dấu. Lãnh đạo và Quản trị viên luôn xem được cả 4 công ty.</p>
+    </fieldset>
     <div class="grid-2">
       <div class="field">
         <label for="password"><%= isNew ? 'Mật khẩu' : 'Mật khẩu mới' %> <% if (isNew) { %><span class="req">*</span><% } %></label>

@@ -7,12 +7,13 @@
     <input type="hidden" name="_csrf" value="<%= csrf %>">
     <input type="hidden" name="next" value="<%= next %>">
     <div class="field">
-      <label for="username">Tên đăng nhập</label>
+      <label for="username"><%= /^\/(vi\/co-dong|en\/investors)/.test(next) ? 'Họ tên cổ đông' : 'Tên đăng nhập' %></label>
       <input id="username" name="username" autocomplete="username" required autofocus>
     </div>
     <div class="field">
       <label for="password">Mật khẩu</label>
       <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <% if (/^\/(vi\/co-dong|en\/investors)/.test(next)) { %><p class="field__hint">Cổ đông: nhập họ tên đầy đủ và mật khẩu là số CCCD (nếu chưa đổi mật khẩu).</p><% } %>
     </div>
     <button class="btn btn--primary btn--block" type="submit">Đăng nhập</button>
   </form>

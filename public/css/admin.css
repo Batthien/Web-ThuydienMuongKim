@@ -151,3 +151,14 @@ code { background: #e9f1f4; padding: 1px 6px; border-radius: 4px; font-size: .9e
 .notice--info { background: #e3f1f5; color: #0b4f63; }
 .pill--admin { background: #e6eefc; color: #2c55a8; }
 .pill--editor { background: #eef3f5; color: #3b5560; }
+
+/* Tài khoản: lọc theo vai trò / công ty; cổ đông */
+.user-filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 16px; }
+.user-filters a { padding: 6px 12px; border-radius: 999px; border: 1px solid #dbe6ea; background: #fff; color: inherit; text-decoration: none; font-size: 13px; }
+.user-filters a[aria-current="page"] { background: #0b4f63; border-color: #0b4f63; color: #fff; }
+.user-filters__sep { margin-left: 10px; font-size: 13px; color: var(--muted); }
+.pill--leader { background: #fff3d6; color: #8a5a00; }
+.pill--shareholder { background: #e3f4ea; color: #1f7a4a; }
+.company-checks { display: grid; gap: 8px; border: 1px solid #dbe6ea; border-radius: 12px; padding: 14px 16px; margin: 0; }
+.company-checks legend { padding: 0 6px; font-weight: 600; }
+.import-summary { display: grid; gap: 8px; margin: 0 0 16px; padding: 0; list-style: none; }

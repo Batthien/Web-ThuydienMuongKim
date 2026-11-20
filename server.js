@@ -13,7 +13,7 @@ const adminRouter = require('./src/routes/admin');
 const framing = require('./src/lib/framing');
 const pkg = require('./package.json');
 const logoWheel = require('./content/logo-wheel.json');
-const { roleOf, canViewIR } = require('./src/lib/access');
+const { userOf, canViewIR, companiesFor } = require('./src/lib/access');
 
 const app = express();
 const ASSET_VERSION = `${pkg.version}-${Date.now().toString(36)}`;
@@ -59,10 +59,13 @@ app.use(cookieSession({
   maxAge: 8 * 60 * 60 * 1000,
 }));
 
-// Tài liệu cổ đông: chỉ Quản trị viên, Lãnh đạo, Cổ đông mới tải được (kể cả khi có sẵn đường dẫn)
+// Tài liệu cổ đông: chỉ người được xem công ty sở hữu tài liệu mới tải được (kể cả khi có sẵn đường dẫn)
+const docCompanyStmt = db.prepare('SELECT company FROM documents WHERE file = ?');
 app.use('/uploads/docs', (req, res, next) => {
-  if (canViewIR(roleOf(req))) return next();
-  if (!req.session || !req.session.userId) return res.redirect('/admin/login?next=' + encodeURIComponent('/vi/co-dong'));
+  const user = userOf(req);
+  if (!user) return res.redirect('/admin/login?next=' + encodeURIComponent('/vi/co-dong'));
+  const doc = docCompanyStmt.get(decodeURIComponent(req.path.replace(/^\//, '')));
+  if (doc && companiesFor(user).includes(doc.company)) return next();
   res.status(403).type('text/plain').send('Forbidden');
 }, express.static(path.join(config.uploadDir, 'docs'), { maxAge: 0, setHeaders: (r) => r.set('Cache-Control', 'private, no-store') }));
 
@@ -72,8 +75,10 @@ app.use((req, res, next) => {
   res.locals.assetVersion = ASSET_VERSION;
   res.locals.logoWheel = logoWheel;
   res.locals.isLoggedIn = Boolean(req.session && req.session.userId);
-  res.locals.userRole = roleOf(req);
+  const user = userOf(req);
+  res.locals.userRole = user ? user.role : null;
   res.locals.canViewIR = canViewIR(res.locals.userRole);
+  res.locals.irCompanies = companiesFor(user); // công ty được xem trong mục Cổ đông
   // Chỉ Quản trị viên mới có công cụ căn chỉnh ảnh trên trang
   res.locals.imageEditor = null;
   if (res.locals.isLoggedIn) {

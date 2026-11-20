@@ -1,0 +1,49 @@
+<%- include('_head', { title: 'Nhập danh sách cổ đông', actions: '<a class="btn btn--ghost" href="/admin/users?role=shareholder">Danh sách cổ đông →</a>' }) %>
+<div class="notice notice--info"><%- icon('shield') %><span>
+  Mỗi cổ đông đăng nhập mục <strong>Cổ đông</strong> bằng <strong>Họ tên</strong> (có dấu hoặc không dấu đều được) và <strong>Mật khẩu là số CCCD</strong>.
+  Cổ đông chỉ xem được tài liệu của công ty mình tham gia. Số CCCD chỉ được lưu dưới dạng mã hoá một chiều — website không lưu và không hiển thị lại số CCCD.
+</span></div>
+
+<% if (error) { %><div class="notice notice--error" role="alert"><%- icon('alert') %><span><%= error %></span></div><% } %>
+
+<% if (result) { %>
+<section class="panel">
+  <div class="panel__head"><h2>Kết quả nhập — <%= (COMPANIES.find((c) => c.code === company) || {}).vi %></h2></div>
+  <ul class="import-summary">
+    <li><span class="pill pill--published"><%= result.created.length %></span> tài khoản cổ đông mới được tạo</li>
+    <li><span class="pill pill--application"><%= result.linked.length %></span> cổ đông đã có tài khoản (công ty khác) — được thêm quyền xem công ty này</li>
+    <li><span class="pill"><%= result.already.length %></span> cổ đông đã có quyền từ trước (bỏ qua)</li>
+    <li><span class="pill pill--draft"><%= result.skipped.length %></span> dòng bị bỏ qua do sai dữ liệu</li>
+  </ul>
+  <% if (result.skipped.length) { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Dòng</th><th>Họ tên</th><th>Lý do</th></tr></thead>
+        <tbody><% result.skipped.forEach((s) => { %><tr><td><%= s.line %></td><td><%= s.name %></td><td><%= s.reason %></td></tr><% }) %></tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+<% } %>
+
+<section class="panel narrow">
+  <form class="stack" method="post" action="/admin/shareholders/import" autocomplete="off">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <div class="field">
+      <label for="company">Công ty <span class="req">*</span></label>
+      <select id="company" name="company" required>
+        <% COMPANIES.forEach((c) => { %><option value="<%= c.code %>" <%= c.code === company ? 'selected' : '' %>><%= c.vi %></option><% }) %>
+      </select>
+    </div>
+    <div class="field">
+      <label for="list">Danh sách cổ đông <span class="req">*</span></label>
+      <textarea id="list" name="list" rows="12" spellcheck="false" placeholder="Họ và tên	Số CCCD (12 số)
+Nguyễn Văn A	0xxxxxxxxxxx"><%= text %></textarea>
+      <p class="field__hint">Trong Excel, chọn 2 cột <strong>Họ tên</strong> và <strong>Số CCCD</strong> (mỗi cổ đông một dòng) → Copy → dán vào đây. Dòng tiêu đề sẽ tự bỏ qua. Nhập lại danh sách cũ không tạo trùng tài khoản.</p>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn--primary" type="submit">Nhập danh sách</button>
+    </div>
+  </form>
+</section>
+<%- include('_foot') %>

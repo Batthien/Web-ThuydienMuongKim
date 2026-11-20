@@ -9,6 +9,7 @@ const { cvUpload, dirs, removeFile } = require('../lib/uploads');
 const mailer = require('../lib/mailer');
 const spotlight = require('../lib/spotlight');
 const { GALLERY_CATS, catOf } = require('../lib/gallery-cats');
+const { COMPANIES, COMPANY_CODES } = require('../lib/access');
 
 const NEWS_PER_PAGE = 9;
 const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community'];
@@ -24,9 +25,10 @@ const q = {
   postBySlug: db.prepare(`SELECT * FROM posts WHERE slug = ? AND status='published'`),
   related: db.prepare(`SELECT * FROM posts WHERE status='published' AND id != ? AND published_at <= date('now','+7 hours')
     ORDER BY (category = ?) DESC, published_at DESC LIMIT 3`),
-  docs: db.prepare(`SELECT * FROM documents WHERE (? = '' OR category = ?) AND (? = 0 OR year = ?)
+  docs: db.prepare(`SELECT * FROM documents WHERE company = ? AND (? = '' OR category = ?) AND (? = 0 OR year = ?)
     ORDER BY published_at DESC, id DESC`),
-  docYears: db.prepare(`SELECT DISTINCT year FROM documents ORDER BY year DESC`),
+  docYears: db.prepare(`SELECT DISTINCT year FROM documents WHERE company = ? ORDER BY year DESC`),
+  initialPw: db.prepare('SELECT initial_pw FROM users WHERE id = ?'),
   latestDocs: db.prepare(`SELECT * FROM documents ORDER BY published_at DESC, id DESC LIMIT ?`),
   jobs: db.prepare(`SELECT * FROM jobs WHERE status='published' ORDER BY created_at DESC`),
   jobBySlug: db.prepare(`SELECT * FROM jobs WHERE slug = ? AND status='published'`),
@@ -79,7 +81,7 @@ function createRouter(lang) {
   router.get('/', (req, res) => {
     setPage(res, 'home', { title: t('home.title') });
     // Tên tài liệu cổ đông chỉ hiện cho người có quyền xem
-    const docs = res.locals.canViewIR ? q.latestDocs.all(4) : [];
+    const docs = res.locals.irCompanies.length ? q.latestDocs.all(40).filter((d) => res.locals.irCompanies.includes(d.company)).slice(0, 4) : [];
     const tiles = spotlight.build({ t, url: res.locals.url, loc: res.locals.loc, posts: q.latestPosts.all(5), docs, jobs: q.jobs.all().slice(0, 4), IR_CATEGORIES });
     res.render('home', { docs, IR_CATEGORIES, spotlight: tiles });
   });
@@ -111,14 +113,20 @@ function createRouter(lang) {
     },
     ir(req, res) {
       setPage(res, 'ir', { title: t('ir.title'), description: t('ir.lead') });
-      if (!res.locals.canViewIR) {
-        res.set('Cache-Control', 'private, no-store');
+      res.set('Cache-Control', 'private, no-store');
+      const allowed = res.locals.irCompanies;
+      const wanted = COMPANY_CODES.includes(req.query.company) ? req.query.company : allowed[0];
+      // Chưa đăng nhập / không có quyền / mở công ty mình không tham gia -> trang khoá
+      if (!allowed.length || !allowed.includes(wanted)) {
         return res.status(res.locals.isLoggedIn ? 403 : 200).render('ir-locked', { loginUrl: '/admin/login?next=' + encodeURIComponent(req.originalUrl) });
       }
-      res.set('Cache-Control', 'private, no-store');
       const cat = IR_CATEGORIES.includes(req.query.cat) ? req.query.cat : '';
       const year = Number.parseInt(req.query.year, 10) || 0;
-      res.render('ir', { docs: q.docs.all(cat, cat, year, year), years: q.docYears.all().map((r) => r.year), cat, year, IR_CATEGORIES });
+      const me = q.initialPw.get(req.session.userId);
+      res.render('ir', {
+        docs: q.docs.all(wanted, cat, cat, year, year), years: q.docYears.all(wanted).map((r) => r.year), cat, year, IR_CATEGORIES,
+        companies: COMPANIES.filter((c) => allowed.includes(c.code)), company: wanted, initialPw: Boolean(me && me.initial_pw),
+      });
     },
     news(req, res) {
       const cat = NEWS_CATEGORIES.includes(req.query.cat) ? req.query.cat : '';

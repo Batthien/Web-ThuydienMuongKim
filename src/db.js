@@ -96,6 +96,19 @@ const userCols = db.prepare('PRAGMA table_info(users)').all().map((c) => c.name)
 if (!userCols.includes('role')) db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'admin'");
 if (!userCols.includes('display_name')) db.exec("ALTER TABLE users ADD COLUMN display_name TEXT NOT NULL DEFAULT ''");
 if (!userCols.includes('last_login_at')) db.exec("ALTER TABLE users ADD COLUMN last_login_at TEXT NOT NULL DEFAULT ''");
+// Cổ đông: khoá tên để đăng nhập bằng họ tên; đánh dấu còn dùng mật khẩu ban đầu (số CCCD)
+if (!userCols.includes('name_key')) db.exec("ALTER TABLE users ADD COLUMN name_key TEXT NOT NULL DEFAULT ''");
+if (!userCols.includes('initial_pw')) db.exec('ALTER TABLE users ADD COLUMN initial_pw INTEGER NOT NULL DEFAULT 0');
+db.exec('CREATE INDEX IF NOT EXISTS idx_users_name_key ON users(name_key)');
+// Cổ đông thuộc công ty nào (một người có thể là cổ đông nhiều công ty)
+db.exec(`CREATE TABLE IF NOT EXISTS user_companies (
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  company TEXT NOT NULL,
+  PRIMARY KEY (user_id, company)
+);`);
+// Tài liệu cổ đông thuộc công ty nào (tài liệu cũ mặc định là của Mường Kim)
+const docCols = db.prepare('PRAGMA table_info(documents)').all().map((c) => c.name);
+if (!docCols.includes('company')) db.exec("ALTER TABLE documents ADD COLUMN company TEXT NOT NULL DEFAULT 'mk'");
 
 // ---- Settings (cấu hình chỉnh được trong CMS) ----
 const getSettingsStmt = db.prepare('SELECT key, value FROM settings');

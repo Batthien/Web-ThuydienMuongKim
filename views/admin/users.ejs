@@ -1,15 +1,23 @@
-<%- include('_head', { title: 'Tài khoản người dùng', actions: '<a class="btn btn--primary" href="/admin/users/new">+ Thêm tài khoản</a>' }) %>
+<%- include('_head', { title: 'Tài khoản người dùng', actions: '<a class="btn btn--ghost" href="/admin/shareholders/import">Nhập danh sách cổ đông</a> <a class="btn btn--primary" href="/admin/users/new">+ Thêm tài khoản</a>' }) %>
 <% const fmt = (d) => d ? h.formatDate(d + 'Z', 'vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }) : 'Chưa đăng nhập'; %>
-<div class="notice notice--info"><%- icon('shield') %><span><strong>Quản trị viên</strong>: toàn quyền (tin tức, tài liệu cổ đông, tuyển dụng, tin nhắn & CV, cấu hình, tài khoản). <strong>Biên tập viên</strong>: chỉ viết và đăng tin tức.</span></div>
+<div class="notice notice--info"><%- icon('shield') %><span><strong>Quản trị viên</strong>: toàn quyền (tin tức, tài liệu cổ đông, tuyển dụng, tin nhắn & CV, cấu hình, tài khoản). <strong>Biên tập viên</strong>: chỉ viết và đăng tin tức. <strong>Lãnh đạo</strong>: xem mục Cổ đông của cả 4 công ty. <strong>Cổ đông</strong>: chỉ xem mục Cổ đông của công ty mình tham gia.</span></div>
+<% const short = (code) => (COMPANIES.find((c) => c.code === code) || {}).short_vi || code; const qs = (o) => '?' + new URLSearchParams(Object.entries({ role, company, ...o }).filter(([, v]) => v)).toString(); %>
+<nav class="user-filters" aria-label="Lọc tài khoản">
+  <a href="/admin/users<%= qs({ role: '', company: '' }) %>" <%- !role && !company ? 'aria-current="page"' : '' %>>Tất cả</a>
+  <% Object.entries(ROLES).forEach(([k, label]) => { %><a href="/admin/users<%= qs({ role: k, company: k === 'shareholder' ? company : '' }) %>" <%- role === k ? 'aria-current="page"' : '' %>><%= label %> (<%= counts[k] %>)</a><% }) %>
+  <% if (role === 'shareholder') { %><span class="user-filters__sep">Công ty:</span><% COMPANIES.forEach((c) => { %><a href="/admin/users<%= qs({ company: company === c.code ? '' : c.code }) %>" <%- company === c.code ? 'aria-current="page"' : '' %>><%= c.short_vi %></a><% }) %><% } %>
+</nav>
 <section class="panel">
   <div class="table-wrap">
     <table class="table">
-      <thead><tr><th>Tài khoản</th><th>Vai trò</th><th>Đăng nhập gần nhất</th><th class="t-right">Thao tác</th></tr></thead>
+      <thead><tr><th>Tài khoản</th><th>Vai trò</th><th>Công ty (cổ đông)</th><th>Đăng nhập gần nhất</th><th class="t-right">Thao tác</th></tr></thead>
       <tbody>
+        <% if (!rows.length) { %><tr><td colspan="5">Không có tài khoản phù hợp.</td></tr><% } %>
         <% rows.forEach((u) => { %>
           <tr>
             <td><a href="/admin/users/<%= u.id %>/edit"><strong><%= u.display_name || u.username %></strong></a><small><%= u.username %><%= u.id === me.id ? ' · (bạn)' : '' %></small></td>
-            <td><span class="pill pill--<%= u.role %>"><%= ROLES[u.role] || u.role %></span></td>
+            <td><span class="pill pill--<%= u.role %>"><%= ROLES[u.role] || u.role %></span><% if (u.role === 'shareholder' && u.initial_pw) { %><small>Chưa đổi mật khẩu CCCD</small><% } %></td>
+            <td><%= u.role === 'shareholder' ? (u.companies.map(short).join(', ') || '—') : (u.role === 'admin' || u.role === 'leader' ? 'Cả 4 công ty' : '—') %></td>
             <td><%= fmt(u.last_login_at) %></td>
             <td class="t-right actions">
               <a class="btn btn--sm btn--outline" href="/admin/users/<%= u.id %>/edit">Sửa</a>

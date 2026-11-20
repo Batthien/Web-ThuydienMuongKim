@@ -254,6 +254,9 @@ module.exports = {
     lockedNoPerm: 'The account you are using does not have access to this section. Please sign in with a shareholder account or contact the Company.',
     lockedLogin: 'Sign in to view',
     lockedContact: 'Contact us',
+    companiesLabel: 'Choose a company',
+    changePw: 'You are still using your initial password (ID card number). For security, please set your own password.',
+    changePwLink: 'Change password',
     lead: 'Information for shareholders and investors of Muong Kim Hydropower JSC.',
     all: 'All',
     categories: {

@@ -148,10 +148,33 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   ok(r.status === 422, 'Báo lỗi khi tạo tài khoản sai (422)');
   r = await req('/admin/users', form({ username: 'bientap', display_name: 'Biên tập', password: 'editor-password-1', confirm: 'editor-password-1', role: 'editor' }));
   ok(r.status === 302, 'Tạo tài khoản Biên tập viên');
-  r = await req('/admin/users', form({ username: 'codong', display_name: 'Cổ đông', password: 'holder-password-1', confirm: 'holder-password-1', role: 'shareholder' }));
+  r = await req('/admin/users', form({ username: 'codong', display_name: 'Cổ đông', password: 'holder-password-1', confirm: 'holder-password-1', role: 'shareholder', companies: 'mk' }));
   ok(r.status === 302, 'Tạo tài khoản Cổ đông');
   r = await req('/admin/users', form({ username: 'lanhdao', display_name: 'Lãnh đạo', password: 'leader-password-1', confirm: 'leader-password-1', role: 'leader' }));
   ok(r.status === 302, 'Tạo tài khoản Lãnh đạo');
+
+  // --- Tài liệu của công ty Than Uyên ---
+  html = await (await req('/admin/documents/new')).text();
+  ok(html.includes('name="company"') && html.includes('Công ty cổ phần Thủy điện Than Uyên'), 'Tài liệu có ô chọn công ty');
+  const doc2 = new FormData();
+  doc2.append('_csrf', csrfFrom(html)); doc2.append('title_vi', 'Nghị quyết ĐHĐCĐ Than Uyên 2026'); doc2.append('company', 'tu');
+  doc2.append('category', 'agm'); doc2.append('year', '2026'); doc2.append('published_at', '2026-04-20');
+  doc2.append('file_upload', new Blob(['%PDF-1.4'], { type: 'application/pdf' }), 'nq-tu-2026.pdf');
+  ok((await req('/admin/documents', { method: 'POST', body: doc2 })).status === 302, 'Tải tài liệu công ty Than Uyên');
+  html = await (await req('/vi/co-dong?company=tu')).text();
+  const docUrlTu = (html.match(/\/uploads\/docs\/[^"]+/) || [])[0];
+  ok(html.includes('Nghị quyết ĐHĐCĐ Than Uyên 2026') && !html.includes('Báo cáo tài chính 2025'), 'Mỗi công ty chỉ hiện tài liệu của mình');
+
+  // --- Nhập danh sách cổ đông (dán từ Excel: Họ tên | CCCD) ---
+  html = await (await req('/admin/shareholders/import')).text();
+  csrf = csrfFrom(html);
+  r = await req('/admin/shareholders/import', form({ company: 'tu', list: 'Họ và tên\tSố CCCD\nNguyễn Văn An\t001085012345\nNguyễn Văn An\t035190001234\nLê Thị Cúc\t12345\n' }));
+  html = await r.text();
+  ok(r.status === 200 && html.includes('>2</span> tài khoản cổ đông mới') && html.includes('Số CCCD/CMND phải gồm'), 'Nhập danh sách: tạo 2 cổ đông trùng tên, báo dòng sai CCCD');
+  ok(!html.includes('001085012345'), 'Không hiển thị lại số CCCD sau khi nhập');
+  r = await req('/admin/shareholders/import', form({ company: 'mk', list: 'Nguyễn Văn An\t001085012345' }));
+  ok((await r.text()).includes('>1</span> cổ đông đã có tài khoản'), 'Cổ đông nhiều công ty: thêm quyền, không tạo trùng tài khoản');
+  ok((await (await req('/admin/users?role=shareholder&company=tu')).text()).includes('Than Uyên'), 'Danh sách tài khoản lọc theo công ty');
   r = await req('/admin/users/1/delete', form({}));
   ok(r.status === 302 && (await (await req('/admin/users')).text()).includes('Không thể xoá tài khoản đang đăng nhập'), 'Không cho xoá chính mình');
   await req('/admin/logout', form({}));
@@ -163,6 +186,7 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   ok(!(await (await req('/vi')).text()).includes('Báo cáo tài chính 2025'), 'Khách: trang chủ không lộ tên tài liệu cổ đông');
   r = await req(docUrl);
   ok(r.status === 302 && r.headers.get('location').startsWith('/admin/login'), 'Khách: không tải được tệp tài liệu (chuyển đăng nhập)');
+  ok((await req('/vi/co-dong?company=tu')).status === 200 && !(await (await req('/vi/co-dong?company=tu')).text()).includes('Nghị quyết'), 'Khách: mục Cổ đông Than Uyên bị khoá');
   html = await (await req('/admin/login')).text();
   csrf = csrfFrom(html);
   r = await req('/admin/login', form({ username: 'bientap', password: 'editor-password-1', next: '/admin' }));
@@ -197,7 +221,32 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
       ok(res.status === 302 && res.headers.get('location') === '/vi/co-dong', `${label} không vào được ${p}`);
     }
     ok((await req('/admin/account')).status === 200, `${label} đổi được mật khẩu`);
+    if (username === 'codong') {
+      ok((await req('/vi/co-dong?company=tu')).status === 403, 'Cổ đông Mường Kim không mở được mục Than Uyên');
+      ok((await req(docUrlTu)).status === 403, 'Cổ đông Mường Kim không tải được tài liệu Than Uyên');
+    } else {
+      ok((await (await req('/vi/co-dong?company=tu')).text()).includes('Nghị quyết ĐHĐCĐ Than Uyên 2026'), 'Lãnh đạo xem được cả công ty Than Uyên');
+    }
   }
+
+  // --- Cổ đông nhập từ danh sách: đăng nhập bằng Họ tên + số CCCD ---
+  const loginHolder = async (name, pw) => {
+    csrf = csrfFrom(await (await req('/admin/account')).text());
+    await req('/admin/logout', form({}));
+    csrf = csrfFrom(await (await req('/admin/login?next=%2Fvi%2Fco-dong')).text());
+    return req('/admin/login', form({ username: name, password: pw, next: '/vi/co-dong' }));
+  };
+  r = await loginHolder('nguyen van an', '035190001234');
+  ok(r.status === 302 && r.headers.get('location') === '/vi/co-dong', 'Đăng nhập bằng họ tên không dấu + CCCD');
+  html = await (await req('/vi/co-dong')).text();
+  ok(html.includes('Nghị quyết ĐHĐCĐ Than Uyên 2026') && html.includes('mật khẩu ban đầu'), 'Cổ đông Than Uyên xem được tài liệu, được nhắc đổi mật khẩu');
+  ok(!html.includes('?company=mk') && (await req('/vi/co-dong?company=mk')).status === 403, 'Người trùng tên khác CCCD không xem được Mường Kim');
+  r = await loginHolder('NGUYỄN VĂN AN', '001 085 012 345');
+  ok(r.status === 302, 'Đăng nhập họ tên viết hoa + CCCD có dấu cách');
+  html = await (await req('/vi/co-dong?company=mk')).text();
+  ok(html.includes('Báo cáo tài chính 2025') && html.includes('?company=tu'), 'Cổ đông 2 công ty xem được cả Mường Kim và Than Uyên');
+  r = await loginHolder('Nguyễn Văn An', '999999999999');
+  ok(r.status === 401, 'Sai số CCCD thì không đăng nhập được');
 
   server.close();
   require('../src/db').db.close();

@@ -1,18 +1,31 @@
 <%- include('partials/head') %>
-<% const L = t('locale'); const base = url('ir'); %>
+<% const L = t('locale'); const base = url('ir'); const co = companies.find((c) => c.code === company); const q0 = '?company=' + company; %>
 <%- include('partials/page-hero', { heroTitle: t('ir.title'), heroLead: t('ir.lead'), crumbs: [{ label: t('nav.ir') }] }) %>
 
 <section class="section">
+  <div class="container">
+    <% if (initialPw) { %>
+      <div class="ir-notice" role="status"><%- icon('shield') %><p><%= t('ir.changePw') %> <a href="/admin/account"><%= t('ir.changePwLink') %></a></p></div>
+    <% } %>
+    <%# Mỗi công ty một mục cổ đông riêng; chỉ hiện công ty người dùng được xem %>
+    <nav class="ir-companies" aria-label="<%= t('ir.companiesLabel') %>">
+      <% companies.forEach((c) => { %>
+        <a href="<%= base %>?company=<%= c.code %>" <%- c.code === company ? 'aria-current="page"' : '' %>><%- icon('growth') %><span><%= lang === 'en' ? c.en : c.vi %></span></a>
+      <% }) %>
+    </nav>
+  </div>
   <div class="container ir-layout">
     <div>
+      <h2 class="ir-company-title"><%= lang === 'en' ? co.en : co.vi %></h2>
       <nav class="tabs" aria-label="<%= t('ir.title') %>">
-        <a href="<%= base %><%= year ? '?year=' + year : '' %>" <%- !cat ? 'aria-current="page"' : '' %>><%= t('ir.all') %></a>
+        <a href="<%= base %><%= q0 %><%= year ? '&year=' + year : '' %>" <%- !cat ? 'aria-current="page"' : '' %>><%= t('ir.all') %></a>
         <% IR_CATEGORIES.forEach((c) => { %>
-          <a href="<%= base %>?cat=<%= c %><%= year ? '&year=' + year : '' %>" <%- cat === c ? 'aria-current="page"' : '' %>><%= t('ir.categories.' + c) %></a>
+          <a href="<%= base %><%= q0 %>&cat=<%= c %><%= year ? '&year=' + year : '' %>" <%- cat === c ? 'aria-current="page"' : '' %>><%= t('ir.categories.' + c) %></a>
         <% }) %>
       </nav>
 
       <form class="filter-bar" method="get" action="<%= base %>">
+        <input type="hidden" name="company" value="<%= company %>">
         <% if (cat) { %><input type="hidden" name="cat" value="<%= cat %>"><% } %>
         <label for="ir-year"><%= t('ir.year') %></label>
         <select id="ir-year" name="year" data-autosubmit>
@@ -53,10 +66,12 @@
       <div class="profile-card">
         <h2 class="profile-card__title"><%= t('ir.profileTitle') %></h2>
         <dl class="profile-list">
-          <div><dt><%= t('about.fields.name') %></dt><dd><%= settings.company_name_vi %></dd></div>
+          <div><dt><%= t('about.fields.name') %></dt><dd><%= lang === 'en' ? co.en : co.vi %></dd></div>
+          <% if (company === 'mk') { %>
           <div><dt><%= t('about.fields.tax') %></dt><dd><%= settings.tax_code %></dd></div>
           <div><dt><%= t('plant.specs.capacity') %></dt><dd><%= h.formatNumber(settings.capacity_mw, L) %> MW</dd></div>
           <div><dt><%= t('plant.specs.operation') %></dt><dd><%= settings.year_operation %></dd></div>
+          <% } %>
         </dl>
       </div>
       <div class="profile-card profile-card--accent">

@@ -30,6 +30,7 @@ const nav = isViewer ? [
   ['/admin/messages', 'Tin nhắn & hồ sơ', 'mail', true],
   ['/admin/settings', 'Cấu hình', 'cog', true],
   ['/admin/users', 'Tài khoản người dùng', 'users', true],
+  ['/admin/shareholders/import', 'Nhập danh sách cổ đông', 'upload', true],
   ['/admin/account', 'Đổi mật khẩu', 'shield', false],
 ].filter(([, , , adminOnly]) => isAdmin || !adminOnly); %>
 <div class="admin-shell">
