@@ -1024,3 +1024,21 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
   .site-header__inner { gap: 10px; }
   .header-cta { padding: .45em .9em; }
 }
+
+/* Chân trang: viền thẳng (không lượn sóng), gọn hơn */
+.site-footer { padding-top: 40px; border-top: 3px solid var(--accent); }
+.site-footer__wave { display: none; }
+.site-footer__grid { gap: 28px; padding-bottom: 28px; font-size: .92rem; }
+.footer-logo { margin-bottom: 12px; padding: 8px 12px; }
+.footer-logo img { width: 110px; height: auto; }
+.site-footer__name { font-size: .98rem; margin-bottom: 4px; }
+.site-footer__tagline { font-size: .86rem; margin: 0; }
+.site-footer__title { font-size: .95rem; margin-bottom: 10px; }
+.site-footer__links { gap: 0; }
+.site-footer__links a { min-height: 30px; }
+.site-footer__contact { gap: 10px; }
+.site-footer__bottom { padding-block: 14px; font-size: .8rem; }
+@media (max-width: 520px) {
+  .site-footer__grid { grid-template-columns: 1fr 1fr; gap: 20px 16px; }
+  .site-footer__brand, .site-footer__grid > div:last-child { grid-column: 1 / -1; }
+}
