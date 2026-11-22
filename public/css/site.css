@@ -1081,3 +1081,25 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .company-contact__pending { margin: 0; font-size: .92rem; text-align: start; }
 .contact-hours { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0 0; font-size: .92rem; color: var(--muted); text-align: start; }
 .contact-hours .icon { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; color: var(--brand-700); }
+
+/* Trang chủ: thống kê SXKD ngày 4 nhà máy */
+.daily { background: var(--mist); }
+.daily__date { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--brand-800); font-weight: 600; font-size: .92rem; text-align: start; }
+.daily__date .icon { width: 18px; height: 18px; color: var(--accent); }
+.daily__wrap { overflow-x: auto; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); -webkit-overflow-scrolling: touch; }
+.daily__wrap:focus-visible { outline: 3px solid var(--brand-400); outline-offset: 2px; }
+.daily__table { width: 100%; min-width: 1060px; border-collapse: collapse; font-size: .93rem; font-variant-numeric: tabular-nums; }
+.daily__table th, .daily__table td { padding: 14px 16px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.daily__table thead th { background: var(--brand-900); color: #fff; font-size: .8rem; font-weight: 600; letter-spacing: .02em; white-space: normal; vertical-align: bottom; line-height: 1.35; }
+.daily__table th[scope="row"], .daily__table thead th:first-child { text-align: left; position: sticky; left: 0; z-index: 1; }
+.daily__table tbody th[scope="row"] { background: #fff; color: var(--ink); font-weight: 600; }
+.daily__table tbody tr:hover td, .daily__table tbody tr:hover th { background: var(--sky-100); }
+.daily__table td strong { color: var(--brand-700); }
+.daily__table tfoot th, .daily__table tfoot td { background: var(--brand-50, #eaf5f7); font-weight: 700; color: var(--ink); border-bottom: 0; }
+.daily__pct { display: inline-block; width: 46px; height: 6px; margin-right: 8px; border-radius: 6px; background: var(--line); vertical-align: middle; overflow: hidden; }
+.daily__pct span { display: block; width: var(--w); height: 100%; background: linear-gradient(90deg, var(--brand-400), var(--accent)); }
+.daily__note { margin: 12px 0 0; font-size: .85rem; color: var(--muted); text-align: start; }
+@media (max-width: 640px) {
+  .daily__table th, .daily__table td { padding: 11px 12px; }
+  .daily__table th[scope="row"] { max-width: 170px; white-space: normal; }
+}

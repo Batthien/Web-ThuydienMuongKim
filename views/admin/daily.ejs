@@ -1,0 +1,63 @@
+<%- include('_head', { title: 'Báo cáo SXKD ngày', actions: '<a class="btn btn--ghost" href="/vi#sxkd-ngay" target="_blank" rel="noopener">Xem trên trang chủ →</a>' }) %>
+<% const v = (x) => (x == null ? '' : String(x).replace('.', ',')); const dmy = (d) => d.split('-').reverse().join('/'); %>
+<div class="notice notice--info"><%- icon('gauge') %><span>
+  Trang chủ hiển thị số liệu của <strong>ngày gần nhất</strong> có số liệu. Lũy kế tháng, lũy kế năm và % kế hoạch năm được tính tự động từ số liệu các ngày đã nhập.
+  Nhập số theo kiểu Việt Nam: dấu phẩy cho phần thập phân (ví dụ <code>2.105,5</code> hoặc <code>2105,5</code>). Để trống cả dòng nếu nhà máy chưa có số liệu ngày đó.
+</span></div>
+
+<section class="panel">
+  <form class="daily-pick" method="get" action="/admin/daily">
+    <div class="field"><label for="pick">Chọn ngày báo cáo</label><input id="pick" type="date" name="date" value="<%= date %>" required></div>
+    <button class="btn btn--ghost" type="submit">Mở ngày này</button>
+  </form>
+  <% if (dates.length) { %>
+    <p class="field__hint">Các ngày đã nhập gần đây:
+      <% dates.forEach((d, i) => { %><a href="/admin/daily?date=<%= d.date %>"><%= dmy(d.date) %></a> (<%= d.n %>/<%= PLANTS.length %>)<%= i < dates.length - 1 ? ', ' : '' %><% }) %>
+    </p>
+  <% } %>
+</section>
+
+<form class="stack" method="post" action="/admin/daily" autocomplete="off">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <input type="hidden" name="date" value="<%= date %>">
+  <section class="panel">
+    <div class="panel__head"><h2>Số liệu ngày <%= dmy(date) %></h2></div>
+    <div class="table-wrap">
+      <table class="table daily-table">
+        <thead><tr><th>Nhà máy</th><% FIELDS.forEach(([, label]) => { %><th><%= label %></th><% }) %></tr></thead>
+        <tbody>
+          <% PLANTS.forEach((p) => { const r = day[p.id] || {}; %>
+            <tr>
+              <td><strong><%= p.vi.replace('Nhà máy Thủy điện ', '') %></strong><small><%= String(p.mw).replace('.', ',') %> MW</small></td>
+              <% FIELDS.forEach(([f, label]) => { %>
+                <td><input name="<%= p.id %>_<%= f %>" value="<%= v(r[f]) %>" inputmode="decimal" aria-label="<%= label %> — <%= p.vi %>"></td>
+              <% }) %>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel__head"><h2>Kế hoạch năm <%= year %></h2></div>
+    <div class="table-wrap">
+      <table class="table daily-table">
+        <thead><tr><th>Nhà máy</th><th>Sản lượng kế hoạch (kWh)</th><th>Doanh thu kế hoạch (triệu đồng)</th><th>Lũy kế SL năm đến <%= dmy(date) %></th><th>% KH năm</th></tr></thead>
+        <tbody>
+          <% PLANTS.forEach((p, i) => { const r = plan[p.id] || {}; const rr = rep.rows[i]; %>
+            <tr>
+              <td><strong><%= p.vi.replace('Nhà máy Thủy điện ', '') %></strong></td>
+              <td><input name="<%= p.id %>_output_plan" value="<%= v(r.output_plan) %>" inputmode="decimal" aria-label="Sản lượng kế hoạch — <%= p.vi %>"></td>
+              <td><input name="<%= p.id %>_revenue_plan" value="<%= v(r.revenue_plan) %>" inputmode="decimal" aria-label="Doanh thu kế hoạch — <%= p.vi %>"></td>
+              <td><%= fmtNum(rr.year_output) %></td>
+              <td><%= rr.pct == null ? '—' : fmtNum(Math.round(rr.pct * 10) / 10) + '%' %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <div class="form-actions"><button class="btn btn--primary" type="submit">Lưu số liệu ngày <%= dmy(date) %></button></div>
+</form>
+<%- include('_foot') %>

@@ -105,6 +105,22 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   const saved = require('../src/db').db.prepare('SELECT * FROM production WHERE year = 2026').get();
   ok(r.status === 302 && saved && saved.output_actual === null && saved.output_plan === 50000000 && saved.revenue_plan === 70000.5, 'Lưu số liệu sản xuất (ô trống = chưa có số liệu)');
 
+  console.log('Báo cáo SXKD ngày');
+  ok((await (await req('/vi')).text()).includes('Số liệu đang được cập nhật'), 'Trang chủ có bảng SXKD ngày (chưa có số liệu)');
+  html = await (await req('/admin/daily?date=2026-03-02')).text();
+  csrf = csrfFrom(html);
+  r = await req('/admin/daily', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ _csrf: csrf, date: '2026-03-02', mk_output: '245.300', mk_revenue: '312,4', mk_water_level: '421,35', mk_output_plan: '50.000.000', pl_output: '100000' }) });
+  html = await (await req('/admin/daily?date=2026-03-01')).text();
+  r = await req('/admin/daily', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ _csrf: csrfFrom(html), date: '2026-03-01', mk_output: '200000', mk_output_plan: '50.000.000' }) });
+  {
+    const rep = require('../src/lib/daily').report();
+    const mk = rep.rows.find((x) => x.id === 'mk');
+    ok(r.status === 302 && rep.date === '2026-03-02' && mk.output === 245300 && mk.revenue === 312.4 && mk.water_level === 421.35, 'Lưu số liệu ngày (dấu chấm hàng nghìn, dấu phẩy thập phân)');
+    ok(mk.month_output === 445300 && mk.year_output === 445300 && Math.abs(mk.pct - 0.8906) < 0.001 && rep.total.output === 345300, 'Tính lũy kế tháng, năm, % kế hoạch và tổng cộng');
+    const home = await (await req('/vi')).text();
+    ok(home.includes('02/03/2026') && home.includes('245.300') && home.includes('445.300'), 'Trang chủ hiển thị số liệu ngày gần nhất');
+  }
+
   console.log('Tiêu đề mục biểu đồ');
   html = await (await req('/vi')).text();
   ok(!html.includes('prod-source') && !html.includes('Nguồn: Báo cáo'), 'Trang chủ không còn dòng nguồn');

@@ -476,6 +476,43 @@ router.post('/users/:id/delete', requireCsrf, (req, res) => {
   res.redirect('/admin/users');
 });
 
+// ================= Báo cáo SXKD ngày của 4 nhà máy (hiện trên trang chủ) =================
+const daily = require('../lib/daily');
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const numOrNull = (v) => {
+  const x = String(v ?? '').replace(/\s/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+  return x === '' || Number.isNaN(Number(x)) ? null : Number(x);
+};
+
+router.get('/daily', (req, res) => {
+  const date = DATE_RE.test(req.query.date || '') ? req.query.date : today();
+  const year = Number(date.slice(0, 4));
+  res.render('admin/daily', {
+    date, year, PLANTS: daily.PLANTS, FIELDS: daily.FIELDS, fmtNum,
+    day: Object.fromEntries(daily.q.day.all(date).map((r) => [r.plant, r])),
+    plan: Object.fromEntries(daily.q.plans.all(year).map((r) => [r.plant, r])),
+    dates: daily.q.dates.all(15),
+    rep: daily.report(date),
+  });
+});
+
+router.post('/daily', requireCsrf, (req, res) => {
+  const date = String(req.body.date || '');
+  if (!DATE_RE.test(date) || Number.isNaN(Date.parse(date))) {
+    flash(req, 'error', 'Ngày báo cáo không hợp lệ.');
+    return res.redirect('/admin/daily');
+  }
+  const year = Number(date.slice(0, 4));
+  for (const p of daily.PLANTS) {
+    const v = daily.FIELDS.map(([f]) => numOrNull(req.body[`${p.id}_${f}`]));
+    if (v.every((x) => x == null)) daily.q.deleteDay.run(date, p.id);
+    else daily.q.upsertDay.run(date, p.id, ...v);
+    daily.q.upsertPlan.run(year, p.id, numOrNull(req.body[`${p.id}_output_plan`]), numOrNull(req.body[`${p.id}_revenue_plan`]));
+  }
+  flash(req, 'success', `Đã lưu số liệu ngày ${date.split('-').reverse().join('/')}.`);
+  res.redirect('/admin/daily?date=' + date);
+});
+
 // ================= Nhập danh sách cổ đông (dán từ Excel: Họ tên | Số CCCD) =================
 router.get('/shareholders/import', (req, res) => {
   res.render('admin/shareholders-import', { COMPANIES, company: COMPANY_CODES[0], text: '', result: null, error: null });

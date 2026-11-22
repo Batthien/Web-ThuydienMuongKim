@@ -162,3 +162,10 @@ code { background: #e9f1f4; padding: 1px 6px; border-radius: 4px; font-size: .9e
 .company-checks { display: grid; gap: 8px; border: 1px solid #dbe6ea; border-radius: 12px; padding: 14px 16px; margin: 0; }
 .company-checks legend { padding: 0 6px; font-weight: 600; }
 .import-summary { display: grid; gap: 8px; margin: 0 0 16px; padding: 0; list-style: none; }
+
+/* Báo cáo SXKD ngày */
+.daily-pick { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 8px; }
+.daily-pick .field { min-width: 220px; }
+.daily-table input { width: 100%; min-width: 130px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; text-align: right; }
+.daily-table input:focus { border-color: var(--brand); outline: none; box-shadow: 0 0 0 3px rgba(78, 163, 192, .2); }
+.daily-table td:first-child { white-space: nowrap; }

@@ -8,6 +8,7 @@ const { csrfToken, requireCsrf } = require('../lib/security');
 const { cvUpload, dirs, removeFile } = require('../lib/uploads');
 const mailer = require('../lib/mailer');
 const spotlight = require('../lib/spotlight');
+const daily = require('../lib/daily');
 const { GALLERY_CATS, catOf } = require('../lib/gallery-cats');
 const { COMPANIES, COMPANY_CODES } = require('../lib/access');
 
@@ -83,7 +84,7 @@ function createRouter(lang) {
     // Tên tài liệu cổ đông chỉ hiện cho người có quyền xem
     const docs = res.locals.irCompanies.length ? q.latestDocs.all(40).filter((d) => res.locals.irCompanies.includes(d.company)).slice(0, 4) : [];
     const tiles = spotlight.build({ t, url: res.locals.url, loc: res.locals.loc, posts: q.latestPosts.all(5), docs, jobs: q.jobs.all().slice(0, 4), IR_CATEGORIES });
-    res.render('home', { docs, IR_CATEGORIES, spotlight: tiles });
+    res.render('home', { docs, IR_CATEGORIES, spotlight: tiles, daily: daily.report() });
   });
 
   const pages = {

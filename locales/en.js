@@ -70,6 +70,16 @@ module.exports = {
       { title: 'Generators & substation', text: 'Generators produce electricity; the substation steps up the voltage for transmission.' },
       { title: 'National grid', text: 'Power is delivered to the grid and sold to Vietnam Electricity (EVN).' },
     ],
+    daily: {
+      eyebrow: 'Operations',
+      title: 'Daily production & business report',
+      date: 'Figures for',
+      pending: 'Figures being updated',
+      total: 'Total',
+      cols: { plant: 'Plant', mw: 'Capacity (MW)', output: 'Daily output (kWh)', month: 'Month to date (kWh)', year: 'Year to date (kWh)', pct: '% of annual plan', revenue: 'Daily revenue (VND m)', level: 'Reservoir level (m)', inflow: 'Inflow (m³/s)' },
+      note: 'Electricity delivered to the grid; revenue in million VND, excluding VAT. Cumulative figures up to the end of the report day.',
+      pendingNote: 'The table will show figures once the Company publishes its daily report.',
+    },
     pillarsEyebrow: 'Sustainability',
     pillarsTitle: 'Our commitments',
     pillars: [

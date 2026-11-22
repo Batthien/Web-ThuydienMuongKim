@@ -70,6 +70,16 @@ module.exports = {
       { title: 'Máy phát & trạm biến áp', text: 'Máy phát tạo ra điện năng, trạm biến áp nâng điện áp để truyền tải.' },
       { title: 'Lưới điện quốc gia', text: 'Điện năng hòa lưới và bán cho Tập đoàn Điện lực Việt Nam (EVN).' },
     ],
+    daily: {
+      eyebrow: 'Hoạt động sản xuất kinh doanh',
+      title: 'Thống kê sản xuất kinh doanh ngày',
+      date: 'Số liệu ngày',
+      pending: 'Số liệu đang được cập nhật',
+      total: 'Tổng cộng',
+      cols: { plant: 'Nhà máy', mw: 'Công suất (MW)', output: 'Sản lượng ngày (kWh)', month: 'Lũy kế tháng (kWh)', year: 'Lũy kế năm (kWh)', pct: '% KH năm', revenue: 'Doanh thu ngày (tr.đ)', level: 'Mực nước hồ (m)', inflow: 'Lưu lượng về (m³/s)' },
+      note: 'Sản lượng điện phát lên lưới; doanh thu tính theo triệu đồng, chưa gồm VAT. Lũy kế tính đến hết ngày báo cáo.',
+      pendingNote: 'Bảng sẽ hiển thị số liệu khi Công ty cập nhật báo cáo ngày.',
+    },
     pillarsEyebrow: 'Phát triển bền vững',
     pillarsTitle: 'Cam kết của chúng tôi',
     pillars: [
