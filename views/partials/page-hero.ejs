@@ -1,6 +1,8 @@
-<%# locals: heroTitle, heroLead, crumbs [{label, href}], bare (chỉ chạy ảnh, chữ ẩn cho SEO) %>
-<section class="page-hero<%= locals.bare ? ' page-hero--bare' : '' %>">
+<%# locals: heroTitle, heroLead, crumbs [{label, href}], bare (chỉ chạy ảnh, chữ ẩn cho SEO), below (ảnh không chữ, tiêu đề hiện ở dưới ảnh) %>
+<% const plain = locals.bare || locals.below; %>
+<section class="page-hero<%= plain ? ' page-hero--bare' : '' %>">
   <%- include('hero-slides', { mediaCls: 'page-hero__media' }) %>
+  <% if (!locals.below) { %>
   <div class="container page-hero__content<%= locals.bare ? ' sr-only' : '' %>">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
@@ -13,4 +15,21 @@
     <h1 class="page-hero__title"><%= heroTitle %></h1>
     <% if (locals.heroLead) { %><p class="page-hero__lead"><%= heroLead %></p><% } %>
   </div>
+  <% } %>
 </section>
+<% if (locals.below) { %>
+<div class="page-intro">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="<%= url('home') %>"><%= t('common.home') %></a></li>
+        <% (locals.crumbs || []).forEach((c, i, arr) => { %>
+          <li><% if (c.href && i < arr.length - 1) { %><a href="<%= c.href %>"><%= c.label %></a><% } else { %><span aria-current="page"><%= c.label %></span><% } %></li>
+        <% }) %>
+      </ol>
+    </nav>
+    <h1 class="page-intro__title"><%= heroTitle %></h1>
+    <% if (locals.heroLead) { %><p class="page-intro__lead"><%= heroLead %></p><% } %>
+  </div>
+</div>
+<% } %>

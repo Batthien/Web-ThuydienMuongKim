@@ -1056,3 +1056,13 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .ir-notice p { margin: 0; text-align: start; }
 .ir-notice .icon { flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px; }
 .ir-notice a { font-weight: 700; color: inherit; }
+
+/* Tiêu đề trang nằm dưới ảnh đầu trang (vd mục Cổ đông) */
+.page-intro { padding: clamp(28px, 4vw, 44px) 0 0; }
+.page-intro .breadcrumb ol { color: var(--muted); margin-bottom: 12px; }
+.page-intro .breadcrumb a { color: var(--brand-700); }
+.page-intro .breadcrumb a:hover { color: var(--brand-900); }
+.page-intro .breadcrumb [aria-current] { color: var(--ink); }
+.page-intro__title { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.025em; margin: 0 0 10px; color: var(--ink); }
+.page-intro__lead { margin: 0; max-width: 64ch; color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.15rem); text-align: start; }
+.page-intro + .section { padding-top: clamp(24px, 3vw, 36px); }

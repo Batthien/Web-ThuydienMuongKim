@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <% const L = t('locale'); const base = url('ir'); const co = companies.find((c) => c.code === company); const q0 = '?company=' + company; %>
-<%- include('partials/page-hero', { heroTitle: t('ir.title'), heroLead: t('ir.lead'), crumbs: [{ label: t('nav.ir') }] }) %>
+<%- include('partials/page-hero', { heroTitle: t('ir.title'), heroLead: t('ir.lead'), crumbs: [{ label: t('nav.ir') }], below: true }) %>
 
 <section class="section">
   <div class="container">
