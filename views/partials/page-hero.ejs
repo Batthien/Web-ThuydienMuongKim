@@ -1,8 +1,8 @@
 <%# locals: heroTitle, heroLead, crumbs [{label, href}], bare (chỉ chạy ảnh, chữ ẩn cho SEO), below (ảnh không chữ, tiêu đề hiện ở dưới ảnh) %>
-<% const plain = locals.bare || locals.below; %>
+<% const below = !locals.bare && locals.below !== false; /* mặc định: ảnh không chữ, tiêu đề dưới ảnh */ const plain = locals.bare || below; %>
 <section class="page-hero<%= plain ? ' page-hero--bare' : '' %>">
   <%- include('hero-slides', { mediaCls: 'page-hero__media' }) %>
-  <% if (!locals.below) { %>
+  <% if (!below) { %>
   <div class="container page-hero__content<%= locals.bare ? ' sr-only' : '' %>">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
@@ -17,7 +17,7 @@
   </div>
   <% } %>
 </section>
-<% if (locals.below) { %>
+<% if (below) { %>
 <div class="page-intro">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb">
