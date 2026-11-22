@@ -43,26 +43,6 @@
   </div>
 </section>
 
-<section class="section section--dark process">
-  <div class="process__bg" aria-hidden="true"><%- h.img('/media/dam/dam-02', '', { sizes: '100vw' }) %></div>
-  <div class="container">
-    <div class="section-head section-head--center reveal">
-      <p class="eyebrow eyebrow--light"><%= t('home.processEyebrow') %></p>
-      <h2 class="section-title"><%= t('home.processTitle') %></h2>
-      <p class="lead"><%= t('home.processText') %></p>
-    </div>
-    <ol class="flow">
-      <% t('home.steps').forEach((s, i) => { %>
-        <li class="flow__step reveal" style="--i:<%= i %>">
-          <span class="flow__num"><%= String(i + 1).padStart(2, '0') %></span>
-          <h3><%= s.title %></h3>
-          <p><%= s.text %></p>
-        </li>
-      <% }) %>
-    </ol>
-  </div>
-</section>
-
 <section class="section pillars">
   <div class="container">
     <div class="section-head reveal">
