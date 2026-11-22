@@ -1129,3 +1129,15 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 @media (max-width: 960px) { .sister__grid { grid-template-columns: 1fr; } }
 @media (max-width: 520px) { .mini-timeline li { grid-template-columns: 1fr; gap: 2px; } }
 .mini-timeline span, .sister-card p { text-align: start; }
+
+/* Thẻ 3 công ty: ảnh nền nhà máy + lớp phủ tối để chữ dễ đọc */
+.sister-card { position: relative; overflow: hidden; isolation: isolate; border: 0; min-height: 300px; color: #fff; background: var(--brand-900); }
+.sister-card__bg { position: absolute; inset: 0; z-index: -2; }
+.sister-card__bg img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.sister-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(4, 31, 40, .35) 0%, rgba(4, 31, 40, .78) 55%, rgba(4, 31, 40, .94) 100%); }
+.sister-card:hover .sister-card__bg img { transform: scale(1.06); }
+.sister-card__icon { background: rgba(255, 255, 255, .16); color: #fff; backdrop-filter: blur(6px); }
+.sister-card h4 { color: #fff; margin-top: auto; }
+.sister-card p { color: rgba(255, 255, 255, .86); flex: 0 0 auto; }
+.sister-card__links a { color: var(--accent-soft); }
+.sister-card__links a:hover { color: #fff; }

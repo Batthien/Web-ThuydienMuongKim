@@ -19,9 +19,9 @@ const settings = {
   co_tu_address: '', co_tu_phone: '', co_tu_email: '', co_tu_tax: '',
   co_pl_address: '', co_pl_phone: '', co_pl_email: '', co_pl_tax: '',
   // Giới thiệu ngắn 3 công ty trên trang chủ (mục Về chúng tôi); co_*_plant = mã trang nhà máy để gắn liên kết
-  co_tu_intro_vi: 'Công ty cổ phần Thủy điện Than Uyên hoạt động trong lĩnh vực đầu tư, sản xuất và kinh doanh điện năng từ thủy điện. Thông tin chi tiết về Công ty đang được cập nhật.',
-  co_tu_intro_en: 'Than Uyen Hydropower JSC invests in, generates and sells hydroelectric power. Further details about the company are coming soon.',
-  co_tu_plant: '',
+  co_tu_intro_vi: 'Công ty cổ phần Thủy điện Than Uyên quản lý, vận hành Nhà máy Thủy điện Mường Kim II 12 MW (3 tổ máy) trên suối Nậm Kim, ngay hạ lưu Nhà máy Thủy điện Mường Kim.',
+  co_tu_intro_en: 'Than Uyen Hydropower JSC manages and operates the 12 MW Muong Kim II Hydropower Plant (3 units) on the Nam Kim stream, just downstream of the Muong Kim plant.',
+  co_tu_plant: 'muong-kim-2',
   co_pl_intro_vi: 'Công ty cổ phần Thủy điện Phiêng Lúc quản lý, vận hành Nhà máy Thủy điện Phiêng Lúc 20 MW (2 tổ máy) trên sông Nậm Mu và suối Nậm Cha, tỉnh Lai Châu.',
   co_pl_intro_en: 'Phieng Luc Hydropower JSC manages and operates the 20 MW Phieng Luc Hydropower Plant (2 units) on the Nam Mu river and Nam Cha stream, Lai Chau province.',
   co_pl_plant: 'phieng-luc',
