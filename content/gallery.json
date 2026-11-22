@@ -967,5 +967,95 @@
       1280
     ],
     "ratio": 1.6966
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-01",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5004
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-02",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5004
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-03",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 0.668
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-04",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 0.5624
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-05",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5004
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-06",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.7794
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-07",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 0.6667
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-08",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 1.5004
+  },
+  {
+    "album": "news-industry",
+    "src": "/media/news-industry/news-industry-09",
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "ratio": 0.5626
   }
 ]
