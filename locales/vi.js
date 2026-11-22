@@ -306,7 +306,7 @@ module.exports = {
     empty: 'Hình ảnh của mục này đang được cập nhật.',
     lead: 'Hình ảnh nhà máy, công trình và hoạt động của Công ty.',
     albums: {
-      all: 'Tất cả', dam: 'Đập tràn', plant: 'Nhà máy', 'plant-mk2': 'Nhà máy Mường Kim II', 'plant-pl': 'Nhà máy Phiêng Lúc', 'plant-hb2': 'Nhà máy Hồ Bốn 2', office: 'Khu điều hành', safety: 'An toàn – PCCC',
+      all: 'Tất cả', '5s': 'Công tác 5S', dam: 'Đập tràn', plant: 'Nhà máy', 'plant-mk2': 'Nhà máy Mường Kim II', 'plant-pl': 'Nhà máy Phiêng Lúc', 'plant-hb2': 'Nhà máy Hồ Bốn 2', office: 'Khu điều hành', safety: 'An toàn – PCCC',
       anniversary: 'Kỷ niệm 10 năm', site: 'Lãnh đạo thăm hiện trường', sports: 'Thể thao', travel: 'Tham quan – nghỉ dưỡng',
     },
     close: 'Đóng', prev: 'Ảnh trước', next: 'Ảnh sau', open: 'Phóng to ảnh',

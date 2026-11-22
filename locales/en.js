@@ -306,7 +306,7 @@ module.exports = {
     empty: 'Photos for this section are coming soon.',
     lead: 'Photos of the plant, structures and company activities.',
     albums: {
-      all: 'All', dam: 'Spillway dam', plant: 'Powerhouse', 'plant-mk2': 'Muong Kim II plant', 'plant-pl': 'Phieng Luc plant', 'plant-hb2': 'Ho Bon 2 plant', office: 'Operations area', safety: 'Fire safety',
+      all: 'All', '5s': '5S workplace', dam: 'Spillway dam', plant: 'Powerhouse', 'plant-mk2': 'Muong Kim II plant', 'plant-pl': 'Phieng Luc plant', 'plant-hb2': 'Ho Bon 2 plant', office: 'Operations area', safety: 'Fire safety',
       anniversary: '10th anniversary', site: 'Site visits', sports: 'Sports', travel: 'Company trips',
     },
     close: 'Close', prev: 'Previous photo', next: 'Next photo', open: 'Enlarge photo',
