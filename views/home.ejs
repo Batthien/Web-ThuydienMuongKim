@@ -114,13 +114,15 @@
            const plant = plantIds.includes(settings['co_' + code + '_plant']) ? settings['co_' + code + '_plant'] : '';
            const photo = { 'muong-kim': '/media/plant/plant-03', 'muong-kim-2': '/media/plant-mk2/plant-mk2-01', 'phieng-luc': '/media/plant-pl/plant-pl-01', 'ho-bon-2': '/media/plant-hb2/plant-hb2-01' }[plant] || '/media/dam/dam-02'; %>
         <article class="sister-card reveal" style="--i:<%= i %>">
-          <div class="sister-card__bg" aria-hidden="true"><%- h.img(photo, '', { sizes: '(min-width: 960px) 420px, 100vw', width: 640 }) %></div>
-          <span class="sister-card__icon"><%- icon('zap') %></span>
-          <h4><%= lang === 'en' ? co.en : co.vi %></h4>
-          <p><%= intro %></p>
-          <div class="sister-card__links">
-            <% if (plant) { %><a href="<%= url('plant', plant) %>"><span><%= t('home.sisterPlant') %></span><%- icon('arrow-right') %></a><% } %>
-            <a href="<%= url('contact') %>"><span><%= t('home.sisterContact') %></span><%- icon('arrow-right') %></a>
+          <div class="sister-card__media" aria-hidden="true"><%- h.img(photo, '', { sizes: '(min-width: 960px) 420px, 100vw', width: 640 }) %></div>
+          <div class="sister-card__body">
+            <span class="sister-card__icon"><%- icon('zap') %></span>
+            <h4><%= lang === 'en' ? co.en : co.vi %></h4>
+            <p><%= intro %></p>
+            <div class="sister-card__links">
+              <% if (plant) { %><a href="<%= url('plant', plant) %>"><span><%= t('home.sisterPlant') %></span><%- icon('arrow-right') %></a><% } %>
+              <a href="<%= url('contact') %>"><span><%= t('home.sisterContact') %></span><%- icon('arrow-right') %></a>
+            </div>
           </div>
         </article>
       <% }) %>
