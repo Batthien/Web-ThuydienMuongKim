@@ -279,7 +279,7 @@ module.exports = {
   news: {
     title: 'Tin tức & Sự kiện',
     lead: 'Hoạt động sản xuất, an toàn, đoàn thể và các sự kiện của Công ty.',
-    categories: { all: 'Tất cả', company: 'Hoạt động công ty', operation: 'Sản xuất – vận hành', safety: 'An toàn', community: 'Đoàn thể – cộng đồng' },
+    categories: { all: 'Tất cả', company: 'Hoạt động công ty', operation: 'Sản xuất – vận hành', safety: 'An toàn', community: 'Đoàn thể – cộng đồng', industry: 'Tin tức ngành' },
     related: 'Tin liên quan',
     empty: 'Chưa có bài viết.',
   },

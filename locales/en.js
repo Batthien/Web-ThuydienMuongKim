@@ -279,7 +279,7 @@ module.exports = {
   news: {
     title: 'News & Events',
     lead: 'Operations, safety, community activities and company events.',
-    categories: { all: 'All', company: 'Company', operation: 'Operations', safety: 'Safety', community: 'Community' },
+    categories: { all: 'All', company: 'Company', operation: 'Operations', safety: 'Safety', community: 'Community', industry: 'Industry news' },
     related: 'Related news',
     empty: 'No articles yet.',
   },

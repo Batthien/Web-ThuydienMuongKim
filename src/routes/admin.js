@@ -15,7 +15,7 @@ const { translator, url } = require('../i18n');
 
 const router = express.Router();
 const tvi = translator('vi');
-const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community'];
+const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community', 'industry'];
 const IR_CATEGORIES = ['disclosure', 'financial', 'annual', 'agm', 'governance'];
 const STATUS = [['published', 'Đăng công khai'], ['draft', 'Nháp (ẩn)']];
 const fmtNum = (v) => (v == null || v === '' ? '—' : new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 }).format(v));

@@ -12,7 +12,7 @@ const { GALLERY_CATS, catOf } = require('../lib/gallery-cats');
 const { COMPANIES, COMPANY_CODES } = require('../lib/access');
 
 const NEWS_PER_PAGE = 9;
-const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community'];
+const NEWS_CATEGORIES = ['company', 'operation', 'safety', 'community', 'industry'];
 const IR_CATEGORIES = ['disclosure', 'financial', 'annual', 'agm', 'governance'];
 
 const q = {
