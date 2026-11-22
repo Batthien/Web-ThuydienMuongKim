@@ -1103,3 +1103,29 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
   .daily__table th, .daily__table td { padding: 11px 12px; }
   .daily__table th[scope="row"] { max-width: 170px; white-space: normal; }
 }
+
+/* Trang chủ — Về chúng tôi: dấu mốc lịch sử + 3 công ty cùng hệ thống */
+.mini-timeline { list-style: none; margin: 4px 0 28px; padding: 0; display: grid; gap: 0; border-left: 2px solid var(--line); }
+.mini-timeline li { position: relative; display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 0 0 14px 20px; }
+.mini-timeline li:last-child { padding-bottom: 0; }
+.mini-timeline li::before { content: ""; position: absolute; left: -7px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); }
+.mini-timeline__year { font-weight: 700; color: var(--brand-700); font-size: .92rem; line-height: 1.5; }
+.mini-timeline strong { display: block; color: var(--ink); font-size: .98rem; }
+.mini-timeline span:not(.mini-timeline__year) { display: block; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+.sister { margin-top: clamp(36px, 5vw, 64px); }
+.sister__head { margin-bottom: 20px; }
+.sister__title { margin: 0; font-size: clamp(1.3rem, 2.2vw, 1.7rem); color: var(--ink); line-height: 1.25; text-align: start; }
+.sister__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.sister-card { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.sister-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.sister-card__icon { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--sky-100); color: var(--brand-700); margin-bottom: 14px; }
+.sister-card__icon .icon { width: 22px; height: 22px; }
+.sister-card h4 { margin: 0 0 8px; font-size: 1.08rem; color: var(--ink); line-height: 1.35; text-align: start; }
+.sister-card p { margin: 0 0 16px; color: var(--text); font-size: .95rem; flex: 1; }
+.sister-card__links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.sister-card__links a { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .9rem; color: var(--brand-700); text-decoration: none; }
+.sister-card__links a .icon { width: 16px; height: 16px; transition: transform .2s; }
+.sister-card__links a:hover .icon { transform: translateX(3px); }
+@media (max-width: 960px) { .sister__grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .mini-timeline li { grid-template-columns: 1fr; gap: 2px; } }
+.mini-timeline span, .sister-card p { text-align: start; }

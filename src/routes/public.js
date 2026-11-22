@@ -84,7 +84,7 @@ function createRouter(lang) {
     // Tên tài liệu cổ đông chỉ hiện cho người có quyền xem
     const docs = res.locals.irCompanies.length ? q.latestDocs.all(40).filter((d) => res.locals.irCompanies.includes(d.company)).slice(0, 4) : [];
     const tiles = spotlight.build({ t, url: res.locals.url, loc: res.locals.loc, posts: q.latestPosts.all(5), docs, jobs: q.jobs.all().slice(0, 4), IR_CATEGORIES });
-    res.render('home', { docs, IR_CATEGORIES, spotlight: tiles, daily: daily.report() });
+    res.render('home', { docs, IR_CATEGORIES, spotlight: tiles, daily: daily.report(), COMPANIES });
   });
 
   const pages = {

@@ -94,10 +94,34 @@
       <p class="eyebrow"><%= t('home.aboutEyebrow') %></p>
       <h2 class="section-title"><%= t('home.aboutTitle') %></h2>
       <p class="lead"><%= t('home.aboutText') %></p>
-      <ul class="checklist">
-        <% t('home.aboutPoints').forEach((p) => { %><li><%- icon('check') %><span><%= p %></span></li><% }) %>
-      </ul>
-      <a class="btn btn--primary" href="<%= url('about') %>"><span><%= t('common.readMore') %></span><%- icon('arrow-right') %></a>
+      <ol class="mini-timeline">
+        <% t('about.timeline').forEach((m) => { %><li><span class="mini-timeline__year"><%= m.year %></span><div><strong><%= m.title %></strong><span><%= m.text %></span></div></li><% }) %>
+      </ol>
+      <a class="btn btn--primary" href="<%= url('about') %>#history"><span><%= t('home.aboutMore') %></span><%- icon('arrow-right') %></a>
+    </div>
+  </div>
+
+  <%# 3 công ty còn lại: nội dung sửa trong Quản trị → Cấu hình %>
+  <div class="container sister">
+    <div class="sister__head reveal">
+      <p class="eyebrow"><%= t('home.sisterEyebrow') %></p>
+      <h3 class="sister__title"><%= t('home.sisterTitle') %></h3>
+    </div>
+    <div class="sister__grid">
+      <% const plantIds = t('plant.plants').map((p) => p.id);
+         ['tu', 'pl', 'nk'].forEach((code, i) => { const co = COMPANIES.find((c) => c.code === code);
+           const intro = settings['co_' + code + '_intro_' + lang] || settings['co_' + code + '_intro_vi'] || '';
+           const plant = plantIds.includes(settings['co_' + code + '_plant']) ? settings['co_' + code + '_plant'] : ''; %>
+        <article class="sister-card reveal" style="--i:<%= i %>">
+          <span class="sister-card__icon"><%- icon('zap') %></span>
+          <h4><%= lang === 'en' ? co.en : co.vi %></h4>
+          <p><%= intro %></p>
+          <div class="sister-card__links">
+            <% if (plant) { %><a href="<%= url('plant', plant) %>"><span><%= t('home.sisterPlant') %></span><%- icon('arrow-right') %></a><% } %>
+            <a href="<%= url('contact') %>"><span><%= t('home.sisterContact') %></span><%- icon('arrow-right') %></a>
+          </div>
+        </article>
+      <% }) %>
     </div>
   </div>
 </section>

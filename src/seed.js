@@ -18,6 +18,16 @@ const settings = {
   // Liên hệ các công ty khác (trang Liên hệ) — để trống thì hiện "đang cập nhật"
   co_tu_address: '', co_tu_phone: '', co_tu_email: '', co_tu_tax: '',
   co_pl_address: '', co_pl_phone: '', co_pl_email: '', co_pl_tax: '',
+  // Giới thiệu ngắn 3 công ty trên trang chủ (mục Về chúng tôi); co_*_plant = mã trang nhà máy để gắn liên kết
+  co_tu_intro_vi: 'Công ty cổ phần Thủy điện Than Uyên hoạt động trong lĩnh vực đầu tư, sản xuất và kinh doanh điện năng từ thủy điện. Thông tin chi tiết về Công ty đang được cập nhật.',
+  co_tu_intro_en: 'Than Uyen Hydropower JSC invests in, generates and sells hydroelectric power. Further details about the company are coming soon.',
+  co_tu_plant: '',
+  co_pl_intro_vi: 'Công ty cổ phần Thủy điện Phiêng Lúc quản lý, vận hành Nhà máy Thủy điện Phiêng Lúc 20 MW (2 tổ máy) trên sông Nậm Mu và suối Nậm Cha, tỉnh Lai Châu.',
+  co_pl_intro_en: 'Phieng Luc Hydropower JSC manages and operates the 20 MW Phieng Luc Hydropower Plant (2 units) on the Nam Mu river and Nam Cha stream, Lai Chau province.',
+  co_pl_plant: 'phieng-luc',
+  co_nk_intro_vi: 'Công ty cổ phần Thủy điện Nậm Kim là chủ đầu tư Nhà máy Thủy điện Hồ Bốn 2 công suất 5 MW (1 tổ máy Kaplan) trên suối Nậm Kim, xã Hồ Bốn, Mù Cang Chải.',
+  co_nk_intro_en: 'Nam Kim Hydropower JSC is the investor of the 5 MW Ho Bon 2 Hydropower Plant (one Kaplan unit) on the Nam Kim stream, Ho Bon commune, Mu Cang Chai.',
+  co_nk_plant: 'ho-bon-2',
   co_nk_address: 'Bản Trống Là, xã Hồ Bốn, Mù Cang Chải', co_nk_phone: '024.62.86.88.99', co_nk_email: '', co_nk_tax: '6200092577',
   // Thông số nhà máy (số dùng dấu chấm thập phân, hiển thị theo ngôn ngữ)
   capacity_mw: '13.5',
