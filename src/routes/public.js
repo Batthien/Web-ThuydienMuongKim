@@ -149,7 +149,7 @@ function createRouter(lang) {
     },
     contact(req, res, extra = {}) {
       setPage(res, 'contact', { title: t('contact.title'), description: t('contact.lead') });
-      res.render('contact', { values: {}, errors: null, sent: req.query.sent === '1', ...extra });
+      res.render('contact', { values: {}, errors: null, sent: req.query.sent === '1', COMPANIES, ...extra });
     },
   };
 

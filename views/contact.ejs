@@ -5,13 +5,29 @@
   <div class="container contact-layout">
     <aside class="contact-info">
       <h2 class="section-title section-title--sm"><%= t('contact.infoTitle') %></h2>
-      <p class="contact-info__company"><%= companyName %></p>
-      <ul class="contact-list">
-        <li><span class="contact-list__icon"><%- icon('pin') %></span><div><strong><%= t('about.fields.address') %></strong><a href="<%= (settings.map_url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(settings.map_query || ''))) %>" target="_blank" rel="noopener" title="<%= t('contact.mapOpen') %>"><%= lang === 'en' ? settings.address_en : settings.address_vi %></a></div></li>
-        <li><span class="contact-list__icon"><%- icon('phone') %></span><div><strong><%= t('about.fields.phone') %></strong><a href="tel:<%= settings.phone.replace(/[^0-9+]/g, '') %>"><%= settings.phone %></a></div></li>
-        <li><span class="contact-list__icon"><%- icon('mail') %></span><div><strong>Email</strong><a href="mailto:<%= settings.email %>"><%= settings.email %></a></div></li>
-        <li><span class="contact-list__icon"><%- icon('clock') %></span><div><strong><%= t('contact.hours') %></strong><span><%= t('contact.hoursValue') %></span></div></li>
-      </ul>
+      <% const plantMap = settings.map_url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(settings.map_query || ''));
+         const cos = [
+           { code: 'mk', address: lang === 'en' ? settings.address_en : settings.address_vi, phone: settings.phone, email: settings.email, tax: settings.tax_code, map: plantMap },
+           ...['tu', 'pl', 'nk'].map((c) => ({ code: c, address: settings['co_' + c + '_address'], phone: settings['co_' + c + '_phone'], email: settings['co_' + c + '_email'], tax: settings['co_' + c + '_tax'] })),
+         ]; %>
+      <div class="company-contacts">
+        <% cos.forEach((c) => { const co = COMPANIES.find((x) => x.code === c.code); const any = c.address || c.phone || c.email; %>
+          <article class="company-contact<%= c.code === 'mk' ? ' company-contact--main' : '' %>">
+            <h3><%= lang === 'en' ? co.en : co.vi %></h3>
+            <% if (any) { %>
+            <ul class="contact-list contact-list--compact">
+              <% if (c.address) { %><li><span class="contact-list__icon"><%- icon('pin') %></span><div><strong><%= t('about.fields.address') %></strong><% if (c.map) { %><a href="<%= c.map %>" target="_blank" rel="noopener" title="<%= t('contact.mapOpen') %>"><%= c.address %></a><% } else { %><span><%= c.address %></span><% } %></div></li><% } %>
+              <% if (c.phone) { %><li><span class="contact-list__icon"><%- icon('phone') %></span><div><strong><%= t('about.fields.phone') %></strong><a href="tel:<%= c.phone.replace(/[^0-9+]/g, '') %>"><%= c.phone %></a></div></li><% } %>
+              <% if (c.email) { %><li><span class="contact-list__icon"><%- icon('mail') %></span><div><strong>Email</strong><a href="mailto:<%= c.email %>"><%= c.email %></a></div></li><% } %>
+              <% if (c.tax) { %><li><span class="contact-list__icon"><%- icon('file') %></span><div><strong><%= t('about.fields.tax') %></strong><span><%= c.tax %></span></div></li><% } %>
+            </ul>
+            <% } else { %>
+            <p class="muted company-contact__pending"><%= t('contact.pending') %></p>
+            <% } %>
+          </article>
+        <% }) %>
+      </div>
+      <p class="contact-hours"><%- icon('clock') %><span><strong><%= t('contact.hours') %>:</strong> <%= t('contact.hoursValue') %></span></p>
     </aside>
     <div class="form-card" id="form">
       <h2 class="section-title section-title--sm"><%= t('contact.formTitle') %></h2>

@@ -1066,3 +1066,18 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .page-intro__title { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.025em; margin: 0 0 10px; color: var(--ink); }
 .page-intro__lead { margin: 0; max-width: 64ch; color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.15rem); text-align: start; }
 .page-intro + .section { padding-top: clamp(24px, 3vw, 36px); }
+
+/* Trang Liên hệ: thông tin 4 công ty */
+.company-contacts { display: grid; gap: 14px; margin-top: 20px; }
+.company-contact { padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+.company-contact--main { border-color: var(--brand-400); box-shadow: var(--shadow-sm); }
+.company-contact h3 { margin: 0 0 10px; font-size: 1rem; color: var(--brand-800); line-height: 1.35; }
+.contact-list--compact { gap: 10px; margin-top: 0; }
+.contact-list--compact li { gap: 12px; }
+.contact-list--compact .contact-list__icon { width: 34px; height: 34px; border-radius: 10px; }
+.contact-list--compact .contact-list__icon .icon { width: 17px; height: 17px; }
+.contact-list--compact strong { font-size: .8rem; }
+.contact-list--compact a, .contact-list--compact span { font-size: .93rem; text-align: start; }
+.company-contact__pending { margin: 0; font-size: .92rem; text-align: start; }
+.contact-hours { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0 0; font-size: .92rem; color: var(--muted); text-align: start; }
+.contact-hours .icon { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; color: var(--brand-700); }

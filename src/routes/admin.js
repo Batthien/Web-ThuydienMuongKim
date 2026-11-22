@@ -358,6 +358,9 @@ const SETTING_GROUPS = [
     ['dam_vi', 'Kết cấu đập (Tiếng Việt)'], ['dam_en', 'Kết cấu đập (English)'],
     ['buyer_vi', 'Đơn vị mua điện (Tiếng Việt)'], ['buyer_en', 'Đơn vị mua điện (English)'],
   ]],
+  ...[['tu', 'Than Uyên'], ['pl', 'Phiêng Lúc'], ['nk', 'Nậm Kim']].map(([c, name]) => [`Liên hệ — Công ty cổ phần Thủy điện ${name} (trang Liên hệ)`, [
+    [`co_${c}_address`, 'Địa chỉ'], [`co_${c}_phone`, 'Điện thoại'], [`co_${c}_email`, 'Email'], [`co_${c}_tax`, 'Mã số thuế'],
+  ]]),
   ['Mục biểu đồ trên trang chủ', [
     ['prod_title_vi', 'Tiêu đề (Tiếng Việt)'], ['prod_title_en', 'Tiêu đề (English)'],
     ['prod_lead_vi', 'Đoạn giới thiệu (Tiếng Việt)', 'textarea'], ['prod_lead_en', 'Đoạn giới thiệu (English)', 'textarea'],

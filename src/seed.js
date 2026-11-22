@@ -15,6 +15,10 @@ const settings = {
   email: 'muongkimhp.jsc@gmail.com',
   map_query: 'VVGR+GQ4, QL32, Khao Mang, Lào Cai, Việt Nam',
   map_url: 'https://maps.app.goo.gl/8UznC7w2AXNzMnGA9',
+  // Liên hệ các công ty khác (trang Liên hệ) — để trống thì hiện "đang cập nhật"
+  co_tu_address: '', co_tu_phone: '', co_tu_email: '', co_tu_tax: '',
+  co_pl_address: '', co_pl_phone: '', co_pl_email: '', co_pl_tax: '',
+  co_nk_address: 'Bản Trống Là, xã Hồ Bốn, Mù Cang Chải', co_nk_phone: '024.62.86.88.99', co_nk_email: '', co_nk_tax: '6200092577',
   // Thông số nhà máy (số dùng dấu chấm thập phân, hiển thị theo ngôn ngữ)
   capacity_mw: '13.5',
   units: '3',
