@@ -41,9 +41,24 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
     return `mkimg${images.get(key).id}`;
   };
 
+  // Trang danh sách tin theo chuyên mục / số trang (?cat=, ?page=): lần theo liên kết để xuất thêm, giữ bộ lọc hoạt động trong bản xem thử
+  const routeSet = new Set(routes);
+  const LIST_RE = /href="(\/(?:vi\/tin-tuc|en\/news))\?([^"#]*)"/g;
+  const listKey = (p, q) => {
+    const params = new URLSearchParams(q.replace(/&amp;/g, '&'));
+    if ([...params.keys()].some((k) => !['cat', 'page'].includes(k))) return null;
+    const s = params.toString();
+    return s ? `${p}?${s}` : p;
+  };
+
   let sprite = '';
-  for (const r of routes) {
+  for (let i = 0; i < routes.length; i++) {
+    const r = routes[i];
     const html = await (await fetch(base + r)).text();
+    for (const [, p, q] of html.matchAll(LIST_RE)) {
+      const k = listKey(p, q);
+      if (k && !routeSet.has(k)) { routeSet.add(k); routes.push(k); }
+    }
     const title = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
     const bodyClass = (html.match(/<body class="([^"]*)"/) || [])[1] || '';
     let body = html.slice(html.indexOf('>', html.indexOf('<body')) + 1, html.lastIndexOf('</body>'));
@@ -56,7 +71,10 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
       .replace(/<img ([^>]*?)(data-src|(?<![\w-])src)="([^"]+?)(-(?:640|1280|1920)\.webp)"/g, '<img $1data-k="$3" $2="$3$4"')
       .replace(IMG_RE, (m) => tokenFor(m))
       .replace(/href="\/admin[^"]*"/g, 'href="#" data-preview-disabled')
-      .replace(/href="(\/(?:vi|en)(?:\/[^"#?]*)?)(?:\?[^"#]*)?(#[^"]*)?"/g, (m, p, a) => `href="#${p}${a || ''}"`)
+      .replace(/href="(\/(?:vi|en)(?:\/[^"#?]*)?)(?:\?([^"#]*))?(#[^"]*)?"/g, (m, p, q, a) => {
+        const k = q ? listKey(p, q) : null; // giữ ?cat=/?page= nếu trang đó đã được xuất
+        return `href="#${k && routeSet.has(k) ? k : p}${a || ''}"`;
+      })
       .replace(/(<a\b[^>]*?\s)href="#([A-Za-z][\w-]*)"/g, (m, pre, a) => `${pre}href="#${r}#${a}"`) // liên kết <a> tới mục trong cùng trang (không đụng biểu tượng <use>)
       .replace(/action="[^"]*"/g, 'action="#" data-preview-form')
       // Video không nhúng được vào 1 file: trỏ tới tệp gốc trong thư mục dự án (xem được khi mở bản xem thử trên máy này)
