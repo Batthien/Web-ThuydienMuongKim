@@ -1139,3 +1139,12 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .sister-card__body { position: relative; display: flex; flex-direction: column; flex: 1; padding: 34px 24px 24px; }
 .sister-card__body .sister-card__icon { position: absolute; top: -24px; left: 24px; margin: 0; background: #fff; box-shadow: var(--shadow-sm); border: 1px solid var(--line); }
 .sister-card__body p { flex: 1; }
+
+/* Sơ đồ tổ chức: đường nối liền mạch — đường ngang ghép từ từng đoạn của mỗi ô (không phụ thuộc khoảng cách cột) */
+.org__units::before { display: none; }
+.org__unit::before { left: calc(50% - 1px); top: -29px; height: 29px; }
+.org__unit::after { content: ''; position: absolute; top: -29px; left: -9px; right: -9px; height: 2px; background: var(--brand-400, #5fa9bd); }
+.org__unit:first-child::after { left: calc(50% - 1px); }
+.org__unit:last-child::after { right: calc(50% - 1px); }
+.org__unit:only-child::after { display: none; }
+@media (max-width: 900px) { .org__unit::after { display: none; } }
