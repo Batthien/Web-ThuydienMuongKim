@@ -1205,3 +1205,21 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 
 /* Video chính của bài tin (thay ảnh đại diện) */
 .article__video video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); background: #000; box-shadow: var(--shadow); }
+
+/* Bảng SXKD ngày: thanh chọn ngày để xem lại số liệu các ngày trước */
+.daily__nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0; }
+.daily__step { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid var(--line); color: var(--brand-700); transition: background .2s, color .2s, border-color .2s; }
+.daily__step .icon { width: 18px; height: 18px; }
+a.daily__step:hover, a.daily__step:focus-visible { background: var(--brand-700); border-color: var(--brand-700); color: #fff; }
+.daily__step.is-disabled { opacity: .4; }
+.daily__pick { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--brand-800); font-weight: 600; cursor: pointer; }
+.daily__pick:focus-within { border-color: var(--brand-400); box-shadow: 0 0 0 3px rgba(78, 163, 192, .2); }
+.daily__pick .icon { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+.daily__pick input { border: 0; background: none; font: inherit; color: inherit; padding: 0; min-width: 0; outline: none; }
+.daily__go { height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--brand-700); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.js .daily__go { display: none; } /* có JS thì đổi ngày là tự tải, không cần nút Xem */
+.daily__latest { height: 40px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 999px; background: var(--sky-100); color: var(--brand-800); font-weight: 600; font-size: .9rem; text-decoration: none; }
+.daily__latest:hover { background: var(--brand-700); color: #fff; }
+.daily[aria-busy="true"] .daily__wrap { opacity: .45; transition: opacity .2s; }
+.daily__note strong { color: var(--ink); }
+.daily__error { color: var(--danger); }

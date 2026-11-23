@@ -79,6 +79,8 @@ module.exports = {
       cols: { plant: 'Plant', mw: 'Capacity (MW)', output: 'Daily output (kWh)', month: 'Month to date (kWh)', year: 'Year to date (kWh)', pct: '% of annual plan', revenue: 'Daily revenue (VND m)', level: 'Reservoir level (m)', inflow: 'Inflow (m³/s)' },
       note: 'Electricity delivered to the grid; revenue in million VND, excluding VAT. Cumulative figures up to the end of the report day.',
       pendingNote: 'The table will show figures once the Company publishes its daily report.',
+      prev: 'Previous day', next: 'Next day', latest: 'Latest', pick: 'Choose a date', go: 'View',
+      noDay: 'No production figures were reported for this day; cumulative totals run to the selected date.',
     },
     pillarsEyebrow: 'Sustainability',
     pillarsTitle: 'Our commitments',

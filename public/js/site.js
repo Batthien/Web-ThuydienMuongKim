@@ -479,4 +479,37 @@
   if (alertBox) alertBox.focus({ preventScroll: false });
 
   document.querySelectorAll('[data-autosubmit]').forEach((el) => el.addEventListener('change', () => el.form.submit()));
+
+  // ---- Bảng SXKD ngày: xem lại số liệu ngày trước (tải riêng khối bảng, không tải lại trang) ----
+  const daily = document.querySelector('[data-daily]');
+  if (daily && window.fetch) {
+    const home = location.pathname;
+    const load = async (date) => {
+      daily.setAttribute('aria-busy', 'true');
+      try {
+        const res = await fetch(`${home}?partial=daily${date ? '&date=' + encodeURIComponent(date) : ''}`, { headers: { Accept: 'text/html' } });
+        if (!res.ok) throw new Error(res.status);
+        daily.innerHTML = await res.text();
+        history.replaceState(null, '', `${home}${date ? '?date=' + date : ''}#sxkd-ngay`);
+      } catch (e) {
+        const note = daily.querySelector('.daily__note');
+        if (note) { note.classList.add('daily__error'); note.textContent = document.documentElement.lang === 'en' ? 'Could not load the figures, please try again.' : 'Không tải được số liệu, vui lòng thử lại.'; }
+      } finally {
+        daily.removeAttribute('aria-busy');
+      }
+    };
+    daily.addEventListener('click', (e) => {
+      const a = e.target.closest('a[data-daily-date]');
+      if (!a) return;
+      e.preventDefault();
+      load(a.dataset.dailyDate);
+    });
+    daily.addEventListener('change', (e) => { if (e.target.matches('input[name="date"]') && e.target.value) load(e.target.value); });
+    daily.addEventListener('submit', (e) => {
+      if (!e.target.matches('[data-daily-form]')) return;
+      e.preventDefault();
+      const v = e.target.querySelector('input[name="date"]').value;
+      if (v) load(v);
+    });
+  }
 })();

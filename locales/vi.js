@@ -79,6 +79,8 @@ module.exports = {
       cols: { plant: 'Nhà máy', mw: 'Công suất (MW)', output: 'Sản lượng ngày (kWh)', month: 'Lũy kế tháng (kWh)', year: 'Lũy kế năm (kWh)', pct: '% KH năm', revenue: 'Doanh thu ngày (tr.đ)', level: 'Mực nước hồ (m)', inflow: 'Lưu lượng về (m³/s)' },
       note: 'Sản lượng điện phát lên lưới; doanh thu tính theo triệu đồng, chưa gồm VAT. Lũy kế tính đến hết ngày báo cáo.',
       pendingNote: 'Bảng sẽ hiển thị số liệu khi Công ty cập nhật báo cáo ngày.',
+      prev: 'Ngày trước', next: 'Ngày sau', latest: 'Mới nhất', pick: 'Chọn ngày xem số liệu', go: 'Xem',
+      noDay: 'Chưa có số liệu sản xuất của ngày này; lũy kế tính đến ngày đã chọn.',
     },
     pillarsEyebrow: 'Phát triển bền vững',
     pillarsTitle: 'Cam kết của chúng tôi',

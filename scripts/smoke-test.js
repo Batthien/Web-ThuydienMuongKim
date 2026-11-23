@@ -139,6 +139,13 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
     ok(mk.month_output === 445300 && mk.year_output === 445300 && Math.abs(mk.pct - 0.8906) < 0.001 && rep.total.output === 345300, 'Tính lũy kế tháng, năm, % kế hoạch và tổng cộng');
     const home = await (await req('/vi')).text();
     ok(home.includes('02/03/2026') && home.includes('245.300') && home.includes('445.300'), 'Trang chủ hiển thị số liệu ngày gần nhất');
+    const back = await (await req('/vi?date=2026-03-01')).text();
+    ok(back.includes('01/03/2026') && back.includes('200.000') && back.includes('data-daily-date="2026-03-02"') && back.includes('Mới nhất'), 'Xem lại số liệu ngày trước (?date=), có nút ngày sau và Mới nhất');
+    const frag = await (await req('/en?partial=daily&date=2026-03-01')).text();
+    ok(!frag.includes('<html') && frag.includes('daily__table') && frag.includes('Previous day') === false && frag.includes('Next day'), 'Tải riêng khối bảng SXKD (không có ngày trước ngày đầu tiên)');
+    const none = await (await req('/vi?date=2026-02-15')).text();
+    ok(none.includes('Chưa có số liệu sản xuất của ngày này'), 'Ngày không có số liệu hiện thông báo');
+    ok((await req('/vi?date=khong-hop-le')).status === 200, 'Ngày không hợp lệ thì về ngày mới nhất');
   }
 
   console.log('Tiêu đề mục biểu đồ');

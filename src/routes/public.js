@@ -80,11 +80,15 @@ function createRouter(lang) {
   };
 
   router.get('/', (req, res) => {
+    // Xem lại số liệu SXKD của ngày trước: ?date=YYYY-MM-DD (không hợp lệ thì lấy ngày mới nhất)
+    const qd = String(req.query.date || '');
+    const dailyDate = /^\d{4}-\d{2}-\d{2}$/.test(qd) && !Number.isNaN(Date.parse(qd)) ? qd : null;
+    if (req.query.partial === 'daily') return res.render('partials/daily', { daily: daily.report(dailyDate), fragment: true });
     setPage(res, 'home', { title: t('home.title') });
     // Tên tài liệu cổ đông chỉ hiện cho người có quyền xem
     const docs = res.locals.irCompanies.length ? q.latestDocs.all(40).filter((d) => res.locals.irCompanies.includes(d.company)).slice(0, 4) : [];
     const tiles = spotlight.build({ t, url: res.locals.url, loc: res.locals.loc, posts: q.latestPosts.all(5), docs, jobs: q.jobs.all().slice(0, 4), IR_CATEGORIES });
-    res.render('home', { docs, IR_CATEGORIES, spotlight: tiles, daily: daily.report(), COMPANIES });
+    res.render('home', { docs, IR_CATEGORIES, spotlight: tiles, daily: daily.report(dailyDate), COMPANIES });
   });
 
   const pages = {

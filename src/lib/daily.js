@@ -33,6 +33,9 @@ CREATE TABLE IF NOT EXISTS daily_plan (
 
 const q = {
   latestDate: db.prepare('SELECT MAX(date) d FROM daily_ops'),
+  firstDate: db.prepare('SELECT MIN(date) d FROM daily_ops'),
+  prevDate: db.prepare('SELECT MAX(date) d FROM daily_ops WHERE date < ?'),
+  nextDate: db.prepare('SELECT MIN(date) d FROM daily_ops WHERE date > ?'),
   day: db.prepare('SELECT * FROM daily_ops WHERE date = ?'),
   sum: db.prepare('SELECT plant, SUM(output) output, SUM(revenue) revenue FROM daily_ops WHERE date >= ? AND date <= ? GROUP BY plant'),
   plans: db.prepare('SELECT * FROM daily_plan WHERE year = ?'),
@@ -48,12 +51,15 @@ const q = {
 const byPlant = (rows) => Object.fromEntries(rows.map((r) => [r.plant, r]));
 const add = (a, b) => (a == null && b == null ? null : (a || 0) + (b || 0));
 
-// Báo cáo của một ngày (mặc định: ngày gần nhất có số liệu)
+// Báo cáo của một ngày (mặc định: ngày gần nhất có số liệu); kèm ngày trước/sau có số liệu để xem lại
 function report(date) {
-  const d = date || q.latestDate.get().d || null;
-  if (!d) return { date: null, rows: PLANTS.map((p) => ({ ...p })), total: { mw: PLANTS.reduce((s, p) => s + p.mw, 0) } };
+  const latest = q.latestDate.get().d || null;
+  const d = date || latest;
+  if (!d) return { date: null, latest: null, rows: PLANTS.map((p) => ({ ...p })), total: { mw: PLANTS.reduce((s, p) => s + p.mw, 0) } };
+  const nav = { latest, first: q.firstDate.get().d, prev: q.prevDate.get(d).d || null, next: q.nextDate.get(d).d || null };
   const year = d.slice(0, 4);
-  const day = byPlant(q.day.all(d));
+  const dayRows = q.day.all(d);
+  const day = byPlant(dayRows);
   const month = byPlant(q.sum.all(d.slice(0, 7) + '-01', d));
   const ytd = byPlant(q.sum.all(year + '-01-01', d));
   const plan = byPlant(q.plans.all(Number(year)));
@@ -73,7 +79,7 @@ function report(date) {
     plan_output: add(t.plan_output, r.plan_output),
   }), { mw: 0, output: null, revenue: null, month_output: null, year_output: null, plan_output: null });
   total.pct = total.year_output != null && total.plan_output ? (total.year_output / total.plan_output) * 100 : null;
-  return { date: d, rows, total };
+  return { date: d, hasDay: dayRows.length > 0, ...nav, rows, total };
 }
 
 module.exports = { PLANTS, PLANT_IDS, FIELDS, report, q };

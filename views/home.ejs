@@ -24,63 +24,9 @@
 
 <%- include('partials/spotlight') %>
 
-<%# Bảng thống kê SXKD ngày: số liệu nhập trong Quản trị → Báo cáo SXKD ngày %>
-<% const D = t('home.daily'); const num = (x, d) => (x == null ? '—' : h.formatNumber(d == null ? Math.round(x) : x, L, d)); %>
-<section class="section daily" id="sxkd-ngay">
-  <div class="container">
-    <div class="section-head section-head--row reveal">
-      <div>
-        <p class="eyebrow"><%= D.eyebrow %></p>
-        <h2 class="section-title"><%= D.title %></h2>
-      </div>
-      <p class="daily__date"><%- icon('calendar') %><span><%= daily.date ? D.date + ' ' + h.formatDate(daily.date, L) : D.pending %></span></p>
-    </div>
-    <div class="daily__wrap reveal" tabindex="0" role="region" aria-label="<%= D.title %>">
-      <table class="daily__table">
-        <thead>
-          <tr>
-            <th scope="col"><%= D.cols.plant %></th>
-            <th scope="col"><%= D.cols.mw %></th>
-            <th scope="col"><%= D.cols.output %></th>
-            <th scope="col"><%= D.cols.month %></th>
-            <th scope="col"><%= D.cols.year %></th>
-            <th scope="col"><%= D.cols.pct %></th>
-            <th scope="col"><%= D.cols.revenue %></th>
-            <th scope="col"><%= D.cols.level %></th>
-            <th scope="col"><%= D.cols.inflow %></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% daily.rows.forEach((r) => { %>
-          <tr>
-            <th scope="row"><%= lang === 'en' ? r.en : r.vi %></th>
-            <td><%= num(r.mw, r.mw % 1 ? 1 : 0) %></td>
-            <td><strong><%= num(r.output) %></strong></td>
-            <td><%= num(r.month_output) %></td>
-            <td><%= num(r.year_output) %></td>
-            <td><% if (r.pct != null) { %><span class="daily__pct"><span style="--w:<%= Math.min(100, r.pct).toFixed(1) %>%"></span></span><%= num(r.pct, 1) %>%<% } else { %>—<% } %></td>
-            <td><%= r.revenue == null ? '—' : num(r.revenue, 1) %></td>
-            <td><%= r.water_level == null ? '—' : num(r.water_level, 2) %></td>
-            <td><%= r.inflow == null ? '—' : num(r.inflow, 2) %></td>
-          </tr>
-          <% }) %>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th scope="row"><%= D.total %></th>
-            <td><%= num(daily.total.mw, 1) %></td>
-            <td><strong><%= num(daily.total.output) %></strong></td>
-            <td><%= num(daily.total.month_output) %></td>
-            <td><%= num(daily.total.year_output) %></td>
-            <td><%= daily.total.pct == null ? '—' : num(daily.total.pct, 1) + '%' %></td>
-            <td><%= daily.total.revenue == null ? '—' : num(daily.total.revenue, 1) %></td>
-            <td></td><td></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-    <p class="daily__note"><%= daily.date ? D.note : D.pendingNote %></p>
-  </div>
+<%# Bảng thống kê SXKD ngày: số liệu nhập trong Quản trị → Báo cáo SXKD ngày; xem lại ngày trước bằng ?date= %>
+<section class="section daily" id="sxkd-ngay" data-daily>
+<%- include('partials/daily') %>
 </section>
 
 <section class="section about-intro">
