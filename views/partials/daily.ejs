@@ -7,17 +7,15 @@
         <p class="eyebrow"><%= D.eyebrow %></p>
         <h2 class="section-title"><%= D.title %></h2>
       </div>
-      <% if (daily.date) { const link = (d) => url('home') + '?date=' + d + '#sxkd-ngay'; %>
+      <% const today = new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10); // giờ Việt Nam
+         const shown = daily.date || today; const link = (d) => url('home') + '?date=' + d + '#sxkd-ngay'; %>
       <form class="daily__nav" method="get" action="<%= url('home') %>#sxkd-ngay" data-daily-form>
         <% if (daily.prev) { %><a class="daily__step" href="<%= link(daily.prev) %>" data-daily-date="<%= daily.prev %>" aria-label="<%= D.prev %>" title="<%= D.prev %>"><%- icon('chevron-left') %></a><% } else { %><span class="daily__step is-disabled" aria-hidden="true"><%- icon('chevron-left') %></span><% } %>
-        <label class="daily__pick"><%- icon('calendar') %><span class="sr-only"><%= D.pick %></span><input type="date" name="date" value="<%= daily.date %>" min="<%= daily.first %>" max="<%= daily.latest %>" required></label>
+        <label class="daily__pick"><%- icon('calendar') %><span class="sr-only"><%= D.pick %></span><input type="date" name="date" value="<%= shown %>"<% if (daily.first) { %> min="<%= daily.first %>"<% } %> max="<%= daily.latest && daily.latest > today ? daily.latest : today %>" required></label>
         <button class="daily__go" type="submit"><%= D.go %></button>
         <% if (daily.next) { %><a class="daily__step" href="<%= link(daily.next) %>" data-daily-date="<%= daily.next %>" aria-label="<%= D.next %>" title="<%= D.next %>"><%- icon('chevron-right') %></a><% } else { %><span class="daily__step is-disabled" aria-hidden="true"><%- icon('chevron-right') %></span><% } %>
-        <% if (daily.date !== daily.latest) { %><a class="daily__latest" href="<%= url('home') %>#sxkd-ngay" data-daily-date=""><%= D.latest %></a><% } %>
+        <% if (daily.latest && daily.date !== daily.latest) { %><a class="daily__latest" href="<%= url('home') %>#sxkd-ngay" data-daily-date=""><%= D.latest %></a><% } %>
       </form>
-      <% } else { %>
-      <p class="daily__date"><%- icon('calendar') %><span><%= D.pending %></span></p>
-      <% } %>
     </div>
     <div class="daily__wrap<%= fragment ? '' : ' reveal' %>" tabindex="0" role="region" aria-label="<%= D.title %>">
       <table class="daily__table">

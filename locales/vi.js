@@ -74,7 +74,6 @@ module.exports = {
       eyebrow: 'Hoạt động sản xuất kinh doanh',
       title: 'Thống kê sản xuất kinh doanh ngày',
       date: 'Số liệu ngày',
-      pending: 'Số liệu đang được cập nhật',
       total: 'Tổng cộng',
       cols: { plant: 'Nhà máy', mw: 'Công suất (MW)', output: 'Sản lượng ngày (kWh)', month: 'Lũy kế tháng (kWh)', year: 'Lũy kế năm (kWh)', pct: '% KH năm', revenue: 'Doanh thu ngày (tr.đ)', level: 'Mực nước hồ (m)', inflow: 'Lưu lượng về (m³/s)' },
       note: 'Sản lượng điện phát lên lưới; doanh thu tính theo triệu đồng, chưa gồm VAT. Lũy kế tính đến hết ngày báo cáo.',

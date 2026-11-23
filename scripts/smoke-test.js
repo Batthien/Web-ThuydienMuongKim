@@ -126,7 +126,7 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   }
 
   console.log('Báo cáo SXKD ngày');
-  ok((await (await req('/vi')).text()).includes('Số liệu đang được cập nhật'), 'Trang chủ có bảng SXKD ngày (chưa có số liệu)');
+  { const e = await (await req('/vi')).text(); ok(e.includes('Bảng sẽ hiển thị số liệu khi Công ty cập nhật') && e.includes('data-daily-form') && !e.includes('daily__latest'), 'Trang chủ có bảng SXKD ngày và thanh chọn ngày (chưa có số liệu)'); }
   html = await (await req('/admin/daily?date=2026-03-02')).text();
   csrf = csrfFrom(html);
   r = await req('/admin/daily', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ _csrf: csrf, date: '2026-03-02', mk_output: '245.300', mk_revenue: '312,4', mk_water_level: '421,35', mk_output_plan: '50.000.000', pl_output: '100000' }) });
