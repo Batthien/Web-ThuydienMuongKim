@@ -1192,7 +1192,13 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
   .org .org__line { transition-duration: .35s !important; }
   .org .org__unit { animation-duration: .55s !important; transition-duration: .3s !important; }
   .org .org__unit::before { transition-duration: .3s !important; }
-  .org .org__unit::after { transition-duration: .4s !important; }
+  .org .org__unit::after { transition-duration: .3s !important; }
   .org .org__line::after { animation-duration: 2.8s !important; animation-iteration-count: infinite !important; }
   .org .org__board::after { animation-duration: 1.4s !important; }
 }
+
+/* Rê chuột: chỉ ô nhấc lên, đường nối đứng yên (bù lại phần dịch của ô; đường dọc ngắn lại đúng bằng khoảng nhấc) */
+.js .org .org__unit::before { transition: transform .3s ease-out 1300ms, translate .3s var(--ease), height .3s var(--ease); }
+.js .org .org__unit::after { transition: transform .4s ease-out 1000ms, translate .3s var(--ease); }
+.js .org.is-visible .org__unit:hover::before { translate: 0 4px; height: 25px; }
+.js .org.is-visible .org__unit:hover::after { translate: 0 4px; }
