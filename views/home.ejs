@@ -24,11 +24,6 @@
 
 <%- include('partials/spotlight') %>
 
-<%# Bảng thống kê SXKD ngày: số liệu nhập trong Quản trị → Báo cáo SXKD ngày; xem lại ngày trước bằng ?date= %>
-<section class="section daily" id="sxkd-ngay" data-daily>
-<%- include('partials/daily') %>
-</section>
-
 <section class="section about-intro">
   <div class="container split">
     <div class="split__media collage reveal">
@@ -91,6 +86,11 @@
       <% }) %>
     </div>
   </div>
+</section>
+
+<%# Bảng thống kê SXKD ngày: số liệu nhập trong Quản trị → Báo cáo SXKD ngày; xem lại ngày trước bằng ?date= %>
+<section class="section daily" id="sxkd-ngay" data-daily>
+<%- include('partials/daily') %>
 </section>
 
 <section class="section ir-band">
