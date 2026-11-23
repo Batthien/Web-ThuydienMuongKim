@@ -132,6 +132,7 @@ const RESOURCES = {
       { name: 'status', label: 'Trạng thái', type: 'select', options: STATUS },
       { name: 'published_at', label: 'Ngày đăng', type: 'date', required: true },
       { name: 'cover', label: 'Ảnh đại diện', type: 'image', help: 'JPG/PNG/WebP, tối đa 15 MB. Tự động nén và tạo nhiều kích thước.' },
+      { name: 'video', label: 'Video chính (không bắt buộc)', type: 'text', help: 'Đường dẫn tệp MP4 đã chép vào thư mục uploads/videos trên máy chủ, ví dụ /uploads/videos/ky-niem-10-nam.mp4. Video hiện ở đầu bài thay cho ảnh đại diện; ảnh đại diện dùng làm ảnh chờ của video. Để trống nếu không có.' },
       { name: 'excerpt', label: 'Tóm tắt', type: 'textarea', i18n: true },
       { name: 'body', label: 'Nội dung', type: 'markdown', i18n: true },
     ],
@@ -232,6 +233,12 @@ for (const [key, R] of Object.entries(RESOURCES)) {
     for (const f of R.fields) {
       const col = f.i18n ? `${f.name}_vi` : f.name;
       if (f.required && !row[col]) errors[col] = 'Bắt buộc nhập.';
+    }
+    // Video chính: chỉ nhận tệp MP4 có thật trong uploads/videos
+    if (row.video) {
+      const okName = /^\/uploads\/videos\/[\w.-]+\.mp4$/i.test(row.video);
+      if (!okName) errors.video = 'Đường dẫn phải có dạng /uploads/videos/ten-tep.mp4';
+      else if (!fs.existsSync(path.join(dirs.images, '..', 'videos', path.basename(row.video)))) errors.video = 'Không tìm thấy tệp này trong thư mục uploads/videos trên máy chủ.';
     }
     if ('slug' in row) row.slug = uniqueSlug(R.table, h.slugify(row.slug || row.title_vi), id);
     if ('quantity' in row) row.quantity = Math.max(1, Number.parseInt(row.quantity, 10) || 1);

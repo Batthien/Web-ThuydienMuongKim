@@ -105,6 +105,26 @@ const ok = (cond, msg) => { console.log(`${cond ? '  ✓' : '  ✗'} ${msg}`); i
   const saved = require('../src/db').db.prepare('SELECT * FROM production WHERE year = 2026').get();
   ok(r.status === 302 && saved && saved.output_actual === null && saved.output_plan === 50000000 && saved.revenue_plan === 70000.5, 'Lưu số liệu sản xuất (ô trống = chưa có số liệu)');
 
+  console.log('Video chính của bài tin');
+  {
+    const vdir = path.join(process.env.UPLOAD_DIR, 'videos');
+    fs.mkdirSync(vdir, { recursive: true });
+    fs.writeFileSync(path.join(vdir, 'thu.mp4'), Buffer.alloc(4096, 1));
+    const { db } = require('../src/db');
+    db.prepare("UPDATE posts SET video = '/uploads/videos/thu.mp4' WHERE slug = 'ky-niem-10-nam-thanh-lap-cong-ty'").run();
+    const vh = await (await req('/vi/tin-tuc/ky-niem-10-nam-thanh-lap-cong-ty')).text();
+    ok(vh.includes('<video') && vh.includes('src="/uploads/videos/thu.mp4"') && vh.includes('poster="/media/anniversary/anniversary-04'), 'Bài có video chính hiện video ở đầu bài, ảnh đại diện làm ảnh chờ');
+    const rr = await req('/uploads/videos/thu.mp4', { headers: { range: 'bytes=0-99' } });
+    ok(rr.status === 206 && rr.headers.get('content-range') === 'bytes 0-99/4096', 'Tệp video hỗ trợ tua (HTTP 206)');
+    const id = db.prepare("SELECT id FROM posts WHERE slug = 'ky-niem-10-nam-thanh-lap-cong-ty'").get().id;
+    const eh = await (await req(`/admin/posts/${id}/edit`)).text();
+    const vf = new FormData();
+    for (const [k, v] of Object.entries({ _csrf: csrfFrom(eh), title_vi: 'Thử video', category: 'company', status: 'published', published_at: '2025-09-20', video: '/uploads/videos/khong-co.mp4' })) vf.append(k, v);
+    const vr = await req(`/admin/posts/${id}`, { method: 'POST', body: vf });
+    ok(vr.status === 422 && (await vr.text()).includes('Không tìm thấy tệp'), 'Không lưu đường dẫn video không tồn tại');
+    db.prepare("UPDATE posts SET video = '' WHERE id = ?").run(id);
+  }
+
   console.log('Báo cáo SXKD ngày');
   ok((await (await req('/vi')).text()).includes('Số liệu đang được cập nhật'), 'Trang chủ có bảng SXKD ngày (chưa có số liệu)');
   html = await (await req('/admin/daily?date=2026-03-02')).text();

@@ -1202,3 +1202,6 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .js .org .org__unit::after { transition: transform .4s ease-out 1000ms, translate .3s var(--ease); }
 .js .org.is-visible .org__unit:hover::before { translate: 0 4px; height: 25px; }
 .js .org.is-visible .org__unit:hover::after { translate: 0 4px; }
+
+/* Video chính của bài tin (thay ảnh đại diện) */
+.article__video video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); background: #000; box-shadow: var(--shadow); }

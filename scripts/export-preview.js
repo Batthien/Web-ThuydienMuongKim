@@ -58,7 +58,9 @@ const IMG_RE = /\/(?:media|uploads\/images)\/[^"'\s,)]+?(?:-(?:640|1280|1920))\.
       .replace(/href="\/admin[^"]*"/g, 'href="#" data-preview-disabled')
       .replace(/href="(\/(?:vi|en)(?:\/[^"#?]*)?)(?:\?[^"#]*)?(#[^"]*)?"/g, (m, p, a) => `href="#${p}${a || ''}"`)
       .replace(/(<a\b[^>]*?\s)href="#([A-Za-z][\w-]*)"/g, (m, pre, a) => `${pre}href="#${r}#${a}"`) // liên kết <a> tới mục trong cùng trang (không đụng biểu tượng <use>)
-      .replace(/action="[^"]*"/g, 'action="#" data-preview-form');
+      .replace(/action="[^"]*"/g, 'action="#" data-preview-form')
+      // Video không nhúng được vào 1 file: trỏ tới tệp gốc trong thư mục dự án (xem được khi mở bản xem thử trên máy này)
+      .replace(/src="\/uploads\/videos\/([^"]+)"/g, (m, f) => `src="${path.relative(path.dirname(OUT), path.join(ROOT, 'uploads', 'videos', f)).split(path.sep).join('/')}"`);
     pages[r] = { title, bodyClass, body };
     process.stdout.write('.');
   }

@@ -107,6 +107,9 @@ db.exec(`CREATE TABLE IF NOT EXISTS user_companies (
   PRIMARY KEY (user_id, company)
 );`);
 // Tài liệu cổ đông thuộc công ty nào (tài liệu cũ mặc định là của Mường Kim)
+// Tin tức: video chính (MP4 trong uploads/videos) hiện thay ảnh đại diện ở đầu bài
+const postCols = db.prepare('PRAGMA table_info(posts)').all().map((c) => c.name);
+if (!postCols.includes('video')) db.exec("ALTER TABLE posts ADD COLUMN video TEXT NOT NULL DEFAULT ''");
 const docCols = db.prepare('PRAGMA table_info(documents)').all().map((c) => c.name);
 if (!docCols.includes('company')) db.exec("ALTER TABLE documents ADD COLUMN company TEXT NOT NULL DEFAULT 'mk'");
 

@@ -15,7 +15,13 @@
       <% if (loc(post, 'excerpt')) { %><p class="article__lead"><%= loc(post, 'excerpt') %></p><% } %>
     </div>
   </header>
-  <% if (post.cover) { %>
+  <% if (post.video) { %>
+    <div class="container container--narrow article__cover article__video">
+      <video controls preload="metadata" playsinline<% if (post.cover) { %> poster="<%= h.imgUrl(post.cover, 1280) %>"<% } %>>
+        <source src="<%= post.video %>" type="video/mp4">
+      </video>
+    </div>
+  <% } else if (post.cover) { %>
     <div class="container container--narrow article__cover"><%- h.img(post.cover, loc(post, 'title'), { sizes: '(min-width: 860px) 780px, 100vw', eager: true }) %></div>
   <% } %>
   <div class="container container--narrow prose">

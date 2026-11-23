@@ -47,6 +47,8 @@ app.use(compression());
 const long = { maxAge: '30d', immutable: true };
 app.use('/media', express.static(path.join(__dirname, 'public/media'), long));
 app.use('/uploads/images', express.static(path.join(config.uploadDir, 'images'), long));
+// Video tin tức (hỗ trợ tua nhờ HTTP Range — express.static tự xử lý)
+app.use('/uploads/videos', express.static(path.join(config.uploadDir, 'videos'), { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: config.isProd ? '7d' : 0 }));
 
 app.use(express.urlencoded({ extended: false, limit: '300kb' }));
