@@ -352,7 +352,7 @@ module.exports = {
     },
   },
   footer: {
-    tagline: 'Vận hành an toàn – Phát triển bền vững – Năng lượng sạch cho tương lai.',
+    tagline: 'Giữ trọn niềm tin, vững bền lợi ích',
     company: 'Công ty', explore: 'Khám phá', contact: 'Liên hệ',
     rights: 'Bản quyền thuộc về {name}.',
     tax: 'MST',

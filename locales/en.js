@@ -352,7 +352,7 @@ module.exports = {
     },
   },
   footer: {
-    tagline: 'Safe operation – Sustainable growth – Clean energy for the future.',
+    tagline: 'Keeping trust, sustaining value',
     company: 'Company', explore: 'Explore', contact: 'Contact',
     rights: '{name}. All rights reserved.',
     tax: 'Tax code',
