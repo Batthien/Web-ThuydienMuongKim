@@ -63,13 +63,13 @@
     </div>
     <div class="org reveal">
       <% org.governance.forEach((g) => { %>
-        <div class="org__node org__node--gov"><strong><%= g.name %></strong><span><%= g.note %></span></div>
+        <div class="org__node org__node--gov"><strong><%= g.name %></strong></div>
         <span class="org__line" aria-hidden="true"></span>
       <% }) %>
       <div class="org__board">
         <p class="org__board-title"><%= org.boardTitle %></p>
         <ul class="org__people">
-          <% org.board.forEach((b) => { %><li><span><%= b.role %></span><strong><%= b.person %></strong></li><% }) %>
+          <% org.board.forEach((b) => { %><li><strong><%= b.role %></strong></li><% }) %>
         </ul>
       </div>
       <span class="org__line" aria-hidden="true"></span>
