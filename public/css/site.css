@@ -946,8 +946,6 @@ body.side-open { overflow: hidden; }
 .plant-tabs__list a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; color: var(--brand-900); font-weight: 600; font-size: .95rem; white-space: nowrap; text-decoration: none; transition: background .2s, color .2s; }
 .plant-tabs__list a:hover { background: var(--sky-100); }
 .plant-tabs__list a[aria-current="page"] { background: var(--brand-800); color: #fff; }
-.plant-tabs__num { font-size: .75rem; font-weight: 700; color: var(--accent); }
-.plant-tabs__list a[aria-current="page"] .plant-tabs__num { color: var(--accent-soft); }
 .plant-pending__box { display: grid; justify-items: center; gap: 12px; padding: clamp(32px, 5vw, 56px); text-align: center; border-radius: var(--radius-lg); background: var(--mist); border: 1px dashed var(--brand-400); }
 .plant-pending__box .section-title { margin: 0; }
 .plant-pending__icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: var(--sky-100); color: var(--brand-700); }
