@@ -138,7 +138,7 @@ module.exports = {
         { icon: 'users', name: 'General Affairs Department', note: 'Administration and human resources' },
         { icon: 'cog', name: 'Technical Department', note: 'Engineering and equipment management' },
         { icon: 'growth', name: 'Finance & Accounting Department', note: 'Company finance and accounting' },
-        { icon: 'zap', name: 'Muong Kim\nHydropower Plant', note: 'Operation management and power generation' },
+        { icon: 'zap', name: 'Muong Kim Hydropower Plant', note: 'Operation management and power generation' },
       ],
       union: { name: 'Trade Union', note: 'Caring for and connecting our people' },
     },
