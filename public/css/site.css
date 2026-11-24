@@ -1256,17 +1256,12 @@ a.daily__step:hover, a.daily__step:focus-visible { background: var(--brand-700);
 .org__units { --org-gap: 20px; gap: var(--org-gap); }
 .org__unit::after { left: calc(-1px - var(--org-gap) / 2); right: calc(-1px - var(--org-gap) / 2); }
 
-/* Sơ đồ tổ chức: tên nhà máy 1 dòng — ô nhà máy rộng vừa tên, 3 ô còn lại chia đều phần còn lại (cỡ chữ giữ nguyên) */
+/* Sơ đồ tổ chức: 4 ô cùng kích thước, rộng hết nội dung trang */
 .org { max-width: none; }
-.org__unit { padding-inline: 16px; }
-@media (min-width: 1100px) {
-  .org__units { grid-template-columns: repeat(3, minmax(0, 1fr)) max-content; }
-  .org__unit:last-child strong { white-space: nowrap; }
-}
-@media (max-width: 900px) and (min-width: 380px) { .org__unit:last-child strong { white-space: nowrap; } }
-/* Màn hình vừa (901–1099px): 4 ô xếp 2×2 như máy tính bảng để các ô đều nhau */
-@media (min-width: 901px) and (max-width: 1099px) {
+.org__unit { padding-inline: 18px; }
+@media (min-width: 901px) and (max-width: 1199px) { .org__unit { padding-inline: 10px; } }
+/* 901–999px: 4 ô bằng nhau quá hẹp cho "Thủy điện Mường Kim" 1 dòng — xếp 2×2 (vẫn cùng kích thước) */
+@media (min-width: 901px) and (max-width: 999px) {
   .org__units { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: 16px; }
   .org__units::before, .org__unit::before, .org__unit::after { display: none; }
-  .org__unit:last-child strong { white-space: nowrap; }
 }
