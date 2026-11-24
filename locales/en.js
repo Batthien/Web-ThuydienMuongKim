@@ -71,7 +71,7 @@ module.exports = {
     ],
     daily: {
       eyebrow: 'Operations',
-      title: 'Daily production & business report',
+      title: 'Production & business report',
       date: 'Figures for',
       total: 'Total',
       cols: { plant: 'Plant', mw: 'Capacity (MW)', output: 'Daily output (kWh)', month: 'Month to date (kWh)', year: 'Year to date (kWh)', pct: '% of annual plan', revenue: 'Daily revenue (VND m)', level: 'Reservoir level (m)', inflow: 'Inflow (m³/s)' },

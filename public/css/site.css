@@ -1222,3 +1222,13 @@ a.daily__step:hover, a.daily__step:focus-visible { background: var(--brand-700);
 .daily[aria-busy="true"] .daily__wrap { opacity: .45; transition: opacity .2s; }
 .daily__note strong { color: var(--ink); }
 .daily__error { color: var(--danger); }
+
+/* Bảng SXKD: tiêu đề 1 hàng, ngang hàng với thanh chọn ngày */
+.daily .section-head--row { align-items: flex-end; flex-wrap: nowrap; }
+.daily .section-head--row > div { max-width: none; min-width: 0; }
+.daily .section-title { font-size: clamp(1.35rem, 2.3vw, 2.1rem); white-space: nowrap; margin-bottom: 0; }
+.daily__nav { flex-shrink: 0; }
+@media (max-width: 900px) {
+  .daily .section-head--row { flex-wrap: wrap; }
+  .daily .section-title { white-space: normal; }
+}

@@ -71,7 +71,7 @@ module.exports = {
     ],
     daily: {
       eyebrow: 'Hoạt động sản xuất kinh doanh',
-      title: 'Thống kê sản xuất kinh doanh ngày',
+      title: 'Báo cáo sản xuất hoạt động kinh doanh',
       date: 'Số liệu ngày',
       total: 'Tổng cộng',
       cols: { plant: 'Nhà máy', mw: 'Công suất (MW)', output: 'Sản lượng ngày (kWh)', month: 'Lũy kế tháng (kWh)', year: 'Lũy kế năm (kWh)', pct: '% KH năm', revenue: 'Doanh thu ngày (tr.đ)', level: 'Mực nước hồ (m)', inflow: 'Lưu lượng về (m³/s)' },
