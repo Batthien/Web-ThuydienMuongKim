@@ -1242,3 +1242,16 @@ a.daily__step:hover, a.daily__step:focus-visible { background: var(--brand-700);
 
 /* Tên ô trong sơ đồ tổ chức: xuống dòng theo nội dung (vd "Nhà máy" / "Thủy điện Mường Kim") */
 .org__unit strong { white-space: pre-line; }
+
+/* Sơ đồ tổ chức: ô phòng ban to hơn, cùng một màu */
+.org { max-width: 1180px; }
+.org__units { gap: 20px; }
+.org__unit { padding: 30px 22px 28px; gap: 8px; min-height: 210px; }
+.org__unit strong { font-size: 1.12rem; }
+.org__unit > span:last-child { font-size: .95rem; }
+.org__unit .org__icon { width: 54px; height: 54px; border-radius: 14px; }
+.org__unit .org__icon .icon { width: 26px; height: 26px; }
+.org__unit:last-child { background: #fff; border-color: var(--line); }
+/* Đường ngang ghép theo khoảng cách cột (--org-gap) để luôn liền mạch khi đổi khoảng cách */
+.org__units { --org-gap: 20px; gap: var(--org-gap); }
+.org__unit::after { left: calc(-1px - var(--org-gap) / 2); right: calc(-1px - var(--org-gap) / 2); }
