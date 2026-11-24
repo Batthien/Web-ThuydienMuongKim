@@ -1114,7 +1114,6 @@ main li :is(h1, h2, h3, h4, h5, h6), main blockquote :is(h1, h2, h3, h4, h5, h6)
 .mini-timeline span:not(.mini-timeline__year) { display: block; color: var(--muted); font-size: .92rem; line-height: 1.55; }
 .sister { margin-top: clamp(36px, 5vw, 64px); }
 .sister__head { margin-bottom: 20px; }
-.sister__title { margin: 0; font-size: clamp(1.3rem, 2.2vw, 1.7rem); color: var(--ink); line-height: 1.25; text-align: start; }
 .sister__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .sister-card { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow-sm); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
 .sister-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
