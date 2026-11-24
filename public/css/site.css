@@ -1239,3 +1239,6 @@ a.daily__step:hover, a.daily__step:focus-visible { background: var(--brand-700);
 .org__board-title { text-align: center; }
 .org__people li { place-items: center; text-align: center; padding: 14px 10px; }
 .org__people strong { font-size: 1rem; }
+
+/* Tên ô trong sơ đồ tổ chức: xuống dòng theo nội dung (vd "Nhà máy" / "Thủy điện Mường Kim") */
+.org__unit strong { white-space: pre-line; }

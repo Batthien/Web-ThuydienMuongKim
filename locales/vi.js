@@ -138,7 +138,7 @@ module.exports = {
         { icon: 'users', name: 'Phòng Tổng hợp', note: 'Hành chính – tổng hợp, nhân sự' },
         { icon: 'cog', name: 'Phòng Kỹ thuật', note: 'Quản lý kỹ thuật, thiết bị công trình' },
         { icon: 'growth', name: 'Phòng Tài chính – Kế toán', note: 'Tài chính, kế toán của Công ty' },
-        { icon: 'zap', name: 'Nhà máy Thủy điện Mường Kim', note: 'Vận hành nhà máy, sản xuất điện năng' },
+        { icon: 'zap', name: 'Nhà máy\nThủy điện Mường Kim', note: 'Quản lý vận hành, sản xuất phát điện' },
       ],
       union: { name: 'Công đoàn Công ty', note: 'Chăm lo đời sống, gắn kết người lao động' },
     },
