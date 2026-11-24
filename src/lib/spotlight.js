@@ -98,8 +98,8 @@ function build({ t, url, loc, posts, docs, jobs, IR_CATEGORIES }) {
   }));
 
   return [
-    { key: 'news', label: t('nav.news'), href: url('news'), items: news },
     { key: 'about', label: t('nav.about'), href: url('about'), items: about },
+    { key: 'news', label: t('nav.news'), href: url('news'), items: news },
     { key: 'plant', label: t('nav.plant'), href: url('plant'), items: plant },
     { key: 'ir', label: t('nav.ir'), href: url('ir'), items: ir },
     { key: 'careers', label: t('nav.careers'), href: url('careers'), items: careers },
